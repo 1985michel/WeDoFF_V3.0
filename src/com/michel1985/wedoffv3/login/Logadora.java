@@ -148,26 +148,6 @@ public class Logadora {
 		}
 	}
 
-	public void animarLogin(byte errouLogin, VBox vBoxLogin, Pane paneLogin) {
-		
-		
-
-		// errouLogin++;
-		if (errouLogin > 2) {
-			String chamas = "application/chamas.gif";
-
-			paneLogin.setStyle(
-					"-fx-background-image: url('" + chamas + "'); " + "-fx-background-position: center center; "
-							+ "-fx-background-repeat: stretch;-fx-background-size: cover, auto;");
-		}
-
-		RotateTransition rt = new RotateTransition(Duration.millis(2000), vBoxLogin);
-		rt.setByAngle(360);
-		rt.setAutoReverse(true);
-		rt.setDuration(Duration.millis(300));
-		rt.setCycleCount(5);
-		rt.play();
-
-	}
+	
 
 }
