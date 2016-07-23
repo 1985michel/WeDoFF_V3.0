@@ -6,6 +6,8 @@ package com.michel1985.wedoffv3.view;
 import com.michel1985.wedoffv3.MainApp;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -107,5 +109,26 @@ public class AtendendoClienteOverviewController {
 		
 		//Em casos de tabela,aqui é o local para solitiar o povoamento
 		//someTable.setItems(mainApp.getClienteData());
+	}
+	
+	/**
+	 * Método chamado quando o usuário consulta a existência de um cliente 
+	 * pelo cpf
+	 * */
+	@FXML
+	public void handleConsultarClientePeloCPF(){
+		boolean TESTEclienteExistente = false;
+		if(TESTEclienteExistente){
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Localizado!");
+			alert.setHeaderText("Cliente localizado com sucesso!");
+			alert.setContentText("");
+			
+			alert.showAndWait();
+		}else{
+			/**
+			 * 
+			 * */
+		}
 	}
 }
