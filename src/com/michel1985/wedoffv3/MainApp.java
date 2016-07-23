@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.LoginOverviewController;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -32,7 +33,8 @@ public class MainApp extends Application {
 		
 		initRootLayout();
 		
-		showAtendendoClienteOverview();
+		showLoginOverview();
+		//showAtendendoClienteOverview();
 	}
 	
 	/**
@@ -48,6 +50,28 @@ public class MainApp extends Application {
 			//Colocando o RootLayout em cena
 			primaryStage.setScene( new Scene(rootLayout));
 			primaryStage.show();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Colocando o LoginOverview dentro do RootLayout
+	 * */
+	public void showLoginOverview(){
+		try{
+			//Passo 1 - Carregando FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource(LoginOverviewController.location));
+			AnchorPane loginOverview = (AnchorPane) loader.load();
+			
+			//Colocando dentro do root
+			rootLayout.setCenter(loginOverview);
+			
+			//Dando acesso para o controller acessar o main
+			LoginOverviewController controller = loader.getController();
+			controller.setMainApp(this);
+			
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -74,6 +98,9 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
 	
 	/**
 	 * Retorna o palco principal

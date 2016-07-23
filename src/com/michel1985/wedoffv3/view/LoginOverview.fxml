@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.michel1985.wedoffv3.view.LoginOverviewController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="450.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="700.0">
+               <children>
+                  <ImageView fx:id="wedoffLogoImageView" fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="wedoffTituloLabel" contentDisplay="CENTER" prefHeight="46.0" prefWidth="129.0" text="WeDoFF" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Playbill" size="68.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="versaoTituloLabel" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="383.0" layoutY="10.0" prefHeight="50.0" prefWidth="50.0" text="v 3.0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Playbill" size="30.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label fx:id="subtituloWeDoNotForgetLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="We do not forget">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER">
+               <children>
+                  <VBox spacing="2.0">
+                     <children>
+                        <TextField fx:id="loginTextField" promptText="login" />
+                        <PasswordField fx:id="senhaPasswordField" promptText="senha" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="logarButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Logar" textAlignment="CENTER" />
+                        <Button fx:id="cadastrarNovoUsuarioButton" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cadastrar Novo Usuário" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
