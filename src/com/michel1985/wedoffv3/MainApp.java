@@ -3,6 +3,7 @@ package com.michel1985.wedoffv3;
 import java.io.IOException;
 
 import com.michel1985.wedoffv3.model.Cliente;
+import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
 
@@ -22,6 +23,9 @@ public class MainApp extends Application {
 	private BorderPane rootLayout;
 	
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
+	
+	private Usuario usuarioAtivo;
+	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -119,6 +123,14 @@ public class MainApp extends Application {
 	public ObservableList<Cliente> getClienteData(){
 		return this.clienteData;
 	}
+	
+	/**
+	 * Setando o usuário ativo
+	 * */
+	public void setUsuarioAtivo(Usuario user){
+		this.usuarioAtivo = user;
+	}
+	
 	
 	
 }
