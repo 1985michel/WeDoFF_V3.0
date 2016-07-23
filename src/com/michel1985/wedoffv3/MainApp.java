@@ -2,7 +2,12 @@ package com.michel1985.wedoffv3;
 
 import java.io.IOException;
 
+import com.michel1985.wedoffv3.model.Cliente;
+import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +18,8 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	
+	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -54,6 +61,10 @@ public class MainApp extends Application {
 			
 			//Colocando dentro do root
 			rootLayout.setCenter(atendendoClienteOverview);
+			
+			//Dando acesso para o controller acessar a MainApp
+			AtendendoClienteOverviewController controller = loader.getController();
+			controller.setMainApp(this);
 		
 		}catch(IOException e){
 			e.printStackTrace();
@@ -70,4 +81,13 @@ public class MainApp extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	/**
+	 * Obterndo as ObservableList
+	 * */
+	public ObservableList<Cliente> getClienteData(){
+		return this.clienteData;
+	}
+	
+	
 }
