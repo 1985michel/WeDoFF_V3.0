@@ -4,10 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 
+import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Seguranca;
 
-import crud.CRUD;
 import javafx.animation.RotateTransition;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;

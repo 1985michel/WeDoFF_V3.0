@@ -1,4 +1,4 @@
-package crud;
+package com.michel1985.wedoffv3.crud;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

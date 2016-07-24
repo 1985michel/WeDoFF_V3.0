@@ -2,11 +2,11 @@ package com.michel1985.wedoffv3.login;
 
 import java.io.File;
 
+import com.michel1985.wedoffv3.crud.CRUD;
+import com.michel1985.wedoffv3.crud.DBFactory;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
 
-import crud.CRUD;
-import crud.DBFactory;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
