@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 
-<DialogPane expanded="true" headerText="WeDoFF v3.0" prefHeight="445.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane headerText="WeDoFF v3.0" prefHeight="445.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <header>
       <Label alignment="CENTER" text="WeDoFF v3.0" />
    </header>

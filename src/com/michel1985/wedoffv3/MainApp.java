@@ -123,6 +123,7 @@ public class MainApp extends Application {
 			dialogStage.setTitle("Sobre o WeDoFF");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(false);
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
