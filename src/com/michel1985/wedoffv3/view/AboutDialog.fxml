@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+
+<DialogPane expanded="true" headerText="WeDoFF v3.0" prefHeight="445.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <header>
+      <Label alignment="CENTER" text="WeDoFF v3.0" />
+   </header>
+   <content>
+      <ScrollPane prefHeight="422.0" prefWidth="400.0">
+         <content>
+            <Label prefHeight="480.0" prefWidth="362.0" text="O WeDoFF surgiu da necessidade de consultar registros sobre ações que tomamos no dia-a-dia das agências.&#10;&#10;Ele provê, dentre outras, cinco principais funcionalidades:&#10;1 - Registrar e consultar todos os clientes que já atendemos;&#10;2 - Registrar e consultar todos os atendimentos que realizamos;&#10;3 - Registrar atendimentos que ficaram pendentes, marcando a data na qual deverão ser retomados e concluidos. Sendo que o sistema reapresentará a pendência ao usuário na data marcada.&#10;         Exemplos: - Processos aguardando prazo de exigências;&#10;                          - PABs aguardando processamento;&#10;                          - Processos aguardando conclusão da análise;&#10;                          - etc.;&#10;4 - Localizar registros específicos por meio de diversos critérios ( nome, CPF, NB, protocolo, data, termo utilizado, etc);&#10;5 - Obter informações estatísticas;&#10;&#10;Todos os dados registrados passam por dupla camada de criptografia de modo que somente o usuário-proprietário dos mesmos tenha acesso.&#10;&#10;Atenção: Na primeira camada de segurança utilizamos criptografia de chave única, logo, NÃO É POSSÍVEL RECUPERAR OS DADOS EM CASO DE PERDA DA SENHA! Tenha cuidado.&#10;&#10;Autor:Michel F. Ribeiro&#10;Contato: consulte meu e-mail no Correio." textAlignment="JUSTIFY" wrapText="true" />
+         </content>
+      </ScrollPane>
+   </content>
+</DialogPane>
