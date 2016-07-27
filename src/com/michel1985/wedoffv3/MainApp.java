@@ -161,5 +161,36 @@ public class MainApp extends Application {
 	public void setUsuarioAtivo(Usuario user) {
 		this.usuarioAtivo = user;
 	}
+	
+	/**
+	 * Mostra o HistoricoDeClienteOverview 
+	 * */
+	public void showHistoricoDeClientesOverview() {
+		try {
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeClientesOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Histórico de Clientes");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 }

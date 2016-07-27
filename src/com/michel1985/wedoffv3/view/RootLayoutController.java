@@ -49,5 +49,13 @@ public class RootLayoutController {
 	private void handleExit() {
 		System.exit(0);
 	}
+	
+	/**
+	 * Exibe o dialog com o histórico de clientes
+	 * */
+	@FXML
+	private void handleHistoricoDeClientes(){
+		mainApp.showHistoricoDeClientesOverview();
+	}
 
 }
