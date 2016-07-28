@@ -234,7 +234,7 @@ public class MainApp extends Application {
 
 			/**
 			 * Reordenando a clienteData
-			 * Utilizando lambda - Comparable
+			 * Utilizando lambda - Comparablea
 			 * */
 			clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente())-Integer.parseInt(o1.getIdCliente()));
 
