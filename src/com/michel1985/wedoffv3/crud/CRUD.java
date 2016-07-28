@@ -33,6 +33,7 @@ public class CRUD {
 			connection = DriverManager.getConnection(this.address, user.getNome(), user.getSenha());
 			statement = connection.createStatement();
 
+			
 			resultSet = statement.executeQuery(strSql);
 
 		} catch (Exception e) {
@@ -53,4 +54,5 @@ public class CRUD {
 		}
 		return resultSet;
 	}
+	
 }

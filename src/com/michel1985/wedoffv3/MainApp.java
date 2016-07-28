@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Cliente;
@@ -37,10 +38,9 @@ public class MainApp extends Application {
 
 	public MainApp() {
 
-		//Cliente newCli = new Cliente("1","Jose Um","87487813983","um notas");
-		//clienteData.add(newCli);
+		// Cliente newCli = new Cliente("1","Jose Um","87487813983","um notas");
+		// clienteData.add(newCli);
 
-		
 	}
 
 	@Override
@@ -172,13 +172,13 @@ public class MainApp extends Application {
 	 */
 	public void setUsuarioAtivo(Usuario user) {
 		this.usuarioAtivo = user;
-		
+
 	}
-	
-	public void carregaHistoricoDeClientes(){
+
+	public void carregaHistoricoDeClientes() {
 		if (this.usuarioAtivo != null) {
 			ResultSet resultSet = null;
-			
+
 			try {
 				resultSet = new CRUD(this.usuarioAtivo).getResultSet("SELECT * FROM clientes ORDER BY IDCLIENTE DESC");
 				adicionaTodosClientesFromDBNaDataClientes(resultSet);
@@ -187,30 +187,31 @@ public class MainApp extends Application {
 			} finally {
 				try {
 					resultSet.close();
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
+
 	private void adicionaTodosClientesFromDBNaDataClientes(ResultSet resultSet) throws SQLException {
 		ArrayList<Cliente> clientes = new ArrayList<>();
 		while (resultSet.next()) {
 
-			clientes.add(new Cliente(resultSet.getString("idcliente"), descriptografa(resultSet.getString("nomeCliente")),
-					descriptografa(resultSet.getString("cpfCliente")), descriptografa(resultSet.getString("notassobrecliente"))));
+			clientes.add(
+					new Cliente(resultSet.getString("idcliente"), descriptografa(resultSet.getString("nomeCliente")),
+							descriptografa(resultSet.getString("cpfCliente")),
+							descriptografa(resultSet.getString("notassobrecliente"))));
 		}
 
 		clienteData.addAll(FXCollections.observableArrayList(clientes));
 	}
-	
+
 	private String descriptografa(String texto) {
 		Cripto cripto = new Cripto();
-		return cripto.descriptografa(texto,this.usuarioAtivo.getSenha());
+		return cripto.descriptografa(texto, this.usuarioAtivo.getSenha());
 	}
-	
 
 	public Usuario getUsuarioAtivo() {
 		return this.usuarioAtivo;
@@ -221,16 +222,21 @@ public class MainApp extends Application {
 	 */
 	public void showHistoricoDeClientesOverview() {
 		try {
-			
-			
+
 			// Load o FXML
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/HistoricoDeClientesOverview.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
-			
-			//Dá ao controlador acesso ao MainApp
+
+			// Dá ao controlador acesso ao MainApp
 			HistoricoDeClientesOverviewController controller = loader.getController();
 			controller.setMainApp(this);
+
+			/**
+			 * Reordenando a clienteData
+			 * Utilizando lambda - Comparable
+			 * */
+			clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente())-Integer.parseInt(o1.getIdCliente()));
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();

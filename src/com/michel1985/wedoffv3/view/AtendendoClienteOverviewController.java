@@ -243,27 +243,71 @@ public class AtendendoClienteOverviewController {
 	private void gravarCliente(){
 		System.out.println("Cliente gravado Hohoho");
 		
-		try{
-			String cpf = cpfTextField.getText();
-			String nome = nomeClienteTextField.getText();
-			String notas =  notasClienteTextArea.getText();
-			int id= mainApp.getClienteData().size();
+		String cpf = "";
+		String nome = "";
+		String notas ="";
+		int id=0;
+		
+		//Gravando o cliente ao banco
+		ResultSet resultSet = null;
+		try {
+			cpf = cpfTextField.getText();
+			nome = nomeClienteTextField.getText();
+			notas =  notasClienteTextArea.getText();
+			
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+			
+			resultSet = crud.getResultSet("INSERT INTO CLIENTES (nomeCliente, cpfCliente, notasSobreCliente) VALUES ('"
+							+ criptografa(nome) + "','" + criptografa(cpf) + "','" + criptografa(notas) + "');CALL IDENTITY();");
+			
+			if (resultSet.next()) id = resultSet.getInt(1);// obtendo o idretornado CALL IDENTITY();
+			habilitarAcoesClienteVBox(true);
+			//id = crud.getLastClienteId();
+			System.out.println("id retornado: "+id);
+			setIdClienteAtual(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//Adicionando o cliente
+		try{			
+			System.out.println("Antes: "+mainApp.getClienteData().size());
 			String idString = ""+id;
 			Cliente newCli = new Cliente(idString,nome, cpf, notas);
 			mainApp.getClienteData().add(newCli);
-			System.out.println("Qtd clientes: "+mainApp.getClienteData().size());
+			System.out.println("Depois: "+mainApp.getClienteData().size());
+			
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
 		
-		//Seta idClienteAtual
 	}
+	/**
+	 * O método abaixo seta o Id do cliente atual.
+	 * 
+	 * */	
+	private void setIdClienteAtual(int id){
+		idClienteAtual = id+"";
+		
+	}
+	
+	
+	
 	
 	private void atualizarCliente(){
 		System.out.println("Atualizando cliente hohoho");
 	}
 	
-	
+	public String criptografa(String texto) {
+		Cripto cripto = new Cripto();
+		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
+	}
 
 	private String descriptografa(String texto) {
 		Cripto cripto = new Cripto();

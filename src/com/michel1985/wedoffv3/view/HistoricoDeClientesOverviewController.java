@@ -100,7 +100,8 @@ public class HistoricoDeClientesOverviewController {
 		clientesTableView.setItems(main.getClienteData());
 
 	}
-
+	
+	
 	public void handleShowHistoricoDeClientes() {
 		
 		//a linha abaixo deve ser excluida posteriormente
