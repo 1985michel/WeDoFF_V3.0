@@ -228,7 +228,7 @@ public class MainApp extends Application {
 			loader.setLocation(MainApp.class.getResource("view/HistoricoDeClientesOverview.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 
-			// Dá ao controlador acesso ao MainApp
+			// Dá ao controlador acesso ao MainAppa
 			HistoricoDeClientesOverviewController controller = loader.getController();
 			controller.setMainApp(this);
 
