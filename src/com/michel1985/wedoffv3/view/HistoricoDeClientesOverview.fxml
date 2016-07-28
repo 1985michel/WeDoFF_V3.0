@@ -33,10 +33,10 @@
                <children>
                   <Label fx:id="NotasSobreClienteTituloLabel" layoutX="14.0" layoutY="14.0" text="Notas Sobre Cliente:" />
                   <Label fx:id="notasSobreClienteLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="53.0" text="..." textAlignment="JUSTIFY" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0" />
-                  <HBox alignment="CENTER_RIGHT" layoutX="14.0" layoutY="371.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                  <HBox fx:id="acoesSobreClienteHBox" alignment="CENTER_RIGHT" disable="true" layoutX="14.0" layoutY="371.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
                         <Button fx:id="verAtendimentosDoClienteButton" defaultButton="true" mnemonicParsing="false" text="Ver Atendimentos do Cliente" HBox.hgrow="ALWAYS" />
-                        <MenuButton mnemonicParsing="false" text="Ações" HBox.hgrow="ALWAYS">
+                        <MenuButton fx:id="acoesMenuButton" mnemonicParsing="false" text="Ações" HBox.hgrow="ALWAYS">
                           <items>
                             <MenuItem fx:id="editarClienteMenuItem" mnemonicParsing="false" text="Editar Cliente" />
                             <MenuItem fx:id="excluirClienteMenuItem" mnemonicParsing="false" text="Excluir Cliente" />

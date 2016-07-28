@@ -1,12 +1,11 @@
 package com.michel1985.wedoffv3;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.prefs.Preferences;
 
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
 import com.michel1985.wedoffv3.view.RootLayoutController;
 
@@ -30,6 +29,13 @@ public class MainApp extends Application {
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 
 	private Usuario usuarioAtivo;
+
+	public MainApp() {
+
+		Cliente newCli = new Cliente("1","Jose Um","87487813983","um notas");
+		clienteData.add(newCli);
+
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -161,16 +167,24 @@ public class MainApp extends Application {
 	public void setUsuarioAtivo(Usuario user) {
 		this.usuarioAtivo = user;
 	}
-	
+
+	public Usuario getUsuarioAtivo() {
+		return this.usuarioAtivo;
+	}
+
 	/**
-	 * Mostra o HistoricoDeClienteOverview 
-	 * */
+	 * Mostra o HistoricoDeClienteOverview
+	 */
 	public void showHistoricoDeClientesOverview() {
 		try {
 			// Load o FXML
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/HistoricoDeClientesOverview.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
+			
+			//Dá ao controlador acesso ao MainApp
+			HistoricoDeClientesOverviewController controller = loader.getController();
+			controller.setMainApp(this);
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -190,7 +204,5 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }

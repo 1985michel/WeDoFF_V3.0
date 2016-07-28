@@ -16,11 +16,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.michel1985.wedoffv3.view.AtendendoClienteOverviewController">
+<AnchorPane fx:id="fullAnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.michel1985.wedoffv3.view.AtendendoClienteOverviewController">
    <children>
       <SplitPane dividerPositions="0.31605351170568563" layoutX="200.0" layoutY="108.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane maxWidth="400.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="300.0">
+          <AnchorPane fx:id="clienteAnchorPane" maxWidth="400.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="300.0">
                <children>
                   <Label fx:id="tituloClienteLabel" layoutX="14.0" layoutY="14.0" text="Cliente" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                   <VBox layoutX="5.0" layoutY="58.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="50.0">
@@ -32,7 +32,7 @@
                                     <Tooltip autoHide="true" text="CPF do Cliente" />
                                  </tooltip>
                               </TextField>
-                              <Button fx:id="consultarClientePeloCpfButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="34.0" text="?">
+                              <Button fx:id="consultarClientePeloCpfButton" defaultButton="true" mnemonicParsing="false" onAction="#handleConsultarClientePeloCPF" prefHeight="25.0" prefWidth="34.0" text="?">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -63,24 +63,25 @@
                            <tooltip>
                               <Tooltip autoHide="true" text="Notas sobre Cliente" />
                            </tooltip></TextArea>
-                        <VBox spacing="2.0">
+                        <VBox fx:id="acoesClienteVBox" spacing="2.0">
                            <children>
-                              <Button fx:id="receberSatButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Receber SAT">
+                              <Button fx:id="receberSatButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Receber SAT" VBox.vgrow="ALWAYS">
                                  <tooltip>
                                     <Tooltip text="Na tela do SAT pressione: CTRL+A e depois CTRL+C" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="verHistoricoDeAtendimentosDoClienteButton" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="212.0" text="Ver Histórico de Atendimentos" textAlignment="CENTER">
+                              <Button fx:id="verHistoricoDeAtendimentosDoClienteButton" contentDisplay="CENTER" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="212.0" text="Ver Atendimentos do Cliente" textAlignment="CENTER">
                                  <tooltip>
                                     <Tooltip text="Histórico de Atendimentos desse Cliente" />
-                                 </tooltip></Button>
+                                 </tooltip>
+                              </Button>
                            </children>
                         </VBox>
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="400.0">
+          <AnchorPane fx:id="atendimentoAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="400.0">
                <children>
                   <Label fx:id="tituloAtendimentoLabel" layoutX="14.0" layoutY="14.0" text="Atendimento" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                   <VBox layoutX="5.0" layoutY="5.0" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="50.0">

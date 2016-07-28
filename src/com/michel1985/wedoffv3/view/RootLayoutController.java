@@ -17,7 +17,7 @@ public class RootLayoutController {
 		this.mainApp = mainApp;
 
 		// Em casos de tabela,aqui é o local para solitiar o povoamento
-		// someTable.setItems(mainApp.getClienteData());
+		//someTable.setItems(mainApp.getClienteData());
 	}
 
 	// Contrutor. É chamado antes do método Initialize

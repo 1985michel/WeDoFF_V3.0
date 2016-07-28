@@ -111,6 +111,9 @@ public class LoginOverviewController {
 	//Informando ao mainApp que o login ocorreu e que a aplicação deve ser liberada
 	public void loginConfirmado(){
 		this.mainApp.setUsuarioAtivo(usuarioAtivo);
+		
+		
+		
 		this.mainApp.showAtendendoClienteOverview();
 	}
 	
