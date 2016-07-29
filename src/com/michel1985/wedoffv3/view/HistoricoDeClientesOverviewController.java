@@ -12,7 +12,9 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 public class HistoricoDeClientesOverviewController {
 
@@ -32,10 +34,10 @@ public class HistoricoDeClientesOverviewController {
 	private Label historicoDeClientesTituloLabel;
 
 	@FXML
-	private Label NotasSobreClienteTituloLabel;
+	private Label notasSobreClienteTituloLabel;
 
 	@FXML
-	private Label notasSobreClienteLabel;
+	private TextArea notasSobreClienteTextArea;
 
 	@FXML
 	private Button verAtendimentosDoClienteButton;
@@ -86,8 +88,8 @@ public class HistoricoDeClientesOverviewController {
 	 * */
 	private void permitirAcoes(Cliente cliente) {
 		// TODO Auto-generated method stub
-		if(cliente != null ) acoesSobreClienteHBox.setDisable(true);
-		else acoesSobreClienteHBox.setDisable(false);
+		if(cliente != null ) acoesSobreClienteHBox.setDisable(false);
+		else acoesSobreClienteHBox.setDisable(true);
 	}
 
 	/**
@@ -115,9 +117,9 @@ public class HistoricoDeClientesOverviewController {
 	private void showClienteDetails(Cliente cliente) {
 		if (cliente != null) {
 			// preenche o label das notas
-			notasSobreClienteLabel.setText(cliente.getNotasSobreCLiente());
+			notasSobreClienteTextArea.setText(cliente.getNotasSobreCLiente());
 		} else {
-			notasSobreClienteLabel.setText("");
+			notasSobreClienteTextArea.setText("");
 		}
 	}
 	
@@ -129,6 +131,9 @@ public class HistoricoDeClientesOverviewController {
 	@FXML
 	private void handleDeleteCliente() {
 		int selectedIndex = clientesTableView.getSelectionModel().getFocusedIndex();
+		
+		
+		
 		clientesTableView.getItems().remove(selectedIndex);
 	}
 

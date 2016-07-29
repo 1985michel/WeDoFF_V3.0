@@ -7,6 +7,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -31,8 +32,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="NotasSobreClienteTituloLabel" layoutX="14.0" layoutY="14.0" text="Notas Sobre Cliente:" />
-                  <Label fx:id="notasSobreClienteLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="53.0" text="..." textAlignment="JUSTIFY" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0" />
+                  <Label fx:id="notasSobreClienteTituloLabel" layoutX="14.0" layoutY="14.0" text="Notas Sobre Cliente:" />
                   <HBox fx:id="acoesSobreClienteHBox" alignment="CENTER_RIGHT" disable="true" layoutX="14.0" layoutY="371.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
                         <Button fx:id="verAtendimentosDoClienteButton" defaultButton="true" mnemonicParsing="false" text="Ver Atendimentos do Cliente" HBox.hgrow="ALWAYS" />
@@ -44,6 +44,7 @@
                         </MenuButton>
                      </children>
                   </HBox>
+                  <TextArea fx:id="notasSobreClienteTextArea" editable="false" layoutX="2.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" promptText="..." wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="40.0" />
                </children></AnchorPane>
         </items>
       </SplitPane>
