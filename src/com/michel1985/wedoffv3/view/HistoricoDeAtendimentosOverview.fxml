@@ -37,7 +37,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label text="Notas sobre Atendimento" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                  <Label alignment="TOP_LEFT" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="..." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0" />
+                  <Label alignment="TOP_LEFT" cacheShape="false" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="..." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0" />
                   <HBox alignment="CENTER_RIGHT" layoutY="373.0" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
                         <Button defaultButton="true" mnemonicParsing="false" text="Ver Atendimentos do Cliente" HBox.hgrow="ALWAYS" />

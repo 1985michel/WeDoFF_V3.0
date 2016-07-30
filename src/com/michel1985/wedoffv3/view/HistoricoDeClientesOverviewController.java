@@ -110,9 +110,6 @@ public class HistoricoDeClientesOverviewController {
 	}
 
 	public void handleShowHistoricoDeClientes() {
-
-		// a linha abaixo deve ser excluida posteriormente
-
 		mainApp.showHistoricoDeClientesOverview();
 	}
 
@@ -120,8 +117,8 @@ public class HistoricoDeClientesOverviewController {
 	 * Preenche os dados da pessoa
 	 */
 	private void showClienteDetails(Cliente cliente) {
+			
 		if (cliente != null) {
-			// preenche o label das notas
 			notasSobreClienteTextArea.setText(cliente.getNotasSobreCLiente());
 		} else {
 			notasSobreClienteTextArea.setText("");
@@ -135,26 +132,12 @@ public class HistoricoDeClientesOverviewController {
 	 */
 	@FXML
 	private void handleDeleteCliente() {
-		
-		//Remove da Tabela
-		//int selectedIndex = clientesTableView.getSelectionModel().getFocusedIndex();
-		//clientesTableView.getItems().remove(selectedIndex);
-		
+
 		String selectedId = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
-		//Gravando o cliente ao banco
 		ResultSet resultSet = null;
 		try {
-						
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
-			//DELETE FROM Customers	WHERE CustomerName='Alfreds Futterkiste'
-			
-			resultSet = crud.getResultSet("DELETE FROM CLIENTES WHERE idcliente = '"+selectedId+"'");
-			/*
-			resultSet = crud.getResultSet("INSERT INTO CLIENTES (nomeCliente, cpfCliente, notasSobreCliente) VALUES ('"
-							+ criptografa(nome) + "','" + criptografa(cpf) + "','" + criptografa(notas) + "');CALL IDENTITY();");
-			*/
-			
-			
+			resultSet = crud.getResultSet("DELETE FROM CLIENTES WHERE idcliente = '" + selectedId + "'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -164,19 +147,33 @@ public class HistoricoDeClientesOverviewController {
 				e.printStackTrace();
 			}
 		}
-		
-		//Adicionando o cliente
-		try{			
-			System.out.println("Antes: "+mainApp.getClienteData().size());
-			//String idString = ""+id;
-			//Cliente newCli = new Cliente(idString,nome, cpf, notas);
+
+		// Removendo o cliente da observableList
+		try {
 			mainApp.getClienteData().remove(clientesTableView.getSelectionModel().getSelectedItem());
-			System.out.println("Depois: "+mainApp.getClienteData().size());
-			
-		}catch (Exception e) {
-			// TODO: handle exception
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+	}
 	
+	/**
+	 * Atualizando cliente
+	 * Chamado quando o usuário clica em "editar cliente"
+	 * */
+	@FXML
+	private void handleAtualizaCliente(){
+		Cliente selectedCliente = clientesTableView.getSelectionModel().getSelectedItem();
+		
+		if(selectedCliente != null){
+			
+			boolean okClicked = mainApp.showEditarClienteOverview(selectedCliente);
+			if(okClicked){
+				showClienteDetails(selectedCliente);
+			}
+		}else{
+			//Não se aplica pois se não houve seleção o botão fica desabilitado
+		}
 	}
 
 }

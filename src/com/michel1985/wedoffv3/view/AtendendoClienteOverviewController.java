@@ -263,7 +263,7 @@ public class AtendendoClienteOverviewController {
 			if (resultSet.next()) id = resultSet.getInt(1);// obtendo o idretornado CALL IDENTITY();
 			habilitarAcoesClienteVBox(true);
 			//id = crud.getLastClienteId();
-			System.out.println("id retornado: "+id);
+			//System.out.println("id retornado: "+id);
 			setIdClienteAtual(id);
 		} catch (Exception e) {
 			e.printStackTrace();

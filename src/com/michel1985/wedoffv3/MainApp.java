@@ -10,6 +10,7 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
 import com.michel1985.wedoffv3.view.RootLayoutController;
@@ -254,6 +255,39 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Apresenta o dialog para edição do cliente
+	 * */
+	public boolean showEditarClienteOverview(Cliente cliente){
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/EditarClienteOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+			
+			//Cria o palco
+			Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Editar Cliente");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(primaryStage);
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+	        
+	        //Passa o cliente a ser editado ao controller
+	        EditarClienteOverviewController controller = loader.getController();
+	        controller.setDialogStage(dialogStage);
+	        controller.setCliente(cliente);
+	        
+	        //Apresenta o dialog
+	        dialogStage.showAndWait();
+	        
+	        return controller.isOkCLicked();
+	        
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }
