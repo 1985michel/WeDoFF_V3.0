@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Cliente;
+import com.michel1985.wedoffv3.seguranca.Cripto;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -117,7 +118,7 @@ public class HistoricoDeClientesOverviewController {
 	 * Preenche os dados da pessoa
 	 */
 	private void showClienteDetails(Cliente cliente) {
-			
+
 		if (cliente != null) {
 			notasSobreClienteTextArea.setText(cliente.getNotasSobreCLiente());
 		} else {
@@ -156,24 +157,52 @@ public class HistoricoDeClientesOverviewController {
 		}
 
 	}
-	
+
 	/**
-	 * Atualizando cliente
-	 * Chamado quando o usuário clica em "editar cliente"
-	 * */
+	 * Atualizando cliente Chamado quando o usuário clica em "editar cliente"
+	 */
 	@FXML
-	private void handleAtualizaCliente(){
+	private void handleAtualizaCliente() {
 		Cliente selectedCliente = clientesTableView.getSelectionModel().getSelectedItem();
-		
-		if(selectedCliente != null){
-			
+
+		if (selectedCliente != null) {
+
 			boolean okClicked = mainApp.showEditarClienteOverview(selectedCliente);
-			if(okClicked){
+			if (okClicked) {
 				showClienteDetails(selectedCliente);
+				atualizaNoBanco(selectedCliente);
 			}
-		}else{
-			//Não se aplica pois se não houve seleção o botão fica desabilitado
+		} else {
+			// Não se aplica pois se não houver seleção o botão fica
+			// desabilitado
 		}
+	}
+
+	private void atualizaNoBanco(Cliente cliente) {
+
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+
+			resultSet = crud.getResultSet("UPDATE clientes SET cpfcliente= '" + criptografa(cliente.getCpf())
+					+ "', nomecliente= '" + criptografa(cliente.getNome()) + "', notassobrecliente= '"
+					+ criptografa(cliente.getNotasSobreCLiente()) + "' WHERE idcliente='" + cliente.getIdCliente()
+					+ "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//Nota: Como trata-se de uma observableList a atualização já foi feita na lista
+	}
+
+	public String criptografa(String texto) {
+		Cripto cripto = new Cripto();
+		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
 
 }
