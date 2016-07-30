@@ -211,6 +211,8 @@ public class AtendendoClienteOverviewController {
 		
 		//Habilitando funções do menu
 		habilitarAcoesClienteVBox(true);
+		
+		
 	}
 	
 	/**
@@ -226,6 +228,8 @@ public class AtendendoClienteOverviewController {
 			
 			//Alterando o método do botão [com lambda!]
 			receberSatButton.setOnAction(event -> gravarCliente());
+			
+			
 		}
 		else{			
 			
@@ -237,6 +241,10 @@ public class AtendendoClienteOverviewController {
 			
 			//Alterando o método do botão [com lambda!]
 			receberSatButton.setOnAction(event -> handleAtualizaCliente());
+			
+			//Desabilita o textField de edição do CPF e o botão de consulta do mesmo
+			cpfTextField.setEditable(false);
+			consultarClientePeloCpfButton.setDisable(true);
 			
 		}
 	}
