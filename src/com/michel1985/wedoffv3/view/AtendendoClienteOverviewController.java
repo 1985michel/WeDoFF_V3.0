@@ -6,6 +6,7 @@ package com.michel1985.wedoffv3.view;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
@@ -146,6 +147,8 @@ public class AtendendoClienteOverviewController {
 	@FXML
 	private void handleConsultarClientePeloCPF(){
 		
+		
+		
 		String cpf = cpfTextField.getText();
 		if(!ValidaCliente.validaCPF(cpf)){
 			Alert alert = new Alert(AlertType.WARNING);
@@ -200,8 +203,13 @@ public class AtendendoClienteOverviewController {
 	 * */
 	private void showCliente(ResultSet resultSet) throws SQLException{
 		
+				
 		//Seta idClienteAtual
 		idClienteAtual = resultSet.getString("idcliente");
+		
+		//REMOVER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		System.out.println("Achamos o cliente e ");
+		System.out.println("Setamos o cliente atual: "+idClienteAtual);
 		
 		//Carrega campos
 		nomeClienteTextField.setText(descriptografa(resultSet.getString("nomeCliente")));
@@ -235,7 +243,7 @@ public class AtendendoClienteOverviewController {
 			receberSatButton.setText("Atualizar Cliente");
 			
 			//Alterando o método do botão [com lambda!]
-			receberSatButton.setOnAction(event -> atualizarCliente());
+			receberSatButton.setOnAction(event -> handleAtualizaCliente());
 			
 		}
 	}
@@ -297,12 +305,75 @@ public class AtendendoClienteOverviewController {
 		
 	}
 	
-	
-	
-	
-	private void atualizarCliente(){
+
+	/**
+	 * Atualizando cliente Chamado quando o usuário clica em "editar cliente"
+	 */
+	@FXML
+	private void handleAtualizaCliente() {
 		System.out.println("Atualizando cliente hohoho");
+		System.out.println("IdClienteAtual: "+idClienteAtual);
+		
+		String cpf = cpfTextField.getText();
+		String nome = nomeClienteTextField.getText();
+		String notas = notasClienteTextArea.getText();
+		
+		if (idClienteAtual != null && idClienteAtual!="") {
+						
+			
+			//for com lambda
+			mainApp.getClienteData().forEach(u -> {
+				if(idClienteAtual.equalsIgnoreCase(u.getIdCliente())){
+					System.out.println("Encontramos o cliente");
+					
+					//Primeiro atualizando na lista
+					u.setCpf(cpf);
+					u.setNome(nome);
+					u.setNotasSobreCLiente(notas);
+					
+					//Depois atualizando no banco		
+					try {
+						atualizaNoBanco(u);
+						return; //interromp o método pois tudo já foi feito
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});			
+			
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Quem estamos atendendo?");
+			alert.setHeaderText("Ocorreu um erro na aplicação.");
+			alert.setContentText("A aplicação não sabe qual cliente está sendo atendido. Por favor feche a aplicação e tente nomvamente.\nFavor relatar o problema ao suporte técnico.");
+			alert.showAndWait();
+		}
 	}
+	
+	
+
+	private void atualizaNoBanco(Cliente cliente) {
+
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+
+			resultSet = crud.getResultSet("UPDATE clientes SET cpfcliente= '" + criptografa(cliente.getCpf())
+					+ "', nomecliente= '" + criptografa(cliente.getNome()) + "', notassobrecliente= '"
+					+ criptografa(cliente.getNotasSobreCLiente()) + "' WHERE idcliente='" + cliente.getIdCliente()
+					+ "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//Nota: Como trata-se de uma observableList a atualização já foi feita na lista
+	}
+
 	
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();

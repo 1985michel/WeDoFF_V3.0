@@ -175,6 +175,11 @@ public class MainApp extends Application {
 
 	}
 
+	/**
+	 * O método abaixo carrega todos os clientes para a ObservableList dataCliente
+	 * 
+	 * O método é chamado pelo loginController quando o login é efetuado
+	 * */
 	public void carregaHistoricoDeClientes() {
 		if (this.usuarioAtivo != null) {
 			ResultSet resultSet = null;
