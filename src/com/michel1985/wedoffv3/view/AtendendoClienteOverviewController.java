@@ -24,6 +24,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.InputMethodRequests;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -229,6 +230,14 @@ public class AtendendoClienteOverviewController {
 			//Alterando o método do botão [com lambda!]
 			receberSatButton.setOnAction(event -> gravarCliente());
 			
+			//Desabilita o textField de edição do CPF
+			cpfTextField.setEditable(true);
+			
+			//Altera texto e método do botão "?" ( pesquisar CPF)
+			consultarClientePeloCpfButton.setText("?");
+			consultarClientePeloCpfButton.setOnAction(event -> handleConsultarClientePeloCPF());
+			consultarClientePeloCpfButton.setTooltip(new Tooltip("Consultar cliente pelo CPF"));
+			
 			
 		}
 		else{			
@@ -239,16 +248,33 @@ public class AtendendoClienteOverviewController {
 			//Alterando texto do botão receberSat
 			receberSatButton.setText("Atualizar Cliente");
 			
-			//Alterando o método do botão [com lambda!]
+			//Alterando o método do botão ReceberSat [com lambda!]
 			receberSatButton.setOnAction(event -> handleAtualizaCliente());
 			
-			//Desabilita o textField de edição do CPF e o botão de consulta do mesmo
+			//Desabilita o textField de edição do CPF
 			cpfTextField.setEditable(false);
-			consultarClientePeloCpfButton.setDisable(true);
+			
+			//Altera texto e método do botão "?" ( pesquisar CPF)
+			consultarClientePeloCpfButton.setText("X");
+			consultarClientePeloCpfButton.setOnAction(event -> handleCancelarAtendimentoDoCliente());
+			consultarClientePeloCpfButton.setTooltip(new Tooltip("Cancelar e Limpar Campos"));
 			
 		}
 	}
 	
+	private void handleCancelarAtendimentoDoCliente() {
+		// TODO Auto-generated method stub
+		habilitarAcoesClienteVBox(false);
+	
+		//limpa idClienteAtual
+		setIdClienteAtual(0);
+		
+		//Limpa os campos do formulário de cliente
+		nomeClienteTextField.setText(""); 
+		cpfTextField.setText("");
+		notasClienteTextArea.setText("");
+	}
+
 	private void gravarCliente(){
 				
 		String cpf = "";
