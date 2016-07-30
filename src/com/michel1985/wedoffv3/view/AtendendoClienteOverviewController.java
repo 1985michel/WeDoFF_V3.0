@@ -145,9 +145,7 @@ public class AtendendoClienteOverviewController {
 	 * pelo cpf
 	 * */
 	@FXML
-	private void handleConsultarClientePeloCPF(){
-		
-		
+	private void handleConsultarClientePeloCPF(){		
 		
 		String cpf = cpfTextField.getText();
 		if(!ValidaCliente.validaCPF(cpf)){
@@ -206,15 +204,10 @@ public class AtendendoClienteOverviewController {
 				
 		//Seta idClienteAtual
 		idClienteAtual = resultSet.getString("idcliente");
-		
-		//REMOVER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-		System.out.println("Achamos o cliente e ");
-		System.out.println("Setamos o cliente atual: "+idClienteAtual);
-		
+				
 		//Carrega campos
 		nomeClienteTextField.setText(descriptografa(resultSet.getString("nomeCliente")));
-		notasClienteTextArea.setText(descriptografa(resultSet.getString("notasSobreCliente")));
-		
+		notasClienteTextArea.setText(descriptografa(resultSet.getString("notasSobreCliente")));		
 		
 		//Habilitando funções do menu
 		habilitarAcoesClienteVBox(true);
@@ -249,8 +242,7 @@ public class AtendendoClienteOverviewController {
 	}
 	
 	private void gravarCliente(){
-		System.out.println("Cliente gravado Hohoho");
-		
+				
 		String cpf = "";
 		String nome = "";
 		String notas ="";
@@ -270,8 +262,7 @@ public class AtendendoClienteOverviewController {
 			
 			if (resultSet.next()) id = resultSet.getInt(1);// obtendo o idretornado CALL IDENTITY();
 			habilitarAcoesClienteVBox(true);
-			//id = crud.getLastClienteId();
-			//System.out.println("id retornado: "+id);
+			
 			setIdClienteAtual(id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -283,16 +274,15 @@ public class AtendendoClienteOverviewController {
 			}
 		}
 		
-		//Adicionando o cliente
+		//Adicionando o cliente à ObservableLIst
 		try{			
-			System.out.println("Antes: "+mainApp.getClienteData().size());
+			
 			String idString = ""+id;
 			Cliente newCli = new Cliente(idString,nome, cpf, notas);
 			mainApp.getClienteData().add(newCli);
-			System.out.println("Depois: "+mainApp.getClienteData().size());
-			
+						
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 	}
@@ -311,9 +301,7 @@ public class AtendendoClienteOverviewController {
 	 */
 	@FXML
 	private void handleAtualizaCliente() {
-		System.out.println("Atualizando cliente hohoho");
-		System.out.println("IdClienteAtual: "+idClienteAtual);
-		
+				
 		String cpf = cpfTextField.getText();
 		String nome = nomeClienteTextField.getText();
 		String notas = notasClienteTextArea.getText();
@@ -324,8 +312,7 @@ public class AtendendoClienteOverviewController {
 			//for com lambda
 			mainApp.getClienteData().forEach(u -> {
 				if(idClienteAtual.equalsIgnoreCase(u.getIdCliente())){
-					System.out.println("Encontramos o cliente");
-					
+										
 					//Primeiro atualizando na lista
 					u.setCpf(cpf);
 					u.setNome(nome);
@@ -371,7 +358,7 @@ public class AtendendoClienteOverviewController {
 				e.printStackTrace();
 			}
 		}
-		//Nota: Como trata-se de uma observableList a atualização já foi feita na lista
+		
 	}
 
 	
