@@ -1,6 +1,9 @@
 package com.michel1985.wedoffv3.view;
 
+import java.sql.ResultSet;
+
 import com.michel1985.wedoffv3.MainApp;
+import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Cliente;
 
 import javafx.fxml.FXML;
@@ -41,10 +44,10 @@ public class HistoricoDeClientesOverviewController {
 
 	@FXML
 	private Button verAtendimentosDoClienteButton;
-	
+
 	@FXML
 	private HBox acoesSobreClienteHBox;
-	
+
 	@FXML
 	private MenuButton acoesMenuButton;
 
@@ -56,7 +59,8 @@ public class HistoricoDeClientesOverviewController {
 
 	private MainApp mainApp;
 
-	public HistoricoDeClientesOverviewController() {}
+	public HistoricoDeClientesOverviewController() {
+	}
 
 	/**
 	 * Inicializa a classe controller. Método chamado ao carregar o fxml
@@ -75,21 +79,23 @@ public class HistoricoDeClientesOverviewController {
 		// algum é selecionado
 		clientesTableView.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showClienteDetails(newValue));
-		
+
 		// Detecta mudanças de seleção e habilita e desabilita as ações do HBox
-				clientesTableView.getSelectionModel().selectedItemProperty()
-						.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
-			
+		clientesTableView.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
+
 	}
-	
+
 	/**
-	 * Método que habilitará e desabilitará as ações sobre o cliente
-	 * Se houver ou não um cliente selecionado na tabela
-	 * */
+	 * Método que habilitará e desabilitará as ações sobre o cliente Se houver
+	 * ou não um cliente selecionado na tabela
+	 */
 	private void permitirAcoes(Cliente cliente) {
 		// TODO Auto-generated method stub
-		if(cliente != null ) acoesSobreClienteHBox.setDisable(false);
-		else acoesSobreClienteHBox.setDisable(true);
+		if (cliente != null)
+			acoesSobreClienteHBox.setDisable(false);
+		else
+			acoesSobreClienteHBox.setDisable(true);
 	}
 
 	/**
@@ -102,12 +108,11 @@ public class HistoricoDeClientesOverviewController {
 		clientesTableView.setItems(main.getClienteData());
 
 	}
-	
-	
+
 	public void handleShowHistoricoDeClientes() {
-		
-		//a linha abaixo deve ser excluida posteriormente
-				
+
+		// a linha abaixo deve ser excluida posteriormente
+
 		mainApp.showHistoricoDeClientesOverview();
 	}
 
@@ -122,7 +127,7 @@ public class HistoricoDeClientesOverviewController {
 			notasSobreClienteTextArea.setText("");
 		}
 	}
-	
+
 	/***/
 
 	/**
@@ -130,11 +135,48 @@ public class HistoricoDeClientesOverviewController {
 	 */
 	@FXML
 	private void handleDeleteCliente() {
-		int selectedIndex = clientesTableView.getSelectionModel().getFocusedIndex();
 		
+		//Remove da Tabela
+		//int selectedIndex = clientesTableView.getSelectionModel().getFocusedIndex();
+		//clientesTableView.getItems().remove(selectedIndex);
 		
+		String selectedId = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
+		//Gravando o cliente ao banco
+		ResultSet resultSet = null;
+		try {
+						
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+			//DELETE FROM Customers	WHERE CustomerName='Alfreds Futterkiste'
+			
+			resultSet = crud.getResultSet("DELETE FROM CLIENTES WHERE idcliente = '"+selectedId+"'");
+			/*
+			resultSet = crud.getResultSet("INSERT INTO CLIENTES (nomeCliente, cpfCliente, notasSobreCliente) VALUES ('"
+							+ criptografa(nome) + "','" + criptografa(cpf) + "','" + criptografa(notas) + "');CALL IDENTITY();");
+			*/
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
-		clientesTableView.getItems().remove(selectedIndex);
+		//Adicionando o cliente
+		try{			
+			System.out.println("Antes: "+mainApp.getClienteData().size());
+			//String idString = ""+id;
+			//Cliente newCli = new Cliente(idString,nome, cpf, notas);
+			mainApp.getClienteData().remove(clientesTableView.getSelectionModel().getSelectedItem());
+			System.out.println("Depois: "+mainApp.getClienteData().size());
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	
 	}
 
 }
