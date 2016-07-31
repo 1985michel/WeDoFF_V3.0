@@ -19,6 +19,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
@@ -59,6 +60,29 @@ public class HistoricoDeClientesOverviewController {
 
 	@FXML
 	private MenuItem excluirClienteMenuItem;
+	
+	
+	/**
+	 * Buscas
+	 * */
+
+    @FXML
+    private TextField cpfSearchTextField;
+
+    @FXML
+    private Button consultarClientePeloCpfButton;
+
+    @FXML
+    private TextField nomeSearchTextField;
+
+    @FXML
+    private Button consultarClientePeloNomeButton;
+
+    @FXML
+    private TextField termoClienteSearchTextField;
+
+    @FXML
+    private Button consultarClientePorTermoButton;
 
 	private MainApp mainApp;
 
