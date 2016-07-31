@@ -65,9 +65,6 @@ public class AtendendoClienteOverviewController {
 	private TextField nomeClienteTextField;
 
 	@FXML
-	private Button consultarClientePeloNomeButton;
-
-	@FXML
 	private TextArea notasClienteTextArea;
 
 	@FXML

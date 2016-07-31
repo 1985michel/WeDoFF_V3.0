@@ -49,14 +49,6 @@
                                     <Tooltip autoHide="true" text="Nome do Cliente" />
                                  </tooltip>
                               </TextField>
-                              <Button fx:id="consultarClientePeloNomeButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="34.0" text="?">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                                 <tooltip>
-                                    <Tooltip text="Consultar Cliente por Nome" />
-                                 </tooltip>
-                              </Button>
                            </children>
                         </HBox>
                         <TextArea fx:id="notasClienteTextArea" prefHeight="311.0" prefWidth="182.0" promptText="Notas sobre o Cliente" wrapText="true" VBox.vgrow="ALWAYS">
