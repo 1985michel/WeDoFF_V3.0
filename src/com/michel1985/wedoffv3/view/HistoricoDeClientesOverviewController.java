@@ -1,6 +1,7 @@
 package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
+import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -133,7 +135,37 @@ public class HistoricoDeClientesOverviewController {
 	 */
 	@FXML
 	private void handleDeleteCliente() {
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Deletar cliente?");
+		alert.setHeaderText("Apagar todos os dados do cliente?");
+		alert.setContentText("Ao clicar em \"Ok\" você estará APAGANDO TODOS OS DADOS DESSE CLIENTE SEM POSSIBILIDADE DE RECUPERA-LOS.\n"
+				+ "\nOs atendimentos desse cliente também serão todos apagados.\n\n"
+				+ "Você tem certeza desta deleção?");
 
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+			deletarClienteDoBancoDeDados();
+
+			// Removendo o cliente da observableList
+			deletarClienteDaClienteData();
+		} else {
+		    // ... user chose CANCEL or closed the dialog
+		}
+
+		
+
+	}
+
+	private void deletarClienteDaClienteData() {
+		try {
+			mainApp.getClienteData().remove(clientesTableView.getSelectionModel().getSelectedItem());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void deletarClienteDoBancoDeDados() {
 		String selectedId = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
 		ResultSet resultSet = null;
 		try {
@@ -148,14 +180,6 @@ public class HistoricoDeClientesOverviewController {
 				e.printStackTrace();
 			}
 		}
-
-		// Removendo o cliente da observableList
-		try {
-			mainApp.getClienteData().remove(clientesTableView.getSelectionModel().getSelectedItem());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	/**
