@@ -40,6 +40,13 @@ public class LoginMiddle {
 	public void cadastrarUsuario(String login, String senha) {
 		if (isUserNameInUse(login)) {
 			System.out.println("Usuário " + login + " já cadastrado");
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erro ao Cadastrar");
+			alert.setHeaderText("Usuário já existente");
+			alert.setContentText("O nome de usuário escolhido já está em uso.\n"
+					+ "Escolha outro nome de usuário ou ( caso o login lhe pertença ) click em 'Logar'");
+
+			alert.showAndWait();
 			return;
 		}
 
@@ -90,7 +97,7 @@ public class LoginMiddle {
 		if (!resultado) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Acesso Negado!");
-			alert.setHeaderText("Login ou Senha não confirmado");
+			alert.setHeaderText("Login e/ou Senha não confirmado");
 			alert.setContentText("Por favor, verifique os dados e tente novamente.");
 
 			alert.showAndWait();

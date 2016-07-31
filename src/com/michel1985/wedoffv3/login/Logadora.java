@@ -76,7 +76,7 @@ public class Logadora {
 			e.printStackTrace();
 		} finally {
 			try {
-				resultSet.close();
+				if(resultSet!=null) resultSet.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

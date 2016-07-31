@@ -31,14 +31,14 @@ public class CRUD {
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection(this.address, user.getNome(), user.getSenha());
-			statement = connection.createStatement();
+			if(connection!= null) statement = connection.createStatement();
+			else return null;
 
-			
-			resultSet = statement.executeQuery(strSql);
+			if(statement!= null)resultSet = statement.executeQuery(strSql);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CRUDException("Houve um problema em obter os dados do banco.");
+			//throw new CRUDException("Houve um problema em obter os dados do banco.");
 		} finally {
 			// logou(logou);
 			try {

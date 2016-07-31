@@ -88,7 +88,7 @@ public class LoginOverviewController {
 	 * 
 	 * Em um primeiro momento pensei que como será uma classe simples - com
 	 * poucos métodos - eu poderia deixa-la aqui no controller. Porém, como
-	 * planeja amadurecer essa aplicação, tomarei a decisão de crar uma classe
+	 * planejo amadurecer essa aplicação, tomarei a decisão de criar uma classe
 	 * para gerenciar o login dessa versão.
 	 * 
 	 * Assim crio a classe "login.LoginMiddle" para deixar a ideia de que é uma classe
@@ -105,7 +105,11 @@ public class LoginOverviewController {
 	@FXML
 	private void handleLogar(){
 		LoginMiddle middle = new LoginMiddle(this);
-		middle.logar(loginTextField.getText(), senhaPasswordField.getText());
+		try {
+			middle.logar(loginTextField.getText(), senhaPasswordField.getText());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	//Informando ao mainApp que o login ocorreu e que a aplicação deve ser liberada
