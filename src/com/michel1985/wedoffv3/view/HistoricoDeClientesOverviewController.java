@@ -7,6 +7,7 @@ import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
+import com.michel1985.wedoffv3.util.ValidaCPF;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -108,7 +109,9 @@ public class HistoricoDeClientesOverviewController {
 		//Detecta mudanças no campo de busca e se ele ficar vazio, apresenta todo os histórico
 		searchTextField.setOnKeyPressed((event) -> {
 			if(searchTextField.getText().length()==0) 
-				clientesTableView.setItems(mainApp.getClienteData());		
+				clientesTableView.setItems(mainApp.getClienteData());
+			//Limpando a lista com os resultados da pesquisa
+			result.clear();
 		});
 
 	}
@@ -259,18 +262,31 @@ public class HistoricoDeClientesOverviewController {
 	@FXML
 	private void handleConsultarCliente(){
 		
-		consultarClientePorNome(searchTextField.getText());
+		String termo = searchTextField.getText();
+		
+		if(new ValidaCPF().validarCPF(termo)) consultarClientePorCpf(termo);
+		else consultarClientePorNome(termo);
 	}
 	
 	/**
 	 * O método abaixo realiza pesquisa do termo fornecido no campo nome 
 	 * */
 	private void consultarClientePorNome(String nome){
-		this.result = FXCollections.observableArrayList();
+		//this.result = FXCollections.observableArrayList();
 		mainApp.getClienteData().forEach(cli ->{
 			if(cli.getNome().toLowerCase().contains(nome.toLowerCase())){
 				result.add(cli);
 			}			
+		});
+		clientesTableView.setItems(result);
+	}
+	
+	/**
+	 * O método abaixo implementa pesquisa por cpf
+	 * */
+	private void consultarClientePorCpf(String termo){
+		mainApp.getClienteData().forEach(cli ->{
+			if(cli.getCpf().equals(termo)) result.add(cli);		
 		});
 		clientesTableView.setItems(result);
 	}
