@@ -40,57 +40,23 @@
                           <panes>
                             <TitledPane animated="false" text="Buscar Cliente">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="522.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="50.0" prefWidth="522.0">
                                        <children>
                                           <VBox layoutX="8.6" layoutY="24.6" prefHeight="115.0" prefWidth="523.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="5.0">
                                              <children>
                                                 <HBox maxWidth="1.7976931348623157E308">
                                                    <children>
-                                                      <TextField fx:id="cpfSearchTextField" prefHeight="25.0" prefWidth="102.0" promptText="CPF " HBox.hgrow="ALWAYS">
+                                                      <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="102.0" promptText="Informe o critério para pesquisa" HBox.hgrow="ALWAYS">
                                                          <tooltip>
-                                                            <Tooltip autoHide="true" text="CPF do Cliente" />
+                                                            <Tooltip autoHide="true" text="Informe o critério para pesquisa" />
                                                          </tooltip>
                                                       </TextField>
-                                                      <Button fx:id="consultarClientePeloCpfButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="34.0" text="?">
+                                                      <Button fx:id="searchButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="34.0" text="?">
                                                          <font>
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                          <tooltip>
-                                                            <Tooltip text="Consultar Cliente pelo CPF" />
-                                                         </tooltip>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                                <HBox maxWidth="1.7976931348623157E308">
-                                                   <children>
-                                                      <TextField fx:id="nomeSearchTextField" prefHeight="25.0" prefWidth="102.0" promptText="Nome" HBox.hgrow="ALWAYS">
-                                                         <tooltip>
-                                                            <Tooltip autoHide="true" text="CPF do Cliente" />
-                                                         </tooltip>
-                                                      </TextField>
-                                                      <Button fx:id="consultarClientePeloNomeButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="34.0" text="?">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                         <tooltip>
-                                                            <Tooltip text="Consultar Cliente pelo CPF" />
-                                                         </tooltip>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                                <HBox maxWidth="1.7976931348623157E308">
-                                                   <children>
-                                                      <TextField fx:id="termoClienteSearchTextField" prefHeight="25.0" prefWidth="102.0" promptText="Termo / NIT / etc." HBox.hgrow="ALWAYS">
-                                                         <tooltip>
-                                                            <Tooltip autoHide="true" text="CPF do Cliente" />
-                                                         </tooltip>
-                                                      </TextField>
-                                                      <Button fx:id="consultarClientePorTermoButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="34.0" text="?">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                         <tooltip>
-                                                            <Tooltip text="Consultar Cliente pelo CPF" />
+                                                            <Tooltip text="Pesquisar" />
                                                          </tooltip>
                                                       </Button>
                                                    </children>

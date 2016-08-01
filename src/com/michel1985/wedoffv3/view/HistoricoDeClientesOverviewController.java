@@ -68,22 +68,10 @@ public class HistoricoDeClientesOverviewController {
 	 * */
 
     @FXML
-    private TextField cpfSearchTextField;
+    private TextField searchTextField;
 
     @FXML
-    private Button consultarClientePeloCpfButton;
-
-    @FXML
-    private TextField nomeSearchTextField;
-
-    @FXML
-    private Button consultarClientePeloNomeButton;
-
-    @FXML
-    private TextField termoClienteSearchTextField;
-
-    @FXML
-    private Button consultarClientePorTermoButton;
+    private Button searchButton;
 
 	private MainApp mainApp;
 
