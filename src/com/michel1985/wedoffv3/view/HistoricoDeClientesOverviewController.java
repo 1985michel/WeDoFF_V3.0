@@ -263,7 +263,7 @@ public class HistoricoDeClientesOverviewController {
 	}
 	
 	/**
-	 * O método abaixo realiza pesquisa do termo fornecido no campo nome
+	 * O método abaixo realiza pesquisa do termo fornecido no campo nome 
 	 * */
 	private void consultarClientePorNome(String nome){
 		this.result = FXCollections.observableArrayList();
