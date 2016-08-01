@@ -8,6 +8,8 @@ import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -67,6 +69,9 @@ public class HistoricoDeClientesOverviewController {
 	 * Buscas
 	 * */
 
+	//Observable list que conterá o resultado das pesquisas
+	public ObservableList<Cliente> result = FXCollections.observableArrayList();
+	
     @FXML
     private TextField searchTextField;
 
@@ -99,6 +104,12 @@ public class HistoricoDeClientesOverviewController {
 		// Detecta mudanças de seleção e habilita e desabilita as ações do HBox
 		clientesTableView.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
+		
+		//Detecta mudanças no campo de busca e se ele ficar vazio, apresenta todo os histórico
+		searchTextField.setOnKeyPressed((event) -> {
+			if(searchTextField.getText().length()==0) 
+				clientesTableView.setItems(mainApp.getClienteData());		
+		});
 
 	}
 
@@ -246,13 +257,22 @@ public class HistoricoDeClientesOverviewController {
 	 * Métodos relativos a consulta 
 	 * */
 	@FXML
-	private void handleConsultarClientePorNome(){
+	private void handleConsultarCliente(){
 		
-		selecionarClienteNaTabelaHistorico();
+		consultarClientePorNome(searchTextField.getText());
 	}
 	
-	private void selecionarClienteNaTabelaHistorico(){
-		
+	/**
+	 * O método abaixo realiza pesquisa do termo fornecido no campo nome
+	 * */
+	private void consultarClientePorNome(String nome){
+		this.result = FXCollections.observableArrayList();
+		mainApp.getClienteData().forEach(cli ->{
+			if(cli.getNome().toLowerCase().contains(nome.toLowerCase())){
+				result.add(cli);
+			}			
+		});
+		clientesTableView.setItems(result);
 	}
 
 }
