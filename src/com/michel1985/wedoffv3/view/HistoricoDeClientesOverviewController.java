@@ -2,6 +2,7 @@ package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
@@ -266,19 +267,20 @@ public class HistoricoDeClientesOverviewController {
 		
 		if(new ValidaCPF().validarCPF(termo)) consultarClientePorCpf(termo);
 		else consultarClientePorNome(termo);
+		consultarClientePorNotas(termo);
+		clientesTableView.setItems(result);
 	}
 	
 	/**
 	 * O método abaixo realiza pesquisa do termo fornecido no campo nome 
 	 * */
 	private void consultarClientePorNome(String nome){
-		//this.result = FXCollections.observableArrayList();
 		mainApp.getClienteData().forEach(cli ->{
 			if(cli.getNome().toLowerCase().contains(nome.toLowerCase())){
-				result.add(cli);
+				if(!result.contains(cli)) result.add(cli);
 			}			
 		});
-		clientesTableView.setItems(result);
+		//clientesTableView.setItems(result);
 	}
 	
 	/**
@@ -286,9 +288,22 @@ public class HistoricoDeClientesOverviewController {
 	 * */
 	private void consultarClientePorCpf(String termo){
 		mainApp.getClienteData().forEach(cli ->{
-			if(cli.getCpf().equals(termo)) result.add(cli);		
+			if(cli.getCpf().equals(termo)) 
+				if(!result.contains(cli)) result.add(cli);		
 		});
-		clientesTableView.setItems(result);
+		//clientesTableView.setItems(result);
+	}
+	
+	/**
+	 * O método abaixo implementa pesquisa nas notas sobre cliente
+	 * */
+	private void consultarClientePorNotas(String nome){
+		mainApp.getClienteData().forEach(cli ->{
+			if(cli.getNotasSobreCLiente().toLowerCase().contains(nome.toLowerCase())){
+				if(!result.contains(cli)) result.add(cli);
+			}			
+		});
+		//clientesTableView.setItems(result);
 	}
 
 }
