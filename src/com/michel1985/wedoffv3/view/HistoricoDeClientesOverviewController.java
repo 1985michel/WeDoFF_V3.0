@@ -18,6 +18,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -251,6 +252,19 @@ public class HistoricoDeClientesOverviewController {
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
+	}
+	
+	/**
+	 * Métodos relativos a consulta 
+	 * */
+	@FXML
+	private void handleConsultarClientePorNome(){
+		
+		selecionarClienteNaTabelaHistorico();
+	}
+	
+	private void selecionarClienteNaTabelaHistorico(){
+		
 	}
 
 }
