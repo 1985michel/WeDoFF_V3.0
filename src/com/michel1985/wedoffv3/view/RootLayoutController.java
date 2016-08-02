@@ -3,7 +3,6 @@ package com.michel1985.wedoffv3.view;
 import com.michel1985.wedoffv3.MainApp;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Menu;
 
 public class RootLayoutController {

@@ -2,8 +2,6 @@ package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Cliente;
@@ -22,11 +20,9 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 
 public class HistoricoDeClientesOverviewController {
 
@@ -65,20 +61,19 @@ public class HistoricoDeClientesOverviewController {
 
 	@FXML
 	private MenuItem excluirClienteMenuItem;
-	
-	
+
 	/**
 	 * Buscas
-	 * */
+	 */
 
-	//Observable list que conterá o resultado das pesquisas
+	// Observable list que conterá o resultado das pesquisas
 	public ObservableList<Cliente> result = FXCollections.observableArrayList();
-	
-    @FXML
-    private TextField searchTextField;
 
-    @FXML
-    private Button searchButton;
+	@FXML
+	private TextField searchTextField;
+
+	@FXML
+	private Button searchButton;
 
 	private MainApp mainApp;
 
@@ -106,13 +101,12 @@ public class HistoricoDeClientesOverviewController {
 		// Detecta mudanças de seleção e habilita e desabilita as ações do HBox
 		clientesTableView.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
-		
-		//Detecta mudanças no campo de busca e se ele ficar vazio, apresenta todo os histórico
+
+		// Detecta mudanças no campo de busca e se ele ficar vazio, apresenta
+		// todo os histórico
 		searchTextField.setOnKeyPressed((event) -> {
-			if(searchTextField.getText().length()==0) 
+			if (searchTextField.getText().length() == 0)
 				clientesTableView.setItems(mainApp.getClienteData());
-			//Limpando a lista com os resultados da pesquisa
-			result.clear();
 		});
 
 	}
@@ -163,26 +157,22 @@ public class HistoricoDeClientesOverviewController {
 	 */
 	@FXML
 	private void handleDeleteCliente() {
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Deletar cliente?");
 		alert.setHeaderText("Apagar todos os dados do cliente?");
-		alert.setContentText("Ao clicar em \"Ok\" você estará APAGANDO TODOS OS DADOS DESSE CLIENTE SEM POSSIBILIDADE DE RECUPERA-LOS.\n"
-				+ "\nOs atendimentos desse cliente também serão todos apagados.\n\n"
-				+ "Você tem certeza desta deleção?");
+		alert.setContentText(
+				"Ao clicar em \"Ok\" você estará APAGANDO TODOS OS DADOS DESSE CLIENTE SEM POSSIBILIDADE DE RECUPERA-LOS.\n"
+						+ "\nOs atendimentos desse cliente também serão todos apagados.\n\n"
+						+ "Você tem certeza desta deleção?");
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK){
+		if (result.get() == ButtonType.OK) {
 			deletarClienteDoBancoDeDados();
 
 			// Removendo o cliente da observableList
 			deletarClienteDaClienteData();
-		} else {
-		    // ... user chose CANCEL or closed the dialog
 		}
-
-		
-
 	}
 
 	private void deletarClienteDaClienteData() {
@@ -224,9 +214,6 @@ public class HistoricoDeClientesOverviewController {
 				showClienteDetails(selectedCliente);
 				atualizaNoBanco(selectedCliente);
 			}
-		} else {
-			// Não se aplica pois se não houver seleção o botão fica
-			// desabilitado
 		}
 	}
 
@@ -249,61 +236,67 @@ public class HistoricoDeClientesOverviewController {
 				e.printStackTrace();
 			}
 		}
-		//Nota: Como trata-se de uma observableList a atualização já foi feita na lista
+		// Nota: Como trata-se de uma observableList a atualização já foi feita
+		// na lista
 	}
 
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
-	
+
 	/**
-	 * Métodos relativos a consulta 
-	 * */
+	 * Métodos relativos a consulta
+	 */
 	@FXML
-	private void handleConsultarCliente(){
-		
+	private void handleConsultarCliente() {
+
+		result.clear();
 		String termo = searchTextField.getText();
-		
-		if(new ValidaCPF().validarCPF(termo)) consultarClientePorCpf(termo);
-		else consultarClientePorNome(termo);
+		if (new ValidaCPF().validarCPF(termo))
+			consultarClientePorCpf(termo);
+		else
+			consultarClientePorNome(termo);
 		consultarClientePorNotas(termo);
 		clientesTableView.setItems(result);
 	}
-	
+
 	/**
-	 * O método abaixo realiza pesquisa do termo fornecido no campo nome 
-	 * */
-	private void consultarClientePorNome(String nome){
-		mainApp.getClienteData().forEach(cli ->{
-			if(cli.getNome().toLowerCase().contains(nome.toLowerCase())){
-				if(!result.contains(cli)) result.add(cli);
-			}			
+	 * O método abaixo realiza pesquisa do termo fornecido no campo nome
+	 */
+	private void consultarClientePorNome(String nome) {
+		mainApp.getClienteData().forEach(cli -> {
+			if (cli.getNome().toLowerCase().contains(nome.toLowerCase())) {
+				if (!result.contains(cli))
+					result.add(cli);
+			}
 		});
-		//clientesTableView.setItems(result);
+		// clientesTableView.setItems(result);
 	}
-	
+
 	/**
 	 * O método abaixo implementa pesquisa por cpf
-	 * */
-	private void consultarClientePorCpf(String termo){
-		mainApp.getClienteData().forEach(cli ->{
-			if(cli.getCpf().equals(termo)) 
-				if(!result.contains(cli)) result.add(cli);		
+	 */
+	private void consultarClientePorCpf(String termo) {
+		mainApp.getClienteData().forEach(cli -> {
+			if (cli.getCpf().equals(termo))
+				if (!result.contains(cli))
+					result.add(cli);
 		});
-		//clientesTableView.setItems(result);
+		// clientesTableView.setItems(result);
 	}
-	
+
 	/**
 	 * O método abaixo implementa pesquisa nas notas sobre cliente
-	 * */
-	private void consultarClientePorNotas(String nome){
-		mainApp.getClienteData().forEach(cli ->{
-			if(cli.getNotasSobreCLiente().toLowerCase().contains(nome.toLowerCase())){
-				if(!result.contains(cli)) result.add(cli);
-			}			
+	 */
+	private void consultarClientePorNotas(String nome) {
+		mainApp.getClienteData().forEach(cli -> {
+			if (cli.getNotasSobreCLiente().toLowerCase().contains(nome.toLowerCase())) {
+				if (!result.contains(cli))
+					result.add(cli);
+			}
 		});
-		//clientesTableView.setItems(result);
+		// clientesTableView.setItems(result);
 	}
 
 }

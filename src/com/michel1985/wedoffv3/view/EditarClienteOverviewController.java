@@ -1,7 +1,6 @@
 package com.michel1985.wedoffv3.view;
 
 import com.michel1985.wedoffv3.model.Cliente;
-import com.michel1985.wedoffv3.util.ValidaCPF;
 import com.michel1985.wedoffv3.util.ValidaCliente;
 
 import javafx.fxml.FXML;
