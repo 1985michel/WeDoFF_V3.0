@@ -64,14 +64,11 @@ public class LoginOverviewController {
 	}
 
 	// Contrutor. É chamado antes do método Initialize
-	public LoginOverviewController() {
-	}
+	public LoginOverviewController() {}
 
 	@FXML // This method is called by the FXMLLoader when initialization is
 			// complete
-	void initialize() {
-
-	}
+	void initialize(){}
 
 	/**
 	 * DECISÃO ARQUITETURAL

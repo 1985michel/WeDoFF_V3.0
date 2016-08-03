@@ -23,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 public class HistoricoDeClientesOverviewController {
 
@@ -74,6 +75,9 @@ public class HistoricoDeClientesOverviewController {
 
 	@FXML
 	private Button searchButton;
+	
+	//Palco desse dialog
+	private Stage dialogStage;
 
 	private MainApp mainApp;
 
@@ -108,8 +112,39 @@ public class HistoricoDeClientesOverviewController {
 			if (searchTextField.getText().length() == 0)
 				clientesTableView.setItems(mainApp.getClienteData());
 		});
+		
+		//Detecta o duplo click do mouse e apresenta o alert perguntando se quer atender aquele cliente.
+		//Caso ok, o cliente é carregado no formulário
+		clientesTableView.setOnMousePressed((event) -> {
+			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Necessária confirmação");
+				alert.setHeaderText("Você deseja atender esse cliente?");
+				alert.setContentText("Ao clicar em \"Ok\" os dados desse cliente serão carregados para atendimento sobrepondo os dados atuais.");
 
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK){
+					//Obtem o id do cliente selecionado
+					String id = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
+					//Passa o id para o controller do AtendendoCliente
+					this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(id);
+					//fecha o dialog do histórico
+					this.dialogStage.close();
+				}                  
+	        }
+		});
+
+		
 	}
+	
+	 /**
+     * Define o palco deste dialog.
+     * Usado para fecha-lo, por exemplo
+     * @param dialogStage
+     */
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
 
 	/**
 	 * Método que habilitará e desabilitará as ações sobre o cliente Se houver

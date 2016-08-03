@@ -31,6 +31,7 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	private AtendendoClienteOverviewController atendendoClienteController;
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 
@@ -115,12 +116,17 @@ public class MainApp extends Application {
 			rootLayout.setCenter(atendendoClienteOverview);
 
 			// Dando acesso para o controller acessar a MainApp
-			AtendendoClienteOverviewController controller = loader.getController();
-			controller.setMainApp(this);
+			atendendoClienteController = loader.getController();
+			atendendoClienteController.setMainApp(this);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//Recupera o controle do atendendo cliente para ser invocado por interações solicitadas pelas telas secundárias
+	public AtendendoClienteOverviewController getAtendendoClienteController(){
+		return this.atendendoClienteController;
 	}
 
 	public void showAboutDialog() {
@@ -233,9 +239,10 @@ public class MainApp extends Application {
 			loader.setLocation(MainApp.class.getResource("view/HistoricoDeClientesOverview.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 
-			// Dá ao controlador acesso ao MainAppa
+			// Dá ao controlador acesso ao MainApp
 			HistoricoDeClientesOverviewController controller = loader.getController();
 			controller.setMainApp(this);
+			
 
 			/**
 			 * Reordenando a clienteData
@@ -253,14 +260,21 @@ public class MainApp extends Application {
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
+			
+			//Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
 
 			// Show
 			dialogStage.showAndWait();
+			
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 	/**
 	 * Apresenta o dialog para edição do cliente

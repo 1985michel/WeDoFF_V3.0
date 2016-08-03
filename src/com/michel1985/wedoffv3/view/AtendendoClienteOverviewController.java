@@ -108,7 +108,7 @@ public class AtendendoClienteOverviewController {
 	private MainApp mainApp;
 
 	// Id do cliente em atendimento
-	static String idClienteAtual;
+	private static String idClienteAtual;
 
 	// Crontrutor. É chamado antes do método initialize
 	public AtendendoClienteOverviewController() {
@@ -185,6 +185,40 @@ public class AtendendoClienteOverviewController {
 
 	}
 
+	public void ConsultarClientePeloId(String id) {
+
+		ResultSet resultSet = null;
+		try {
+			resultSet = new CRUD(mainApp.getUsuarioAtivo())
+					.getResultSet("SELECT * FROM CLIENTES where idCliente ='" + id + "'");
+			boolean achou = false;
+			while (resultSet.next()) {
+				showCliente(resultSet);
+				showCpf(resultSet);
+				achou = true;
+				try {
+					resultSet.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return;
+
+			}
+			if (!achou) {
+				clienteNaoLocalizado();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 	/**
 	 * Método que notifica se tratar de um novo cliente
 	 */
@@ -210,6 +244,15 @@ public class AtendendoClienteOverviewController {
 		// Habilitando funções do menu
 		habilitarAcoesClienteVBox(true);
 
+	}
+	
+	/**
+	 * O método showCliente não precisa setar o campo CPF, pois ele já está no textField apropriado no nomento da consulta.
+	 * Então, estou criando um método showCpf para ser invoncado por métodos secundários que utilizam essa funcionalidade
+	 * 
+	 * */
+	private void showCpf(ResultSet resultSet) throws SQLException {
+		cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
 	}
 
 	/**
@@ -336,7 +379,6 @@ public class AtendendoClienteOverviewController {
 	 */
 	private void setIdClienteAtual(int id) {
 		idClienteAtual = id + "";
-
 	}
 
 	/**
