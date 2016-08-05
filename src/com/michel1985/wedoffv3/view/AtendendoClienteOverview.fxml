@@ -151,7 +151,7 @@
                               <Separator orientation="VERTICAL" prefHeight="44.0" prefWidth="4.0" />
                               <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="registrarAtendimentoButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Registrar Atendimento">
+                                    <Button fx:id="registrarAtendimentoButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#handleGravarAtendimento" text="Registrar Atendimento">
                                        <tooltip>
                                           <Tooltip text="Salvar Atendimento e Limpar Campos" />
                                        </tooltip>

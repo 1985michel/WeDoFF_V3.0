@@ -119,12 +119,13 @@ public class AtendendoClienteOverviewController {
 	 */
 	@FXML
 	private void initialize() {
+		//Tonando o dataPicker desabilitado inicialmente
+		dataParaSolucionarPendenciaDatePicker.setDisable(true);
 
-		// Utilizado para inicializar tabelas e tals
-		// Lambda: "em cada célula dessa coluna, coloquei o valor do
-		// firstNameProperty"
-		// firstNameColumn.setCellValueFactory(cellData ->
-		// cellData.getValue().firstNameProperty());
+		//Tornando o dataPicker habilitado somente se o atendimento estiver marcado como pendente
+		isPendenteCheckBox.setOnAction((event)->{
+			dataParaSolucionarPendenciaDatePicker.setDisable(!isPendenteCheckBox.isSelected());
+		});
 	}
 
 	/**
@@ -245,12 +246,14 @@ public class AtendendoClienteOverviewController {
 		habilitarAcoesClienteVBox(true);
 
 	}
-	
+
 	/**
-	 * O método showCliente não precisa setar o campo CPF, pois ele já está no textField apropriado no nomento da consulta.
-	 * Então, estou criando um método showCpf para ser invoncado por métodos secundários que utilizam essa funcionalidade
+	 * O método showCliente não precisa setar o campo CPF, pois ele já está no
+	 * textField apropriado no nomento da consulta. Então, estou criando um
+	 * método showCpf para ser invoncado por métodos secundários que utilizam
+	 * essa funcionalidade
 	 * 
-	 * */
+	 */
 	private void showCpf(ResultSet resultSet) throws SQLException {
 		cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
 	}
@@ -339,7 +342,6 @@ public class AtendendoClienteOverviewController {
 			notas = notasClienteTextArea.getText();
 
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
-
 			resultSet = crud.getResultSet(
 					"INSERT INTO CLIENTES (nomeCliente, cpfCliente, notasSobreCliente) VALUES ('" + criptografa(nome)
 							+ "','" + criptografa(cpf) + "','" + criptografa(notas) + "');CALL IDENTITY();");
@@ -396,15 +398,10 @@ public class AtendendoClienteOverviewController {
 			// for com lambda
 			mainApp.getClienteData().forEach(u -> {
 				if (idClienteAtual.equalsIgnoreCase(u.getIdCliente())) {
+					atualizaClienteNaLista(cpf, nome, notas, u);
 
-					// Primeiro atualizando na lista
-					u.setCpf(cpf);
-					u.setNome(nome);
-					u.setNotasSobreCLiente(notas);
-
-					// Depois atualizando no banco
 					try {
-						atualizaNoBanco(u);
+						atualizaClienteNoBanco(u);
 						return; // interromp o método pois tudo já foi feito
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -422,7 +419,13 @@ public class AtendendoClienteOverviewController {
 		}
 	}
 
-	private void atualizaNoBanco(Cliente cliente) {
+	private void atualizaClienteNaLista(String cpf, String nome, String notas, Cliente u) {
+		u.setCpf(cpf);
+		u.setNome(nome);
+		u.setNotasSobreCLiente(notas);
+	}
+
+	private void atualizaClienteNoBanco(Cliente cliente) {
 
 		ResultSet resultSet = null;
 		try {
@@ -442,6 +445,93 @@ public class AtendendoClienteOverviewController {
 			}
 		}
 
+	}
+
+	@FXML
+	private void handleGravarAtendimento() {
+
+		ResultSet resultSet = null;
+		try {
+			// Primeiro vamos captar os dados informados
+			String nb = nbTextField.getText();
+			String notas = notasClienteTextArea.getText();
+
+			String nbCripto = criptografa(nb);
+			String notasCripto = criptografa(notas);
+
+			boolean isPendente = isPendenteCheckBox.isSelected();
+			boolean isAgendamento = isAgendamentoCheckBox.isSelected();
+
+			// Se o atendimento estiver pendente, será obrigatório informar uma
+			// data de solução
+			String dataSolucao = "";
+			if (isPendente) {
+				try {
+					if (dataParaSolucionarPendenciaDatePicker.getValue() == null
+							|| dataParaSolucionarPendenciaDatePicker.getValue().toString().equalsIgnoreCase("")) {
+						alertarWarning("Data de Solução?", "Quando este atendimento deve ser concluído?",
+								"Você informou que o atendimento ficou pendente.\nQuando ele deve ser concluido?");
+						return;
+					} else {
+						dataSolucao = dataParaSolucionarPendenciaDatePicker.getValue().toString();
+					}
+
+				} catch (Exception e) {
+					alertarWarning("Data de Solução?", "Quando este atendimento deve ser concluído?",
+							"Você informou que o atendimento ficou pendente.\nQuando ele deve ser concluido?");
+					return;
+				}
+
+			}
+
+			// A data do atendimento séra sempre obrigatória
+			String data = "";
+			try {
+				if (dataDoAtendimentoDatePicker.getValue() == null
+						|| dataDoAtendimentoDatePicker.getValue().toString().equalsIgnoreCase("")) {
+					alertarWarning("Data do Atendimento?", "O cliente está sendo atendido hoje?",
+							"Favor informar a data do atendimento.");
+					return;
+				} else {
+					data = dataDoAtendimentoDatePicker.getValue().toString();
+				}
+			} catch (Exception e) {
+				return;
+			}
+
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+			resultSet = crud.getResultSet(
+					"INSERT INTO atendimentos (idCliente,isPendente,isAgendamento,nb,dataatendimento,notassobreatendimento,datasolucao) VALUES ('"
+							+ idClienteAtual + "','" + isPendente + "','" + isAgendamento + "','" + nbCripto + "','"
+							+ data + "','" + notasCripto + "','" + dataSolucao + "')");
+
+			// >>>>>>>>>>>>>>>>>>>>>feekBack("Atendimento Registrado com
+			// Sucesso", "green");
+			System.out.println("Atendimento registrado");
+			// limparAtendimento();
+			// limparCliente();
+		} catch (Exception e) {
+			if (idClienteAtual == "") {
+				System.out.println("Querido animalzinho dos infernos, Quem você está atendendo?");
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void alertarWarning(String title, String header, String content) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 
 	public String criptografa(String texto) {
