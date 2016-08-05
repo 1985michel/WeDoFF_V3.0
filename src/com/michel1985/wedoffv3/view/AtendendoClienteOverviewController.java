@@ -510,9 +510,11 @@ public class AtendendoClienteOverviewController {
 			System.out.println("Atendimento registrado");
 			// limparAtendimento();
 			// limparCliente();
+			mainApp.showDialogJustImageOverviewController();
 		} catch (Exception e) {
 			if (idClienteAtual == "") {
 				System.out.println("Querido animalzinho dos infernos, Quem você está atendendo?");
+				
 			}
 			e.printStackTrace();
 		} finally {

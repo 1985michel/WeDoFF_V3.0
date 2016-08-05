@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="107.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ImageView fitHeight="107.0" fitWidth="199.0" layoutX="201.0" pickOnBounds="true" preserveRatio="true" />
-   </children>
-</AnchorPane>
+<DialogPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="115.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="115.0" fitWidth="200.0" layoutX="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+   </content>
+</DialogPane>

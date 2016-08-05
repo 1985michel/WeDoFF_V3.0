@@ -10,6 +10,7 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.DialogJustImageOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
@@ -26,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainApp extends Application {
 
@@ -103,6 +105,39 @@ public class MainApp extends Application {
 	}
 
 	/**
+	 * Apresentando o DialogJustImageOverviewController
+	 */
+	public void showDialogJustImageOverviewController() {
+		try {
+			// Passo 1 - Carregando FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource(DialogJustImageOverviewController.location));
+			DialogPane page = (DialogPane) loader.load();
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.initStyle(StageStyle.UNDECORATED);
+			
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Show
+			
+			dialogStage.showAndWait();
+
+			// Dando acesso para o controller acessar o main
+			LoginOverviewController controller = loader.getController();
+			controller.setMainApp(this);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * Colocando o AtendendoCLiente dentro do RootLayout
 	 */
 	public void showAtendendoClienteOverview() {
@@ -123,9 +158,10 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	//Recupera o controle do atendendo cliente para ser invocado por interações solicitadas pelas telas secundárias
-	public AtendendoClienteOverviewController getAtendendoClienteController(){
+
+	// Recupera o controle do atendendo cliente para ser invocado por interações
+	// solicitadas pelas telas secundárias
+	public AtendendoClienteOverviewController getAtendendoClienteController() {
 		return this.atendendoClienteController;
 	}
 
@@ -182,10 +218,11 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 * O método abaixo carrega todos os clientes para a ObservableList dataCliente
+	 * O método abaixo carrega todos os clientes para a ObservableList
+	 * dataCliente
 	 * 
 	 * O método é chamado pelo loginController quando o login é efetuado
-	 * */
+	 */
 	public void carregaHistoricoDeClientes() {
 		if (this.usuarioAtivo != null) {
 			ResultSet resultSet = null;
@@ -242,13 +279,11 @@ public class MainApp extends Application {
 			// Dá ao controlador acesso ao MainApp
 			HistoricoDeClientesOverviewController controller = loader.getController();
 			controller.setMainApp(this);
-			
 
 			/**
-			 * Reordenando a clienteData
-			 * Utilizando lambda - Comparablea
-			 * */
-			clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente())-Integer.parseInt(o1.getIdCliente()));
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente()) - Integer.parseInt(o1.getIdCliente()));
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -260,50 +295,46 @@ public class MainApp extends Application {
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
-			
-			//Dando ao controlador poderes sobre seu próprio dialogStage
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
 			controller.setDialogStage(dialogStage);
 
 			// Show
 			dialogStage.showAndWait();
-			
-			
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Apresenta o dialog para edição do cliente
-	 * */
-	public boolean showEditarClienteOverview(Cliente cliente){
-		try{
+	 */
+	public boolean showEditarClienteOverview(Cliente cliente) {
+		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/EditarClienteOverview.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
-			
-			//Cria o palco
+
+			// Cria o palco
 			Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Editar Cliente");
-	        dialogStage.initModality(Modality.WINDOW_MODAL);
-	        dialogStage.initOwner(primaryStage);
-	        Scene scene = new Scene(page);
-	        dialogStage.setScene(scene);
-	        
-	        //Passa o cliente a ser editado ao controller
-	        EditarClienteOverviewController controller = loader.getController();
-	        controller.setDialogStage(dialogStage);
-	        controller.setCliente(cliente);
-	        
-	        //Apresenta o dialog
-	        dialogStage.showAndWait();
-	        
-	        return controller.isOkCLicked();
-	        
-		}catch (Exception e) {
+			dialogStage.setTitle("Editar Cliente");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Passa o cliente a ser editado ao controller
+			EditarClienteOverviewController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setCliente(cliente);
+
+			// Apresenta o dialog
+			dialogStage.showAndWait();
+
+			return controller.isOkCLicked();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
