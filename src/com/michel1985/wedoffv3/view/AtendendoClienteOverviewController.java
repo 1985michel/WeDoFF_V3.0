@@ -13,6 +13,9 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.ValidaCliente;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -513,7 +516,7 @@ public class AtendendoClienteOverviewController {
 			System.out.println("Atendimento registrado");
 			// limparAtendimento();
 			// limparCliente();
-			showWait();
+			waitSomeTime();
 		} catch (Exception e) {
 			if (idClienteAtual == "") {
 				System.out.println("Querido animalzinho dos infernos, Quem você está atendendo?");
@@ -544,10 +547,33 @@ public class AtendendoClienteOverviewController {
 		waitAnchorPane.toFront();
 	}
 	
+	private void waitSomeTime(){
+		showWait();
+		Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+            	hideWait();
+            }
+        });
+        new Thread(sleeper).start();
+	}
+	
 	//Oculta o gif do wait
 	private void hideWait(){
 		waitAnchorPane.toBack();
 	}
+	
+	
 
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
