@@ -3,14 +3,19 @@ package com.michel1985.wedoffv3.view;
 
 import com.michel1985.wedoffv3.MainApp;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.DialogPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class DialogJustImageOverviewController {
 
     @FXML
-    private AnchorPane baseAnchorPane;
+    private DialogPane baseAnchorPane;
 
     @FXML
     private ImageView imagemImageView;
@@ -37,6 +42,7 @@ public class DialogJustImageOverviewController {
 	@FXML // This method is called by the FXMLLoader when initialization is
 			// complete
 	void initialize(){
+		
 		
 		
 	}

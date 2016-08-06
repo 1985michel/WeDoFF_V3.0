@@ -111,7 +111,7 @@ public class MainApp extends Application {
 		try {
 			// Passo 1 - Carregando FXML
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource(DialogJustImageOverviewController.location));
+			loader.setLocation(MainApp.class.getResource("view/DialogJustImageOverview.fxml"));
 			DialogPane page = (DialogPane) loader.load();
 
 			// Criando o dialogStage
@@ -124,7 +124,6 @@ public class MainApp extends Application {
 			dialogStage.setScene(scene);
 
 			// Show
-			
 			dialogStage.showAndWait();
 
 			// Dando acesso para o controller acessar o main
