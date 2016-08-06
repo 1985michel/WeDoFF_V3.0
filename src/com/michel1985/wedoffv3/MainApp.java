@@ -10,7 +10,6 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
-import com.michel1985.wedoffv3.view.DialogJustImageOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
@@ -27,7 +26,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class MainApp extends Application {
 
@@ -104,37 +102,6 @@ public class MainApp extends Application {
 		}
 	}
 
-	/**
-	 * Apresentando o DialogJustImageOverviewController
-	 */
-	public void showDialogJustImageOverviewController() {
-		try {
-			// Passo 1 - Carregando FXML
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/DialogJustImageOverview.fxml"));
-			DialogPane page = (DialogPane) loader.load();
-
-			// Criando o dialogStage
-			Stage dialogStage = new Stage();
-			dialogStage.initStyle(StageStyle.UNDECORATED);
-			
-			// dialogStage.getIcons().add(new
-			// Image("file:resources/images/edit.png"));
-			Scene scene = new Scene(page);
-			dialogStage.setScene(scene);
-
-			// Show
-			dialogStage.showAndWait();
-
-			// Dando acesso para o controller acessar o main
-			LoginOverviewController controller = loader.getController();
-			controller.setMainApp(this);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	/**
 	 * Colocando o AtendendoCLiente dentro do RootLayout

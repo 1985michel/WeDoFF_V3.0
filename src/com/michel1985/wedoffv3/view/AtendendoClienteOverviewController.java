@@ -103,6 +103,9 @@ public class AtendendoClienteOverviewController {
 
 	@FXML
 	private Button cancelarAtendimentoButton;
+	
+	//Componentes do wait
+	@FXML AnchorPane waitAnchorPane;
 
 	// Referência ao Main
 	private MainApp mainApp;
@@ -510,7 +513,7 @@ public class AtendendoClienteOverviewController {
 			System.out.println("Atendimento registrado");
 			// limparAtendimento();
 			// limparCliente();
-			mainApp.showDialogJustImageOverviewController();
+			showWait();
 		} catch (Exception e) {
 			if (idClienteAtual == "") {
 				System.out.println("Querido animalzinho dos infernos, Quem você está atendendo?");
@@ -534,6 +537,16 @@ public class AtendendoClienteOverviewController {
 		alert.setHeaderText(header);
 		alert.setContentText(content);
 		alert.showAndWait();
+	}
+	
+	//Mostra o gif do wait
+	private void showWait(){
+		waitAnchorPane.toFront();
+	}
+	
+	//Oculta o gif do wait
+	private void hideWait(){
+		waitAnchorPane.toBack();
 	}
 
 	public String criptografa(String texto) {
