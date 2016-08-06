@@ -15,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
 public class DialogJustImageOverviewController {
 
     @FXML
-    private DialogPane baseAnchorPane;
+    private DialogPane baseDialogPane;
 
     @FXML
     private ImageView imagemImageView;
