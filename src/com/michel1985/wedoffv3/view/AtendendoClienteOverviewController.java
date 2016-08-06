@@ -506,7 +506,7 @@ public class AtendendoClienteOverviewController {
 			}
 
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
-			resultSet = crud.getResultSet( 
+			resultSet = crud.getResultSet(  
 					"INSERT INTO atendimentos (idCliente,isPendente,isAgendamento,nb,dataatendimento,notassobreatendimento,datasolucao) VALUES ('"
 							+ idClienteAtual + "','" + isPendente + "','" + isAgendamento + "','" + nbCripto + "','"
 							+ data + "','" + notasCripto + "','" + dataSolucao + "')");
