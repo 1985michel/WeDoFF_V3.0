@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
@@ -142,6 +143,8 @@ public class AtendendoClienteOverviewController {
 	@FXML
 	private void initialize() {
 		
+		setaDataAtendimentoHoje();
+		
 		faixaBackgroundPane.setStyle("-fx-background-color: #181A1C;");
 		
 		//Tonando o dataPicker desabilitado inicialmente
@@ -150,6 +153,7 @@ public class AtendendoClienteOverviewController {
 		//Tornando o dataPicker habilitado somente se o atendimento estiver marcado como pendente
 		isPendenteCheckBox.setOnAction((event)->{
 			dataParaSolucionarPendenciaDatePicker.setDisable(!isPendenteCheckBox.isSelected());
+			if(isPendenteCheckBox.isSelected()) setaDataSolucacaoPendenciaParaDaqui30Dias(); 
 		});
 	}
 
@@ -606,6 +610,16 @@ public class AtendendoClienteOverviewController {
 	private String descriptografa(String texto) {
 		Cripto cripto = new Cripto();
 		return cripto.descriptografa(texto, mainApp.getUsuarioAtivo().getSenha());
+	}
+	
+	private void setaDataAtendimentoHoje() {
+		LocalDate date = LocalDate.now();
+		dataDoAtendimentoDatePicker.setValue(date);
+	}
+	
+	private void setaDataSolucacaoPendenciaParaDaqui30Dias(){
+		LocalDate date = LocalDate.now();
+		dataParaSolucionarPendenciaDatePicker.setValue(date.plusMonths(1));
 	}
 
 }
