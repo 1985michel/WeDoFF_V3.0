@@ -28,6 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -108,7 +109,14 @@ public class AtendendoClienteOverviewController {
 	private Button cancelarAtendimentoButton;
 	
 	//Componentes do wait
-	@FXML AnchorPane waitAnchorPane;
+	@FXML 
+	private AnchorPane waitAnchorPane;
+	
+	@FXML
+	private Pane faixaBackgroundPane;
+	
+	
+	
 
 	// Referência ao Main
 	private MainApp mainApp;
@@ -118,6 +126,7 @@ public class AtendendoClienteOverviewController {
 
 	// Crontrutor. É chamado antes do método initialize
 	public AtendendoClienteOverviewController() {
+		
 	}
 
 	/**
@@ -125,6 +134,9 @@ public class AtendendoClienteOverviewController {
 	 */
 	@FXML
 	private void initialize() {
+		
+		faixaBackgroundPane.setStyle("-fx-background-color: #181A1C;");
+		
 		//Tonando o dataPicker desabilitado inicialmente
 		dataParaSolucionarPendenciaDatePicker.setDisable(true);
 
@@ -544,6 +556,7 @@ public class AtendendoClienteOverviewController {
 	
 	//Mostra o gif do wait
 	private void showWait(){
+		
 		waitAnchorPane.toFront();
 	}
 	
@@ -571,6 +584,7 @@ public class AtendendoClienteOverviewController {
 	//Oculta o gif do wait
 	private void hideWait(){
 		waitAnchorPane.toBack();
+		
 	}
 	
 	
