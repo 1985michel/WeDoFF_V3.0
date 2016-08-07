@@ -567,7 +567,6 @@ public class AtendendoClienteOverviewController {
 	
 	//Mostra o gif do wait
 	private void showWait(){
-		imagemImageView.setImage(null);
 		Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
 		imagemImageView.setImage(img);
 		waitAnchorPane.toFront();
@@ -597,6 +596,7 @@ public class AtendendoClienteOverviewController {
 	//Oculta o gif do wait
 	private void hideWait(){
 		waitAnchorPane.toBack();
+		imagemImageView.setImage(null);
 		
 	}
 	
