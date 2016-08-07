@@ -93,6 +93,7 @@ public class LoginMiddle {
 	}
 
 	private void logou(boolean resultado) {
+		controller.hideWait();
 		System.out.println("Logado: " + resultado);
 		if (!resultado) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -103,7 +104,7 @@ public class LoginMiddle {
 			alert.showAndWait();
 
 		} else if (resultado) {
-			controller.loginConfirmado();
+			controller.loginConfirmado();			
 		}
 	}
 

@@ -6,12 +6,19 @@ import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.login.LoginMiddle;
 import com.michel1985.wedoffv3.model.Usuario;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class LoginOverviewController {
 	
@@ -49,9 +56,24 @@ public class LoginOverviewController {
 
 	@FXML
 	private Button cadastrarNovoUsuarioButton;
+	
+	//Componentes do wait
+	@FXML 
+	private AnchorPane waitAnchorPane;
+	
+	@FXML
+	private Pane faixaBackgroundPane;
+	
+	@FXML
+	private ImageView imagemImageView;
+	
+	@FXML
+	private VBox fundoPrincipalVBox;
 
 	// Referencia ao Main
 	private MainApp mainApp;
+	
+
 
 	/**
 	 * setMainApp - é usado pelo MainApp para para se referenciar
@@ -101,6 +123,7 @@ public class LoginOverviewController {
 	//Delegando a tarefa de logar
 	@FXML
 	private void handleLogar(){
+		showWait();
 		LoginMiddle middle = new LoginMiddle(this);
 		try {
 			middle.logar(loginTextField.getText().trim(), senhaPasswordField.getText());
@@ -111,8 +134,15 @@ public class LoginOverviewController {
 	
 	//Informando ao mainApp que o login ocorreu e que a aplicação deve ser liberada
 	public void loginConfirmado(){
+		waitSomeTime();
 		this.mainApp.setUsuarioAtivo(usuarioAtivo);
 		this.mainApp.carregaHistoricoDeClientes(); // Carrega o banco de dados para a aplicação		
+		
+		
+	}
+	
+	public void entrar(){
+		
 		this.mainApp.showAtendendoClienteOverview();
 	}
 	
@@ -121,6 +151,48 @@ public class LoginOverviewController {
 		LoginMiddle middle = new LoginMiddle(this);
 		middle.cadastrarUsuario(loginTextField.getText(), senhaPasswordField.getText());
 	}
+	
+	//Mostra o gif do wait
+	private void showWait(){
+		faixaBackgroundPane.setVisible(true);
+		imagemImageView.setVisible(true);
+		faixaBackgroundPane.setStyle("-fx-background-color: #000000;");
+		//Image img = new Image("file:resources/images/load04.gif");
+		//imagemImageView.setImage(img);
+		waitAnchorPane.toFront();
+	}
+	
+	private void waitSomeTime(){
+		showWait();
+		Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+            	entrar();
+            }
+        });
+        new Thread(sleeper).start();
+	}
+	
+	public void hideWait(){
+		waitAnchorPane.toBack();
+		faixaBackgroundPane.setVisible(false);
+		imagemImageView.setVisible(false);
+		
+		fundoPrincipalVBox.toFront();
+		//imagemImageView.setImage(null);
+		
+	}
+
 	
 
 }

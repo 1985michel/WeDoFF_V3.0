@@ -211,6 +211,8 @@ public class MainApp extends Application {
 
 	private void adicionaTodosClientesFromDBNaDataClientes(ResultSet resultSet) throws SQLException {
 		ArrayList<Cliente> clientes = new ArrayList<>();
+				
+		
 		while (resultSet.next()) {
 
 			clientes.add(
