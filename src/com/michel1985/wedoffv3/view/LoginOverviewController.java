@@ -103,7 +103,7 @@ public class LoginOverviewController {
 	private void handleLogar(){
 		LoginMiddle middle = new LoginMiddle(this);
 		try {
-			middle.logar(loginTextField.getText(), senhaPasswordField.getText());
+			middle.logar(loginTextField.getText().trim(), senhaPasswordField.getText());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
