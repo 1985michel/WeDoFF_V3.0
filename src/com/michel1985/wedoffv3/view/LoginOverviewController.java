@@ -1,28 +1,25 @@
 package com.michel1985.wedoffv3.view;
 
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import com.michel1985.wedoffv3.MainApp;
+import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.login.LoginMiddle;
 import com.michel1985.wedoffv3.model.Usuario;
 
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class LoginOverviewController {
-	
-	
 
 	@FXML // ResourceBundle that was given to the FXMLLoader
 	private ResourceBundle resources;
@@ -56,24 +53,25 @@ public class LoginOverviewController {
 
 	@FXML
 	private Button cadastrarNovoUsuarioButton;
-	
-	//Componentes do wait
-	@FXML 
-	private AnchorPane waitAnchorPane;
-	
+
+	// Componentes do wait
+
 	@FXML
 	private Pane faixaBackgroundPane;
-	
+
 	@FXML
 	private ImageView imagemImageView;
-	
+
 	@FXML
 	private VBox fundoPrincipalVBox;
 
+	@FXML
+	private ProgressBar carregandoLoginProgressBar;
+
+	static Task<?> copyWorker;
+
 	// Referencia ao Main
 	private MainApp mainApp;
-	
-
 
 	/**
 	 * setMainApp - é usado pelo MainApp para para se referenciar
@@ -86,44 +84,23 @@ public class LoginOverviewController {
 	}
 
 	// Contrutor. É chamado antes do método Initialize
-	public LoginOverviewController() {}
+	public LoginOverviewController() {
+	}
 
 	@FXML // This method is called by the FXMLLoader when initialization is
 			// complete
-	void initialize(){}
+	void initialize() {
+	}
 
 	/**
-	 * DECISÃO ARQUITETURAL
-	 * 
-	 * Neste ponto devo implementar os métodos para interagir com a view e a
-	 * Lógica de Login. Há duas possibilidades: deixar a lógica de login nesta
-	 * classe OU Criar uma nova classe para conter a Lógica de Login.
-	 * 
-	 * A principal estrutura de login já é contida na classe login.Logadora
-	 * porém há uma série de peculiaridades e validações que precisam ser
-	 * realizadas pela aplicação específica ( essa aplicação ) antes de invocar
-	 * os métodoas da classe login.Logadora.
-	 * 
-	 * 
-	 * Em um primeiro momento pensei que como será uma classe simples - com
-	 * poucos métodos - eu poderia deixa-la aqui no controller. Porém, como
-	 * planejo amadurecer essa aplicação, tomarei a decisão de criar uma classe
-	 * para gerenciar o login dessa versão.
-	 * 
-	 * Assim crio a classe "login.LoginMiddle" para deixar a ideia de que é uma classe
-	 * meio que liga esse controller à classe Logadora.
-	 */
-	
-	
-	/**
 	 * Reconhecendo o usuário ativo
-	 * */
+	 */
 	public static Usuario usuarioAtivo;
-	
-	//Delegando a tarefa de logar
+
+	// Delegando a tarefa de logar
 	@FXML
-	private void handleLogar(){
-		showWait();
+	private void handleLogar() {
+
 		LoginMiddle middle = new LoginMiddle(this);
 		try {
 			middle.logar(loginTextField.getText().trim(), senhaPasswordField.getText());
@@ -131,68 +108,101 @@ public class LoginOverviewController {
 			// TODO: handle exception
 		}
 	}
-	
-	//Informando ao mainApp que o login ocorreu e que a aplicação deve ser liberada
-	public void loginConfirmado(){
-		waitSomeTime();
+
+	// Informando ao mainApp que o login ocorreu e que a aplicação deve ser
+	// liberada
+	public void loginConfirmado() {
 		this.mainApp.setUsuarioAtivo(usuarioAtivo);
-		this.mainApp.carregaHistoricoDeClientes(); // Carrega o banco de dados para a aplicação		
-		
-		
+		carregaInterfaceDeAbertura();
+		this.mainApp.carregaHistoricoDeClientes();
+		// this.mainApp.showAtendendoClienteOverview();
 	}
-	
-	public void entrar(){
-		
-		this.mainApp.showAtendendoClienteOverview();
-	}
-	
+
 	@FXML
-	private void handleCadastrarNovoUsuario(){
+	private void handleCadastrarNovoUsuario() {
 		LoginMiddle middle = new LoginMiddle(this);
 		middle.cadastrarUsuario(loginTextField.getText(), senhaPasswordField.getText());
 	}
-	
-	//Mostra o gif do wait
-	private void showWait(){
-		faixaBackgroundPane.setVisible(true);
-		imagemImageView.setVisible(true);
+
+	/**
+	 * Método responsável pelo carregamento da interface de abertura abrangendo
+	 * 1 - A exibição da imagem de abertura; 2 - O carregamento de progresssBar
+	 * confrome a quantidade de Clientes sendo carregados
+	 */
+	private void carregaInterfaceDeAbertura() {
+
+		// Faz o fundo ficar preto
 		faixaBackgroundPane.setStyle("-fx-background-color: #000000;");
-		//Image img = new Image("file:resources/images/load04.gif");
-		//imagemImageView.setImage(img);
-		waitAnchorPane.toFront();
-	}
-	
-	private void waitSomeTime(){
-		showWait();
-		Task<Void> sleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                try {
-                    Thread.sleep(4000);
-                } catch (InterruptedException e) {
-                }
-                return null;
-            }
-        };
-        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-            	entrar();
-            }
-        });
-        new Thread(sleeper).start();
-	}
-	
-	public void hideWait(){
-		waitAnchorPane.toBack();
-		faixaBackgroundPane.setVisible(false);
-		imagemImageView.setVisible(false);
-		
-		fundoPrincipalVBox.toFront();
-		//imagemImageView.setImage(null);
-		
+
+		imagemImageView.toFront();
+		imagemImageView.setVisible(true);
+
+		// Obtendo a quantidade de clientes e criando uma Task
+		copyWorker = createWorker(getQtdDeClientes());
+
+		// Dizendo a ProgressBar que ela deve observar o percentual de execução
+		// da thread e exibi-lo
+		carregandoLoginProgressBar.progressProperty().unbind();
+		carregandoLoginProgressBar.progressProperty().bind(copyWorker.progressProperty());
+
+		// Passando a tarefa para a Thread e começando o processamento
+		new Thread(copyWorker).start();
+
+		// Quando o copyWorkerTerminar, carregue a tela principal
+		copyWorker.setOnSucceeded((event) -> {
+			this.mainApp.showAtendendoClienteOverview();
+		});
 	}
 
-	
+	/**
+	 * Método que retorna uma Task
+	 */
+	public Task<?> createWorker(int qtd) {
+		return new Task() {
+			@Override
+			protected Object call() throws Exception {
+				for (int i = 0; i < qtd; i++) {
+					// pausando a thread
+					seguraTempo(qtd);
+					// atualizando o progresso da thread
+					updateProgress(i + 1, qtd);
+					System.out.println(i + 1);
+				}
+				return true;
+			}
+		};
+
+	}
+
+	public void seguraTempo(int qtd) throws InterruptedException {
+		long millis = 0;
+		if (qtd <= 16)
+			millis = 312;
+		else
+			millis = 5000 / qtd;
+		Thread.sleep(millis);
+	}
+
+	// Método que retorna a quantidade de clientes
+	private int getQtdDeClientes() {
+		int qtd = 0;
+		ResultSet resultSet = null;
+		try {
+			resultSet = new CRUD(mainApp.getUsuarioAtivo()).getResultSet("SELECT idCliente FROM CLIENTES");
+			while (resultSet.next()) {
+				qtd++;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return qtd;
+	}
 
 }

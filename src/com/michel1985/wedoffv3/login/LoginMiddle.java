@@ -93,8 +93,8 @@ public class LoginMiddle {
 	}
 
 	private void logou(boolean resultado) {
-		controller.hideWait();
-		System.out.println("Logado: " + resultado);
+		
+		//System.out.println("Logado: " + resultado);
 		if (!resultado) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Acesso Negado!");

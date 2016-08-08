@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -19,69 +20,70 @@
 
 <AnchorPane prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.michel1985.wedoffv3.view.LoginOverviewController">
    <children>
-      <AnchorPane fx:id="waitAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="457.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane prefHeight="450.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="266.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <GridPane prefHeight="450.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="266.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            <Pane fx:id="faixaBackgroundPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+            <VBox fx:id="fundoPrincipalVBox" alignment="CENTER" prefHeight="450.0" prefWidth="700.0" GridPane.rowIndex="1">
                <children>
-                  <Pane fx:id="faixaBackgroundPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                  <ImageView fx:id="imagemImageView" fitHeight="263.0" fitWidth="418.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                     <image>
-                        <Image url="@../../../../../resources/images/load04.gif" />
-                     </image>
-                  </ImageView>
-               </children>
-            </GridPane>
-         </children>
-      </AnchorPane>
-      <VBox fx:id="fundoPrincipalVBox" alignment="CENTER" prefHeight="450.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="59.0" prefWidth="700.0">
-               <children>
-                  <ImageView fx:id="wedoffLogoImageView" fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="wedoffTituloLabel" contentDisplay="CENTER" prefHeight="46.0" prefWidth="129.0" text="WeDoFF" textAlignment="CENTER" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="Playbill" size="68.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="versaoTituloLabel" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="383.0" layoutY="10.0" prefHeight="50.0" prefWidth="50.0" text="v 3.0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="Playbill" size="30.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <Label fx:id="subtituloWeDoNotForgetLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="We do not forget">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER">
-               <children>
-                  <VBox spacing="2.0">
+                  <HBox alignment="CENTER" prefHeight="59.0" prefWidth="700.0">
                      <children>
-                        <TextField fx:id="loginTextField" promptText="login" />
-                        <PasswordField fx:id="senhaPasswordField" promptText="senha" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="logarButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogar" text="Logar" textAlignment="CENTER" />
-                        <Button fx:id="cadastrarNovoUsuarioButton" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCadastrarNovoUsuario" text="Cadastrar Novo Usuário" />
+                        <ImageView fx:id="wedoffLogoImageView" fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="wedoffTituloLabel" contentDisplay="CENTER" prefHeight="46.0" prefWidth="129.0" text="WeDoFF" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="Playbill" size="68.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="versaoTituloLabel" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="383.0" layoutY="10.0" prefHeight="50.0" prefWidth="50.0" text="v 3.0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="Playbill" size="30.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Label>
                      </children>
-                  </VBox>
+                  </HBox>
+                  <Label fx:id="subtituloWeDoNotForgetLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="We do not forget">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <VBox spacing="2.0">
+                           <children>
+                              <TextField fx:id="loginTextField" promptText="login" />
+                              <PasswordField fx:id="senhaPasswordField" promptText="senha" VBox.vgrow="ALWAYS" />
+                              <Button fx:id="logarButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogar" text="Logar" textAlignment="CENTER" />
+                              <Button fx:id="cadastrarNovoUsuarioButton" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCadastrarNovoUsuario" text="Cadastrar Novo Usuário" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
+            <ProgressBar fx:id="carregandoLoginProgressBar" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="562.0" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+            </ProgressBar>
+            <ImageView fx:id="imagemImageView" fitHeight="263.0" fitWidth="418.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+               <image>
+                  <Image url="@../../../../../resources/images/load04.gif" />
+               </image>
+            </ImageView>
          </children>
-      </VBox>
+      </GridPane>
    </children>
 </AnchorPane>
