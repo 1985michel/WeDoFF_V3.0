@@ -223,6 +223,8 @@ public class MainApp extends Application {
 
 		clienteData.addAll(FXCollections.observableArrayList(clientes));
 	}
+	
+	
 
 	private String descriptografa(String texto) {
 		Cripto cripto = new Cripto();

@@ -55,7 +55,7 @@ public class LoginOverviewController {
 	private Button cadastrarNovoUsuarioButton;
 
 	// Componentes do wait
-
+	
 	@FXML
 	private Pane faixaBackgroundPane;
 
@@ -64,14 +64,15 @@ public class LoginOverviewController {
 
 	@FXML
 	private VBox fundoPrincipalVBox;
-
+	
 	@FXML
 	private ProgressBar carregandoLoginProgressBar;
-
+	
+	
 	static Task<?> copyWorker;
 
 	// Referencia ao Main
-	private MainApp mainApp;
+	private MainApp mainApp;	
 
 	/**
 	 * setMainApp - é usado pelo MainApp para para se referenciar
@@ -89,9 +90,8 @@ public class LoginOverviewController {
 
 	@FXML // This method is called by the FXMLLoader when initialization is
 			// complete
-	void initialize() {
-	}
-
+	void initialize() {}
+	
 	/**
 	 * Reconhecendo o usuário ativo
 	 */
@@ -100,7 +100,7 @@ public class LoginOverviewController {
 	// Delegando a tarefa de logar
 	@FXML
 	private void handleLogar() {
-
+		
 		LoginMiddle middle = new LoginMiddle(this);
 		try {
 			middle.logar(loginTextField.getText().trim(), senhaPasswordField.getText());
@@ -111,88 +111,87 @@ public class LoginOverviewController {
 
 	// Informando ao mainApp que o login ocorreu e que a aplicação deve ser
 	// liberada
-	public void loginConfirmado() {
+	public void loginConfirmado() {		
 		this.mainApp.setUsuarioAtivo(usuarioAtivo);
 		carregaInterfaceDeAbertura();
 		this.mainApp.carregaHistoricoDeClientes();
-		// this.mainApp.showAtendendoClienteOverview();
+		//this.mainApp.showAtendendoClienteOverview();
 	}
 
+	
 	@FXML
 	private void handleCadastrarNovoUsuario() {
 		LoginMiddle middle = new LoginMiddle(this);
 		middle.cadastrarUsuario(loginTextField.getText(), senhaPasswordField.getText());
 	}
-
+	
 	/**
 	 * Método responsável pelo carregamento da interface de abertura abrangendo
-	 * 1 - A exibição da imagem de abertura; 2 - O carregamento de progresssBar
-	 * confrome a quantidade de Clientes sendo carregados
-	 */
-	private void carregaInterfaceDeAbertura() {
-
-		// Faz o fundo ficar preto
+	 * 1 - A exibição da imagem de abertura;
+	 * 2 - O carregamento de progresssBar confrome a quantidade de Clientes sendo carregados
+	 * */
+	private void carregaInterfaceDeAbertura(){
+		
+		//Faz o fundo ficar preto
 		faixaBackgroundPane.setStyle("-fx-background-color: #000000;");
-
+		
 		imagemImageView.toFront();
 		imagemImageView.setVisible(true);
-
-		// Obtendo a quantidade de clientes e criando uma Task
+		
+		//Obtendo a quantidade de clientes e criando uma Task			
 		copyWorker = createWorker(getQtdDeClientes());
-
-		// Dizendo a ProgressBar que ela deve observar o percentual de execução
-		// da thread e exibi-lo
+		
+		//Dizendo a ProgressBar que ela deve observar o percentual de execução da thread e exibi-lo
 		carregandoLoginProgressBar.progressProperty().unbind();
 		carregandoLoginProgressBar.progressProperty().bind(copyWorker.progressProperty());
 
-		// Passando a tarefa para a Thread e começando o processamento
+		//Passando a tarefa para a Thread e começando o processamento
 		new Thread(copyWorker).start();
-
-		// Quando o copyWorkerTerminar, carregue a tela principal
-		copyWorker.setOnSucceeded((event) -> {
-			this.mainApp.showAtendendoClienteOverview();
-		});
+		
+		//Quando o copyWorkerTerminar, carregue a tela principal
+		copyWorker.setOnSucceeded((event)->{this.mainApp.showAtendendoClienteOverview();});
 	}
-
+	
 	/**
 	 * Método que retorna uma Task
-	 */
-	public Task<?> createWorker(int qtd) {
+	 * */
+	public Task createWorker(int qtd) {
 		return new Task() {
 			@Override
 			protected Object call() throws Exception {
 				for (int i = 0; i < qtd; i++) {
-					// pausando a thread
+					//pausando a thread
 					seguraTempo(qtd);
-					// atualizando o progresso da thread
+					//atualizando o progresso da thread
 					updateProgress(i + 1, qtd);
 					System.out.println(i + 1);
 				}
-				return true;
-			}
+				return true;				
+			}			
 		};
-
+		
 	}
 
 	public void seguraTempo(int qtd) throws InterruptedException {
 		long millis = 0;
-		if (qtd <= 16)
-			millis = 312;
+		if (qtd <= 1000)
+			millis = 312;			
 		else
 			millis = 5000 / qtd;
 		Thread.sleep(millis);
 	}
-
-	// Método que retorna a quantidade de clientes
-	private int getQtdDeClientes() {
-		int qtd = 0;
+	
+	//Método que retorna a quantidade de clientes
+	private int getQtdDeClientes(){
+		int qtd=0;
 		ResultSet resultSet = null;
 		try {
-			resultSet = new CRUD(mainApp.getUsuarioAtivo()).getResultSet("SELECT idCliente FROM CLIENTES");
-			while (resultSet.next()) {
+			resultSet = new CRUD(mainApp.getUsuarioAtivo())
+					.getResultSet("SELECT idCliente FROM CLIENTES");
+			while(resultSet.next()){
 				qtd++;
 			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -204,5 +203,5 @@ public class LoginOverviewController {
 		}
 		return qtd;
 	}
-
+	
 }
