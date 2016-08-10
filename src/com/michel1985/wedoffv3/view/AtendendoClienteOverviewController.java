@@ -629,7 +629,7 @@ public class AtendendoClienteOverviewController {
 			isPendenteCheckBox.setSelected(false);
 			dataParaSolucionarPendenciaDatePicker.setDisable(true);
 			// Não é preciso setar a data da solução pois ela é automática
-			notasSobreAtendimentoTextArea.setText("");
+			notasSobreAtendimentoTextArea.setText(""); 
 		}
 
 	}
