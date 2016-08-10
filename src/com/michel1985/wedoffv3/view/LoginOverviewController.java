@@ -125,6 +125,9 @@ public class LoginOverviewController {
 		middle.cadastrarUsuario(loginTextField.getText(), senhaPasswordField.getText());
 	}
 	
+	
+	
+	
 	/**
 	 * Método responsável pelo carregamento da interface de abertura abrangendo
 	 * 1 - A exibição da imagem de abertura;
@@ -138,8 +141,9 @@ public class LoginOverviewController {
 		imagemImageView.toFront();
 		imagemImageView.setVisible(true);
 		
-		//Obtendo a quantidade de clientes e criando uma Task			
-		copyWorker = createWorker(getQtdDeClientes());
+		//Obtendo a quantidade de clientes e criando uma Task	
+		int qtd = getQtdDeClientes();
+		copyWorker = createWorker(qtd<100 ? 100 : qtd);
 		
 		//Dizendo a ProgressBar que ela deve observar o percentual de execução da thread e exibi-lo
 		carregandoLoginProgressBar.progressProperty().unbind();
@@ -156,6 +160,7 @@ public class LoginOverviewController {
 	 * Método que retorna uma Task
 	 * */
 	public Task createWorker(int qtd) {
+		
 		return new Task() {
 			@Override
 			protected Object call() throws Exception {
@@ -173,12 +178,8 @@ public class LoginOverviewController {
 	}
 
 	public void seguraTempo(int qtd) throws InterruptedException {
-		long millis = 0;
-		if (qtd <= 1000)
-			millis = 312;			
-		else
-			millis = 5000 / qtd;
-		Thread.sleep(millis);
+		//A minha idéia é esperar 5 segundos
+		Thread.sleep(qtd<100 ? 50 : 5000/100);
 	}
 	
 	//Método que retorna a quantidade de clientes

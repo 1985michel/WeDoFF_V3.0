@@ -184,7 +184,7 @@
                                           <Tooltip text="Salvar Atendimento e Limpar Campos" />
                                        </tooltip>
                                     </Button>
-                                    <Button fx:id="cancelarAtendimentoButton" cancelButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Cancelar">
+                                    <Button fx:id="cancelarAtendimentoButton" cancelButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#handleCancelarAtendimento" text="Cancelar">
                                        <tooltip>
                                           <Tooltip text="Cancelar e apagar todos os dados SEM SALVAR!" />
                                        </tooltip></Button>

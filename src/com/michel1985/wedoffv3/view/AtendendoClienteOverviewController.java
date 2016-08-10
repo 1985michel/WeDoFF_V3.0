@@ -110,19 +110,16 @@ public class AtendendoClienteOverviewController {
 
 	@FXML
 	private Button cancelarAtendimentoButton;
-	
-	//Componentes do wait
-	@FXML 
+
+	// Componentes do wait
+	@FXML
 	private AnchorPane waitAnchorPane;
-	
+
 	@FXML
 	private Pane faixaBackgroundPane;
-	
+
 	@FXML
 	private ImageView imagemImageView;
-	
-	
-	
 
 	// Referência ao Main
 	private MainApp mainApp;
@@ -132,7 +129,7 @@ public class AtendendoClienteOverviewController {
 
 	// Crontrutor. É chamado antes do método initialize
 	public AtendendoClienteOverviewController() {
-		
+
 	}
 
 	/**
@@ -140,18 +137,20 @@ public class AtendendoClienteOverviewController {
 	 */
 	@FXML
 	private void initialize() {
-		
+
 		setaDataAtendimentoHoje();
-		
+
 		faixaBackgroundPane.setStyle("-fx-background-color: #181A1C;");
-		
-		//Tonando o dataPicker desabilitado inicialmente
+
+		// Tonando o dataPicker desabilitado inicialmente
 		dataParaSolucionarPendenciaDatePicker.setDisable(true);
 
-		//Tornando o dataPicker habilitado somente se o atendimento estiver marcado como pendente
-		isPendenteCheckBox.setOnAction((event)->{
+		// Tornando o dataPicker habilitado somente se o atendimento estiver
+		// marcado como pendente
+		isPendenteCheckBox.setOnAction((event) -> {
 			dataParaSolucionarPendenciaDatePicker.setDisable(!isPendenteCheckBox.isSelected());
-			if(isPendenteCheckBox.isSelected()) setaDataSolucacaoPendenciaParaDaqui30Dias(); 
+			if (isPendenteCheckBox.isSelected())
+				setaDataSolucacaoPendenciaParaDaqui30Dias();
 		});
 	}
 
@@ -527,7 +526,7 @@ public class AtendendoClienteOverviewController {
 			}
 
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
-			resultSet = crud.getResultSet(  
+			resultSet = crud.getResultSet(
 					"INSERT INTO atendimentos (idCliente,isPendente,isAgendamento,nb,dataatendimento,notassobreatendimento,datasolucao) VALUES ('"
 							+ idClienteAtual + "','" + isPendente + "','" + isAgendamento + "','" + nbCripto + "','"
 							+ data + "','" + notasCripto + "','" + dataSolucao + "')");
@@ -535,13 +534,14 @@ public class AtendendoClienteOverviewController {
 			// >>>>>>>>>>>>>>>>>>>>>feekBack("Atendimento Registrado com
 			// Sucesso", "green");
 			System.out.println("Atendimento registrado");
+			limparCamposAoConcluirAtendiemnto();
 			// limparAtendimento();
 			// limparCliente();
 			waitSomeTime();
 		} catch (Exception e) {
 			if (idClienteAtual == "") {
 				System.out.println("Querido animalzinho dos infernos, Quem você está atendendo?");
-				
+
 			}
 			e.printStackTrace();
 		} finally {
@@ -562,43 +562,83 @@ public class AtendendoClienteOverviewController {
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
-	
-	//Mostra o gif do wait
-	private void showWait(){
+
+	// Mostra o gif do wait
+	private void showWait() {
 		Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
 		imagemImageView.setImage(img);
 		waitAnchorPane.toFront();
 	}
-	
-	private void waitSomeTime(){
+
+	private void waitSomeTime() {
 		showWait();
 		Task<Void> sleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                try {
-                    Thread.sleep(2300);
-                } catch (InterruptedException e) {
-                }
-                return null;
-            }
-        };
-        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-            	hideWait();
-            }
-        });
-        new Thread(sleeper).start();
+			@Override
+			protected Void call() throws Exception {
+				try {
+					Thread.sleep(2300);
+				} catch (InterruptedException e) {
+				}
+				return null;
+			}
+		};
+		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				hideWait();
+			}
+		});
+		new Thread(sleeper).start();
 	}
-	
-	//Oculta o gif do wait
-	private void hideWait(){
+
+	// Oculta o gif do wait
+	private void hideWait() {
 		waitAnchorPane.toBack();
 		imagemImageView.setImage(null);
-		
+
 	}
-	
-	
+
+	/**
+	 * Limpando todos os campos ao salvar um atendimento
+	 */
+
+	private void limparCamposAoConcluirAtendiemnto() {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Cancelar e Limpar");
+		alert.setHeaderText("Deseja cancelar esse atendimento?");
+		alert.setContentText("As informações não salvas serão perdidas.\nConfirma o cancelamento?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+
+			habilitarAcoesClienteVBox(false);
+
+			// limpa idClienteAtual
+			setIdClienteAtual(0);
+
+			// Limpa os campos do formulário de cliente
+			nomeClienteTextField.setText("");
+			cpfTextField.setText("");
+			notasClienteTextArea.setText("");
+
+			// Limpa os campos do formulário de Atendimento
+			nbTextField.setText("");
+			isAgendamentoCheckBox.setSelected(false);
+			setaDataAtendimentoHoje();
+			isPendenteCheckBox.setSelected(false);
+			dataParaSolucionarPendenciaDatePicker.setDisable(true);
+			// Não é preciso setar a data da solução pois ela é automática
+			notasSobreAtendimentoTextArea.setText("");
+		}
+
+	}
+
+	@FXML
+	private void handleCancelarAtendimento() {
+		limparCamposAoConcluirAtendiemnto();
+
+	}
 
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
@@ -609,13 +649,13 @@ public class AtendendoClienteOverviewController {
 		Cripto cripto = new Cripto();
 		return cripto.descriptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
-	
+
 	private void setaDataAtendimentoHoje() {
 		LocalDate date = LocalDate.now();
 		dataDoAtendimentoDatePicker.setValue(date);
 	}
-	
-	private void setaDataSolucacaoPendenciaParaDaqui30Dias(){
+
+	private void setaDataSolucacaoPendenciaParaDaqui30Dias() {
 		LocalDate date = LocalDate.now();
 		dataParaSolucionarPendenciaDatePicker.setValue(date.plusMonths(1));
 	}
