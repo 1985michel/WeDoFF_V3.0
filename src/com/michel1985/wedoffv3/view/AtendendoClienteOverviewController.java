@@ -156,7 +156,7 @@ public class AtendendoClienteOverviewController {
 	 */
 	@FXML 
 	void handleConsultarClientePeloCPF() {
-		System.out.println("1");
+		
 		String cpf = cpfTextField.getText();
 		if (!ValidaCliente.validaCPF(cpf)) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -173,7 +173,7 @@ public class AtendendoClienteOverviewController {
 			while (resultSet.next()) {
 				String cpfDesc = descriptografa(resultSet.getString("cpfCliente"));
 				if (cpfDesc.equalsIgnoreCase(cpf)) {
-					System.out.println("2");
+					
 					showCliente(resultSet);
 					achou = true;
 					try {
@@ -185,7 +185,7 @@ public class AtendendoClienteOverviewController {
 				}
 			}
 			if (!achou) {
-				System.out.println("3");
+				
 				setStatusDoFormCliente(AtendendoClienteOverviewUIManager.NOVO_CLIENTE);
 			}
 		} catch (Exception e) {
@@ -524,8 +524,12 @@ public class AtendendoClienteOverviewController {
 			waitSomeTime();
 		} catch (Exception e) {
 			if (idClienteAtual == "") {
-				System.out.println("Querido animalzinho dos infernos, Quem você está atendendo?");
-
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Quem estamos atendendo?");
+				alert.setHeaderText("Ocorreu um erro na aplicação.");
+				alert.setContentText(
+						"A aplicação não sabe qual cliente está sendo atendido. Por favor feche a aplicação e tente nomvamente.\nFavor relatar o problema ao suporte técnico.");
+				alert.showAndWait();
 			}
 			e.printStackTrace();
 		} finally {

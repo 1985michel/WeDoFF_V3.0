@@ -68,7 +68,8 @@ public class AtendendoClienteOverviewUIManager {
 	public void setFormClienteStatusAtendendo() {
 
 		controller.cpfTextField.setEditable(false);
-		controller.consultarAtendimentoPeloNbButton.setDisable(false);
+		
+		controller.consultarClientePeloCpfButton.setDisable(false);
 		controller.consultarClientePeloCpfButton.setText("X");
 		controller.consultarClientePeloCpfButton.setOnAction(event -> controller.handleCancelarAtendimentoDoCliente());
 		controller.consultarClientePeloCpfButton.setTooltip(new Tooltip("Cancelar e Limpar Campos"));
