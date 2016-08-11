@@ -168,8 +168,7 @@ public class LoginOverviewController {
 					//pausando a thread
 					seguraTempo(qtd);
 					//atualizando o progresso da thread
-					updateProgress(i + 1, qtd);
-					System.out.println(i + 1);
+					updateProgress(i + 1, qtd);					
 				}
 				return true;				
 			}			

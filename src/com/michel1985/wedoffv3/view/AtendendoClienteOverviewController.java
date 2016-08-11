@@ -604,6 +604,29 @@ public class AtendendoClienteOverviewController {
 
 	private void limparCamposAoConcluirAtendiemnto() {
 
+		habilitarAcoesClienteVBox(false);
+
+		// limpa idClienteAtual
+		setIdClienteAtual(0);
+
+		// Limpa os campos do formulário de cliente
+		nomeClienteTextField.setText("");
+		cpfTextField.setText("");
+		notasClienteTextArea.setText("");
+
+		// Limpa os campos do formulário de Atendimento
+		nbTextField.setText("");
+		isAgendamentoCheckBox.setSelected(false);
+		setaDataAtendimentoHoje();
+		isPendenteCheckBox.setSelected(false);
+		dataParaSolucionarPendenciaDatePicker.setDisable(true);
+		// Não é preciso setar a data da solução pois ela é automática
+		notasSobreAtendimentoTextArea.setText("");
+
+	}
+
+	@FXML
+	private void handleCancelarAtendimento() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Cancelar e Limpar");
 		alert.setHeaderText("Deseja cancelar esse atendimento?");
@@ -611,32 +634,8 @@ public class AtendendoClienteOverviewController {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-
-			habilitarAcoesClienteVBox(false);
-
-			// limpa idClienteAtual
-			setIdClienteAtual(0);
-
-			// Limpa os campos do formulário de cliente
-			nomeClienteTextField.setText("");
-			cpfTextField.setText("");
-			notasClienteTextArea.setText("");
-
-			// Limpa os campos do formulário de Atendimento
-			nbTextField.setText("");
-			isAgendamentoCheckBox.setSelected(false);
-			setaDataAtendimentoHoje();
-			isPendenteCheckBox.setSelected(false);
-			dataParaSolucionarPendenciaDatePicker.setDisable(true);
-			// Não é preciso setar a data da solução pois ela é automática
-			notasSobreAtendimentoTextArea.setText(""); 
+			limparCamposAoConcluirAtendiemnto();
 		}
-
-	}
-
-	@FXML
-	private void handleCancelarAtendimento() {
-		limparCamposAoConcluirAtendiemnto();
 
 	}
 
