@@ -148,9 +148,6 @@ public class AtendendoClienteOverviewController {
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-
-		// Em casos de tabela,aqui é o local para solitiar o povoamento
-		// someTable.setItems(mainApp.getClienteData());
 	}
 
 	/**
