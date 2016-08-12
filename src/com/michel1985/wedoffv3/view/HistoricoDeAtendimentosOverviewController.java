@@ -147,7 +147,7 @@ public class HistoricoDeAtendimentosOverviewController {
 		this.mainApp = main;
 
 		// Adiciona os dados da observable list à tabela
-		atendimentosTableView.setItems(main.getAtendiemntoData());
+		atendimentosTableView.setItems(main.getAtendiementoData());
 
 	}
 	

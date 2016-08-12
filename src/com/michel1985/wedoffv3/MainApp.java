@@ -180,7 +180,7 @@ public class MainApp extends Application {
 	/**
 	 * Obtendo a ObservableList de Atendimentos
 	 */
-	public ObservableList<Atendimento> getAtendiemntoData() {
+	public ObservableList<Atendimento> getAtendiementoData() {
 		return this.atendimentoData;
 	}
 

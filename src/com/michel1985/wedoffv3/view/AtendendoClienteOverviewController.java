@@ -12,6 +12,7 @@ import javax.swing.UIManager;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
+import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.ValidaCliente;
@@ -42,7 +43,6 @@ import javafx.scene.layout.VBox;
  */
 public class AtendendoClienteOverviewController {
 
-	
 	@FXML
 	TextField cpfTextField;
 
@@ -109,15 +109,14 @@ public class AtendendoClienteOverviewController {
 
 	// Referência ao Main
 	private MainApp mainApp;
-	
-	//Referência ao ManagerUI
+
+	// Referência ao ManagerUI
 	private AtendendoClienteOverviewUIManager uiManager;
 
 	// Id do cliente em atendimento
 	private static String idClienteAtual;
-	
-	
-	//Id do atendimento em andamento
+
+	// Id do atendimento em andamento
 	private static String idAtendimentoAtual;
 
 	// Crontrutor. É chamado antes do método initialize
@@ -158,9 +157,9 @@ public class AtendendoClienteOverviewController {
 	 * Método chamado quando o usuário consulta a existência de um cliente pelo
 	 * cpf
 	 */
-	@FXML 
+	@FXML
 	void handleConsultarClientePeloCPF() {
-		
+
 		String cpf = cpfTextField.getText();
 		if (!ValidaCliente.validaCPF(cpf)) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -177,7 +176,7 @@ public class AtendendoClienteOverviewController {
 			while (resultSet.next()) {
 				String cpfDesc = descriptografa(resultSet.getString("cpfCliente"));
 				if (cpfDesc.equalsIgnoreCase(cpf)) {
-					
+
 					showCliente(resultSet);
 					achou = true;
 					try {
@@ -189,7 +188,7 @@ public class AtendendoClienteOverviewController {
 				}
 			}
 			if (!achou) {
-				
+
 				setStatusDoFormCliente(AtendendoClienteOverviewUIManager.NOVO_CLIENTE);
 			}
 		} catch (Exception e) {
@@ -243,7 +242,8 @@ public class AtendendoClienteOverviewController {
 		// TODO Auto-generated method stub
 	}
 
-	@FXML void handleVerAtendimentosDoCliente() {
+	@FXML
+	void handleVerAtendimentosDoCliente() {
 		// TODO Auto-generated method stub
 	}
 
@@ -267,9 +267,23 @@ public class AtendendoClienteOverviewController {
 			break;
 		}
 	}
+	
+	
+	private void setStatusDoFormAtendimento(int status) {
+		//ToDo
+		switch (status) {
+		case 1:
+			//uiManager.setFormClienteStatusInicial();
+			break;
+		case 2:
+			//uiManager.setFormClienteStatusNovoCliente();
+			break;
+		case 3:
+			//uiManager.setFormClienteStatusAtendendo();
+			break;
+		}
+	}
 
-	
-	
 	@FXML
 	void handleCancelarCadastramentoDoCliente() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -325,7 +339,6 @@ public class AtendendoClienteOverviewController {
 	}
 
 	void handleCancelarAtendimentoDoCliente() {
-		
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Cancelar e Limpar");
@@ -403,11 +416,20 @@ public class AtendendoClienteOverviewController {
 	private void setIdClienteAtual(int id) {
 		idClienteAtual = id + "";
 	}
+	
+	/**
+	 * O método abaixo seta o Id do cliente atual.
+	 * 
+	 */
+	private void setIdAtendimentoAtual(int id) {
+		idAtendimentoAtual = id + "";
+	}
 
 	/**
 	 * Atualizando cliente Chamado quando o usuário clica em "editar cliente"
 	 */
-	@FXML void handleAtualizaCliente() {
+	@FXML
+	void handleAtualizaCliente() {
 
 		String cpf = cpfTextField.getText();
 		String nome = nomeClienteTextField.getText();
@@ -474,7 +496,7 @@ public class AtendendoClienteOverviewController {
 		try {
 			// Primeiro vamos captar os dados informados
 			String nb = nbTextField.getText();
-			String notas = notasClienteTextArea.getText();
+			String notas = notasSobreAtendimentoTextArea.getText();
 
 			String nbCripto = criptografa(nb);
 			String notasCripto = criptografa(notas);
@@ -523,8 +545,30 @@ public class AtendendoClienteOverviewController {
 			resultSet = crud.getResultSet(
 					"INSERT INTO atendimentos (idCliente,isPendente,isAgendamento,nb,dataatendimento,notassobreatendimento,datasolucao) VALUES ('"
 							+ idClienteAtual + "','" + isPendente + "','" + isAgendamento + "','" + nbCripto + "','"
-							+ data + "','" + notasCripto + "','" + dataSolucao + "')");
+							+ data + "','" + notasCripto + "','" + dataSolucao + "');CALL IDENTITY();");
 
+			int id =0;
+			if (resultSet.next())
+				id = resultSet.getInt(1);// obtendo o idretornado CALL
+											// IDENTITY();
+			
+			// Adicionando o cliente à ObservableLIst
+			try {
+
+//public Atendimento(String id, String idCli, boolean agendamento,  boolean pendente, String nb, String notas, String data, String datasolu){
+
+				
+				String idString = "" + id;
+				Atendimento newAtendimento = new Atendimento(idString,idClienteAtual,isAgendamento,isPendente,nb,notas,data,dataSolucao);
+				mainApp.getAtendiementoData().add(newAtendimento);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			setStatusDoFormAtendimento(AtendendoClienteOverviewUIManager.ATENDENDO);
+
+			setIdAtendimentoAtual(id);
+			
 			waitSomeTime();
 		} catch (Exception e) {
 			if (idClienteAtual == "") {
@@ -546,6 +590,8 @@ public class AtendendoClienteOverviewController {
 		}
 
 	}
+
+	
 
 	private void alertarWarning(String title, String header, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
