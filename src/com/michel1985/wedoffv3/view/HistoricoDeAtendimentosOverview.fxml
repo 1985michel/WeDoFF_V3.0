@@ -37,7 +37,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label fx:id="notasSobreAtendimentoTituloLabel" text="Notas sobre Atendimento" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                  <Label fx:id="notasSobreAtendimentoTextArea" alignment="TOP_LEFT" cacheShape="false" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="..." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0" />
+                  <Label fx:id="notasSobreAtendimentoTextArea" alignment="TOP_LEFT" cacheShape="false" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="..." textAlignment="JUSTIFY" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0" />
                   <HBox fx:id="acoesSobreAtendimentoHBox" alignment="CENTER_RIGHT" disable="true" layoutY="373.0" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
                         <Button fx:id="verClienteAtendidoButton" defaultButton="true" mnemonicParsing="false" text="Ver Cliente Atendido" HBox.hgrow="ALWAYS" />

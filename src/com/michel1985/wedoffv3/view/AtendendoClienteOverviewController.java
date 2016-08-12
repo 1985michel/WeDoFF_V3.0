@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import javax.swing.UIManager;
-
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
@@ -30,7 +28,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -44,7 +41,7 @@ import javafx.scene.layout.VBox;
 public class AtendendoClienteOverviewController {
 
 	@FXML
-	TextField cpfTextField;
+	TextFieldLimited cpfTextField;
 
 	@FXML
 	Button consultarClientePeloCpfButton;
@@ -144,6 +141,7 @@ public class AtendendoClienteOverviewController {
 			if (isPendenteCheckBox.isSelected())
 				setaDataSolucacaoPendenciaParaDaqui30Dias();
 		});
+		
 	}
 
 	/**

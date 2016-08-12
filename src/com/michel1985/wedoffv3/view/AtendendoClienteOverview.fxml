@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.michel1985.wedoffv3.view.TextFieldLimited?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
@@ -55,11 +56,11 @@
                      <children>
                         <HBox maxWidth="1.7976931348623157E308">
                            <children>
-                              <TextField fx:id="cpfTextField" prefHeight="25.0" prefWidth="102.0" promptText="CPF" HBox.hgrow="ALWAYS">
+                              <TextFieldLimited fx:id="cpfTextField" prefHeight="25.0" prefWidth="102.0" promptText="CPF" HBox.hgrow="ALWAYS">
                                  <tooltip>
                                     <Tooltip autoHide="true" text="CPF do Cliente" />
                                  </tooltip>
-                              </TextField>
+                              </TextFieldLimited>
                               <Button fx:id="consultarClientePeloCpfButton" defaultButton="true" mnemonicParsing="false" onAction="#handleConsultarClientePeloCPF" prefHeight="25.0" prefWidth="34.0" text="?">
                                  <font>
                                     <Font name="System Bold" size="12.0" />

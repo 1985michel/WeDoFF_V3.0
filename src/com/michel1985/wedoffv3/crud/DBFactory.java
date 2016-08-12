@@ -16,13 +16,13 @@ public class DBFactory {
 		this.comandosDeCriacao.add(criarTabelaUsuarios);
 		// nomeCliente, cpfCliente, notasSobreCliente
 		String criarTabelaClientes = "CREATE TABLE CLIENTES (" + "idcliente INTEGER IDENTITY PRIMARY KEY,"
-				+ "nomeCliente VARCHAR(300)," + "cpfCliente VARCHAR(100)," + "notasSobreCliente VARCHAR(5000)," + ");";
+				+ "nomeCliente VARCHAR(300)," + "cpfCliente VARCHAR(11)," + "notasSobreCliente VARCHAR(50000)," + ");";
 
 		this.comandosDeCriacao.add(criarTabelaClientes);
 
 		String criarTabelaAtendimentos = "CREATE TABLE ATENDIMENTOS (" + "idatendimento INTEGER IDENTITY PRIMARY KEY,"
 				+ "idcliente VARCHAR(100)," + "isagendamento BOOLEAN," + "ispendente BOOLEAN," + "nb VARCHAR(100),"
-				+ "notassobreatendimento VARCHAR(5000)," + "dataatendimento VARCHAR(10)," + "datasolucao VARCHAR(10),"
+				+ "notassobreatendimento VARCHAR(50000)," + "dataatendimento VARCHAR(10)," + "datasolucao VARCHAR(10),"
 				+ ");";
 		this.comandosDeCriacao.add(criarTabelaAtendimentos);
 	}
