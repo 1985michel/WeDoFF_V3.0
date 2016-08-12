@@ -105,7 +105,6 @@ public class MainApp extends Application {
 		}
 	}
 
-
 	/**
 	 * Colocando o AtendendoCLiente dentro do RootLayout
 	 */
@@ -177,10 +176,10 @@ public class MainApp extends Application {
 	public ObservableList<Cliente> getClienteData() {
 		return this.clienteData;
 	}
-	
+
 	/**
 	 * Obtendo a ObservableList de Atendimentos
-	 * */
+	 */
 	public ObservableList<Atendimento> getAtendiemntoData() {
 		return this.atendimentoData;
 	}
@@ -221,8 +220,7 @@ public class MainApp extends Application {
 
 	private void adicionaTodosClientesFromDBNaDataClientes(ResultSet resultSet) throws SQLException {
 		ArrayList<Cliente> clientes = new ArrayList<>();
-				
-		
+
 		while (resultSet.next()) {
 
 			clientes.add(
@@ -233,8 +231,45 @@ public class MainApp extends Application {
 
 		clienteData.addAll(FXCollections.observableArrayList(clientes));
 	}
-	
-	
+
+	public void carregaHistoricoDeAtendimentos() {
+		if (this.usuarioAtivo != null) {
+			ResultSet resultSet = null;
+
+			try {
+				resultSet = new CRUD(this.usuarioAtivo)
+						.getResultSet("SELECT * FROM atendimentos ORDER BY IDCLIENTE DESC");
+				adicionaTodosAtendimentosFromDBNaDataAtendimentos(resultSet);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					resultSet.close();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private void adicionaTodosAtendimentosFromDBNaDataAtendimentos(ResultSet resultSet) throws SQLException {
+		ArrayList<Atendimento> atendimentos = new ArrayList<>();
+
+		while (resultSet.next()) {
+			// public Atendimento(String id, String idCli, boolean agendamento,
+			// boolean pendente, String nb, String notas, String data, String
+			// datasolu){
+
+			atendimentos.add(new Atendimento(resultSet.getString("idatendimento"), resultSet.getString("idcliente"),
+					resultSet.getBoolean("isagendamento"), resultSet.getBoolean("isPendente"),
+					descriptografa(resultSet.getString("nb")),
+					descriptografa(resultSet.getString("notassobreatendimento")),
+					resultSet.getString("dataatendimento"), resultSet.getString("datasolucao")));
+		}
+
+		atendimentoData.addAll(FXCollections.observableArrayList(atendimentos));
+	}
 
 	private String descriptografa(String texto) {
 		Cripto cripto = new Cripto();
@@ -319,7 +354,7 @@ public class MainApp extends Application {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Mostra o HistoricoDeClienteOverview
 	 */
@@ -338,7 +373,8 @@ public class MainApp extends Application {
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
 			 */
-			atendimentoData.sort((o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+			atendimentoData.sort(
+					(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();

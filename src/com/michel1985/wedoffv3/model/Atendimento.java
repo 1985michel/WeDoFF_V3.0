@@ -18,12 +18,12 @@ public class Atendimento {
 
 		
 		public Atendimento(String id, String idCli, boolean agendamento,  boolean pendente, String nb, String notas, String data, String datasolu){
-			this.idAtendimento.set(id);
-			this.idCliente.set(idCli);
-			this.nb.set(nb);
-			this.notasSobreAtendimento.set(notas);
-			this.dataAtendimento.set(data);
-			this.dataSolucao.set(datasolu);
+			this.idAtendimento = new SimpleStringProperty(id);
+			this.idCliente = new SimpleStringProperty(idCli);
+			this.nb = new SimpleStringProperty(nb);
+			this.notasSobreAtendimento = new SimpleStringProperty(notas);
+			this.dataAtendimento = new SimpleStringProperty(data);
+			this.dataSolucao = new SimpleStringProperty(datasolu);
 			this.isAgendamento = new SimpleBooleanProperty(agendamento);
 			this.isPendente = new SimpleBooleanProperty(pendente);
 		}

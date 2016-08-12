@@ -115,6 +115,7 @@ public class LoginOverviewController {
 		this.mainApp.setUsuarioAtivo(usuarioAtivo);
 		carregaInterfaceDeAbertura();
 		this.mainApp.carregaHistoricoDeClientes();
+		this.mainApp.carregaHistoricoDeAtendimentos();
 		//this.mainApp.showAtendendoClienteOverview();
 	}
 
