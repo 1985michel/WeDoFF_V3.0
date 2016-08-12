@@ -17,7 +17,7 @@
             <Menu mnemonicParsing="false" text="Histórico">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeClientes" text="Todos Clientes" />
-                  <MenuItem mnemonicParsing="false" text="Todos Atendimentos" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeAtendimentos" text="Todos Atendimentos" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Buscar Registro">

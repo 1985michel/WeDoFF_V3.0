@@ -62,6 +62,14 @@ public class HistoricoDeClientesOverviewController {
 
 	@FXML
 	private MenuItem excluirClienteMenuItem;
+
+	@FXML
+	private TextField searchTextField;
+
+	@FXML
+	private Button searchButton;
+	
+	
 	
 
 	/**
@@ -70,12 +78,6 @@ public class HistoricoDeClientesOverviewController {
 
 	// Observable list que conterá o resultado das pesquisas
 	public ObservableList<Cliente> result = FXCollections.observableArrayList();
-
-	@FXML
-	private TextField searchTextField;
-
-	@FXML
-	private Button searchButton;
 	
 	//Palco desse dialog
 	private Stage dialogStage;

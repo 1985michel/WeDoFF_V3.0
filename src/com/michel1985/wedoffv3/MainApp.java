@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.michel1985.wedoffv3.crud.CRUD;
+import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
+import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
 import com.michel1985.wedoffv3.view.RootLayoutController;
@@ -34,6 +36,7 @@ public class MainApp extends Application {
 	private AtendendoClienteOverviewController atendendoClienteController;
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
+	private ObservableList<Atendimento> atendimentoData = FXCollections.observableArrayList();
 
 	private Usuario usuarioAtivo;
 
@@ -169,10 +172,17 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 * Obterndo as ObservableList
+	 * Obterndo a ObservableList de Clientes
 	 */
 	public ObservableList<Cliente> getClienteData() {
 		return this.clienteData;
+	}
+	
+	/**
+	 * Obtendo a ObservableList de Atendimentos
+	 * */
+	public ObservableList<Atendimento> getAtendiemntoData() {
+		return this.atendimentoData;
 	}
 
 	/**
@@ -308,6 +318,48 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	/**
+	 * Mostra o HistoricoDeClienteOverview
+	 */
+	public void showHistoricoDeAtendimentosOverview() {
+		try {
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeAtendimentosOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			HistoricoDeAtendimentosOverviewController controller = loader.getController();
+			controller.setMainApp(this);
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			atendimentoData.sort((o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Histórico de Atendimentos");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

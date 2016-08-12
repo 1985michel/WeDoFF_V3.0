@@ -115,6 +115,10 @@ public class AtendendoClienteOverviewController {
 
 	// Id do cliente em atendimento
 	private static String idClienteAtual;
+	
+	
+	//Id do atendimento em andamento
+	private static String idAtendimentoAtual;
 
 	// Crontrutor. É chamado antes do método initialize
 	public AtendendoClienteOverviewController() {

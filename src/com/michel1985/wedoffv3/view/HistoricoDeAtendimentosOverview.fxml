@@ -11,23 +11,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController">
    <children>
       <SplitPane dividerPositions="0.6160458452722063" layoutX="191.0" layoutY="112.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane maxWidth="430.0" minHeight="0.0" minWidth="430.0" prefHeight="398.0" prefWidth="502.0">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Histórico de Atendimentos" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <Label fx:id="historicoDeAtendimentosTituloLabel" layoutX="14.0" layoutY="14.0" text="Histórico de Atendimentos" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                   <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="398.0" prefWidth="427.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                      <content>
-                        <TableView maxWidth="430.0" prefHeight="356.0" prefWidth="411.0">
+                        <TableView fx:id="atendimentosTableView" maxWidth="430.0" prefHeight="356.0" prefWidth="411.0">
                            <columns>
-                              <TableColumn maxWidth="100.0" prefWidth="42.0" text="nº" />
-                              <TableColumn maxWidth="100.0" prefWidth="61.0" text="nº Cliente" />
-                              <TableColumn maxWidth="200.0" prefWidth="103.0" text="NB / Prot." />
-                              <TableColumn maxWidth="100.0" prefWidth="79.0" text="Data Atend." />
-                              <TableColumn maxWidth="86.0" minWidth="2.0" prefWidth="59.0" text="Agend.?" />
-                              <TableColumn maxWidth="92.0" prefWidth="89.0" text="Pendente?" />
+                              <TableColumn fx:id="idAtendimentoTableColumn" maxWidth="100.0" prefWidth="42.0" text="nº" />
+                              <TableColumn fx:id="idClienteTableColumn" maxWidth="100.0" prefWidth="61.0" text="nº Cliente" />
+                              <TableColumn fx:id="nbTableColumn" maxWidth="200.0" prefWidth="103.0" text="NB / Prot." />
+                              <TableColumn fx:id="dataAtendimentoTableColumn" maxWidth="100.0" prefWidth="79.0" text="Data Atend." />
+                              <TableColumn fx:id="isAgendamentoTableColumn" maxWidth="86.0" minWidth="2.0" prefWidth="59.0" text="Agend.?" />
+                              <TableColumn fx:id="isPendenteTableColumn" maxWidth="92.0" prefWidth="89.0" text="Pendente?" />
                            </columns>
                         </TableView>
                      </content>
@@ -36,15 +36,15 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Label text="Notas sobre Atendimento" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                  <Label alignment="TOP_LEFT" cacheShape="false" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="..." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0" />
-                  <HBox alignment="CENTER_RIGHT" layoutY="373.0" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                  <Label fx:id="notasSobreAtendimentoTituloLabel" text="Notas sobre Atendimento" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <Label fx:id="notasSobreAtendimentoTextArea" alignment="TOP_LEFT" cacheShape="false" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="..." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0" />
+                  <HBox fx:id="acoesSobreAtendimentoHBox" alignment="CENTER_RIGHT" layoutY="373.0" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
-                        <Button defaultButton="true" mnemonicParsing="false" text="Ver Atendimentos do Cliente" HBox.hgrow="ALWAYS" />
-                        <MenuButton mnemonicParsing="false" text="Ações" HBox.hgrow="ALWAYS">
+                        <Button fx:id="verClienteAtendidoButton" defaultButton="true" mnemonicParsing="false" text="Ver Cliente Atendido" HBox.hgrow="ALWAYS" />
+                        <MenuButton fx:id="acoesMenuButton" mnemonicParsing="false" text="Ações" HBox.hgrow="ALWAYS">
                            <items>
-                              <MenuItem mnemonicParsing="false" text="Editar Atendimento" />
-                              <MenuItem mnemonicParsing="false" text="Excluir Atendimento" />
+                              <MenuItem fx:id="editarAtendimentoMenuItem" mnemonicParsing="false" text="Editar Atendimento" />
+                              <MenuItem fx:id="excluirAtendimentoMenuItem" mnemonicParsing="false" text="Excluir Atendimento" />
                            </items>
                         </MenuButton>
                      </children>
