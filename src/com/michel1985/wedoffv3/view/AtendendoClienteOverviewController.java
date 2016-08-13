@@ -575,7 +575,7 @@ public class AtendendoClienteOverviewController {
 				
 				String idString = "" + id;
 				Atendimento newAtendimento = new Atendimento(idString,idClienteAtual,isAgendamento,isPendente,nb,notas,data,dataSolucao);
-				mainApp.getAtendiementoData().add(newAtendimento);
+				mainApp.getAtendimentoData().add(newAtendimento);
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -11,6 +11,7 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
@@ -180,7 +181,7 @@ public class MainApp extends Application {
 	/**
 	 * Obtendo a ObservableList de Atendimentos
 	 */
-	public ObservableList<Atendimento> getAtendiementoData() {
+	public ObservableList<Atendimento> getAtendimentoData() {
 		return this.atendimentoData;
 	}
 
@@ -396,6 +397,39 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Apresenta o dialog para edição do cliente
+	 */
+	public boolean showEditarAtendimentoOverview(Atendimento atendimento) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/EditarAtendimentoOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Cria o palco
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Editar Atendimento");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Passa o cliente a ser editado ao controller
+			EditarAtendimentoOverviewController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setAtendimento(atendimento);
+
+			// Apresenta o dialog
+			dialogStage.showAndWait();
+
+			return controller.isOkCLicked();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

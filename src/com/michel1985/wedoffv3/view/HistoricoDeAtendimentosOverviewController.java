@@ -1,8 +1,10 @@
 package com.michel1985.wedoffv3.view;
 
+import java.sql.ResultSet;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
+import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 
@@ -147,7 +149,7 @@ public class HistoricoDeAtendimentosOverviewController {
 		this.mainApp = main;
 
 		// Adiciona os dados da observable list à tabela
-		atendimentosTableView.setItems(main.getAtendiementoData());
+		atendimentosTableView.setItems(main.getAtendimentoData());
 
 	}
 	
@@ -184,5 +186,55 @@ public class HistoricoDeAtendimentosOverviewController {
 		else
 			acoesSobreAtendimentoHBox.setDisable(true);
 	}
+	
+	/**
+	 * Deleção de clientes
+	 */
+	@FXML
+	private void handleDeleteAtendimento() {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Deletar Atendimento?");
+		alert.setHeaderText("Deseja apagar este atendimento?");
+		alert.setContentText(
+				"Ao clicar em \"Ok\" você estará APAGANDO TODOS OS DADOS DESSE ATENDIMENTO SEM POSSIBILIDADE DE RECUPERA-LOS.\n"
+						+ "\nVocê tem certeza desta deleção?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			deletarAtendimentoDoBancoDeDados();
+
+			// Removendo o cliente da observableList
+			deletarAtendimentoDaAtendimentoData();
+		}
+	}
+
+	private void deletarAtendimentoDaAtendimentoData() {
+		try {
+			mainApp.getAtendimentoData().remove(atendimentosTableView.getSelectionModel().getSelectedItem());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void deletarAtendimentoDoBancoDeDados() {
+		
+		String selectedId = atendimentosTableView.getSelectionModel().getSelectedItem().getIdAtendimento();
+		
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+			resultSet = crud.getResultSet("DELETE FROM ATENDIMENTOS WHERE idATENDIMENTO = '" + selectedId + "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 
 }
