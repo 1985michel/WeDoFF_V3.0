@@ -9,6 +9,7 @@ import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
+import com.michel1985.wedoffv3.util.EstruturaData;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -96,9 +97,11 @@ public class HistoricoDeAtendimentosOverviewController {
 		idAtendimentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().idAtendimentoProperty());
 		idClienteTableColumn.setCellValueFactory(cellData -> cellData.getValue().idClienteProperty());
 		nbTableColumn.setCellValueFactory(cellData -> cellData.getValue().nbProperty());
-		dataAtendimentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().dataAtendimentoProperty());
+		dataAtendimentoTableColumn.setCellValueFactory(cellData -> EstruturaData.estruturaData(cellData.getValue().dataAtendimentoProperty()));
 		isAgendamentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().isAgendamentoProperty());
 		isPendenteTableColumn.setCellValueFactory(cellData -> cellData.getValue().isPendenteProperty());
+		
+		
 
 		// limpa os detalhes do atendimento
 		showAtendimentoDetails(null);

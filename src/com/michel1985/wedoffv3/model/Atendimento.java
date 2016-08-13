@@ -1,6 +1,10 @@
 package com.michel1985.wedoffv3.model;
 
 
+import java.time.format.DateTimeFormatter;
+
+import com.michel1985.wedoffv3.util.EstruturaData;
+
 import javafx.beans.property.*;
 
 
@@ -15,6 +19,7 @@ public class Atendimento {
 	private StringProperty notasSobreAtendimento;
 	private StringProperty dataAtendimento;
 	private StringProperty dataSolucao;
+
 
 		
 		public Atendimento(String id, String idCli, boolean agendamento,  boolean pendente, String nb, String notas, String data, String datasolu){
@@ -99,7 +104,7 @@ public class Atendimento {
 			return dataAtendimento.getValue();
 		}
 		public StringProperty dataAtendimentoProperty(){
-			return this.dataAtendimento;
+				return this.dataAtendimento;
 		}
 		public void setDataAtendimento(String dataAtendimento) {
 			this.dataAtendimento.set(dataAtendimento);
