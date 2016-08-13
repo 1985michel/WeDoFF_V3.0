@@ -498,12 +498,11 @@ public class AtendendoClienteOverviewController {
 			
 			if(notas=="" || notas == null || notas.length()<2){
 				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("O que foi feito neste atendimento?");
-				alert.setHeaderText("Contradição...");
+				alert.setTitle("Contradição...");
+				alert.setHeaderText("O que foi feito neste atendimento?");
 				alert.setContentText(
-						"Se não é para registrar dados sobre atendimentos realizados, para que serve esta aplicação?");
+						"Se não é para registrar dados sobre atendimentos realizados, para que serve esta aplicação?\nInforme no campo \"Notas\" o que foi feito neste atendimento.");
 				alert.showAndWait();
-				System.out.println("Notas vazio");
 				return;
 			}
 
