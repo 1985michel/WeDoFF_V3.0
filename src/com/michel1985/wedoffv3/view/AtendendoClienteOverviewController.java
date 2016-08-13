@@ -495,12 +495,25 @@ public class AtendendoClienteOverviewController {
 			// Primeiro vamos captar os dados informados
 			String nb = nbTextField.getText();
 			String notas = notasSobreAtendimentoTextArea.getText();
+			
+			if(notas=="" || notas == null || notas.length()<2){
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("O que foi feito neste atendimento?");
+				alert.setHeaderText("Contradição...");
+				alert.setContentText(
+						"Se não é para registrar dados sobre atendimentos realizados, para que serve esta aplicação?");
+				alert.showAndWait();
+				System.out.println("Notas vazio");
+				return;
+			}
 
 			String nbCripto = criptografa(nb);
 			String notasCripto = criptografa(notas);
 
 			boolean isPendente = isPendenteCheckBox.isSelected();
 			boolean isAgendamento = isAgendamentoCheckBox.isSelected();
+			
+			
 
 			// Se o atendimento estiver pendente, será obrigatório informar uma
 			// data de solução
