@@ -12,6 +12,7 @@ public class AtendendoClienteOverviewUIManager {
 	public static final int INICIAL = 1;
 	public static final int NOVO_CLIENTE =2;
 	public static final int ATENDENDO = 3;
+	
 
 	public AtendendoClienteOverviewUIManager(AtendendoClienteOverviewController controller) {
 		this.controller = controller;
@@ -85,6 +86,23 @@ public class AtendendoClienteOverviewUIManager {
 		controller.verHistoricoDeAtendimentosDoClienteButton.setText("Ver Atendimentos do Cliente");
 		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerAtendimentosDoCliente());
 
+	}
+	
+	public void limparAtendendoClienteOverview(){
+		
+		//limpando os ids de Cliente e Atendimento
+		this.controller.limparClienteEAtendimentoAtual();
+		
+		// Limpando lado cliente
+		setFormClienteStatusInicial();
+		
+		//Limpando lado Atendimento
+		this.controller.cpfTextField.setText("");
+		this.controller.notasSobreAtendimentoTextArea.setText("");
+		this.controller.nbTextField.setText("");
+		this.controller.isAgendamentoCheckBox.setSelected(false);
+		this.controller.isPendenteCheckBox.setSelected(false);
+		
 	}
 
 }

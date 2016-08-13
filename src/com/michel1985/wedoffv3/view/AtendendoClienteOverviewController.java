@@ -422,6 +422,11 @@ public class AtendendoClienteOverviewController {
 	private void setIdAtendimentoAtual(int id) {
 		idAtendimentoAtual = id + "";
 	}
+	
+	public void limparClienteEAtendimentoAtual(){
+		setIdAtendimentoAtual(0);
+		setIdClienteAtual(0);
+	}
 
 	/**
 	 * Atualizando cliente Chamado quando o usuário clica em "editar cliente"
@@ -576,6 +581,7 @@ public class AtendendoClienteOverviewController {
 				e.printStackTrace();
 			}
 			setStatusDoFormAtendimento(AtendendoClienteOverviewUIManager.ATENDENDO);
+			uiManager.limparAtendendoClienteOverview();
 
 			setIdAtendimentoAtual(id);
 			
@@ -586,7 +592,7 @@ public class AtendendoClienteOverviewController {
 				alert.setTitle("Quem estamos atendendo?");
 				alert.setHeaderText("Ocorreu um erro na aplicação.");
 				alert.setContentText(
-						"A aplicação não sabe qual cliente está sendo atendido. Por favor feche a aplicação e tente nomvamente.\nFavor relatar o problema ao suporte técnico.");
+						"A aplicação não sabe qual cliente está sendo atendido.\nPor favor feche a aplicação e tente nomvamente.\nFavor relatar o problema ao suporte técnico.");
 				alert.showAndWait();
 			}
 			e.printStackTrace();
