@@ -43,7 +43,7 @@
                         <Button fx:id="verClienteAtendidoButton" defaultButton="true" mnemonicParsing="false" text="Ver Cliente Atendido" HBox.hgrow="ALWAYS" />
                         <MenuButton fx:id="acoesMenuButton" mnemonicParsing="false" text="Ações" HBox.hgrow="ALWAYS">
                            <items>
-                              <MenuItem fx:id="editarAtendimentoMenuItem" mnemonicParsing="false" text="Editar Atendimento" />
+                              <MenuItem fx:id="editarAtendimentoMenuItem" mnemonicParsing="false" onAction="#handleAtualizaAtendimento" text="Editar Atendimento" />
                               <MenuItem fx:id="excluirAtendimentoMenuItem" mnemonicParsing="false" onAction="#handleDeleteAtendimento" text="Excluir Atendimento" />
                            </items>
                         </MenuButton>

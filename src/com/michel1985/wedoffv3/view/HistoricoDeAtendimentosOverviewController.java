@@ -1,12 +1,14 @@
 package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
+import com.michel1985.wedoffv3.seguranca.Cripto;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -234,6 +236,51 @@ public class HistoricoDeAtendimentosOverviewController {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Atualizando {@link Atendimento} Chamado quando o usuário clica em "editar cliente"
+	 */
+	@FXML
+	private void handleAtualizaAtendimento() {
+		Atendimento selectedAtendimento = atendimentosTableView.getSelectionModel().getSelectedItem();
+
+		if (selectedAtendimento != null) {
+
+			boolean okClicked = mainApp.showEditarAtendimentoOverview(selectedAtendimento);
+			if (okClicked) {
+				showAtendimentoDetails(selectedAtendimento);
+				atualizaNoBanco(selectedAtendimento);
+			}
+		}
+	}
+
+	private void atualizaNoBanco(Atendimento atendimento) {
+
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+
+			resultSet = crud.getResultSet("UPDATE atendimentos SET nb= '" + criptografa(atendimento.getNb())
+			+ "', notassobreatendimento= '" + criptografa(atendimento.getNotasSobreAtendimento()) + "', datasolucao= '" + atendimento.getDataSolucao()
+			+ "', dataatendimento= '" + atendimento.getDataAtendimento() + "', ispendente= '" + atendimento.getIsPendente()+ "', isagendamento= '"
+			+ atendimento.getIsAgendamento() + "' WHERE idatendimento='" + atendimento.getIdAtendimento() + "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Nota: Como trata-se de uma observableList a atualização já foi feita
+		// na lista
+	}
+
+	public String criptografa(String texto) {
+		Cripto cripto = new Cripto();
+		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
 
 
