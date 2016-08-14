@@ -40,6 +40,14 @@ public class AtendendoClienteOverViewAlertManagers {
 		alert.setContentText("Por favor, verifique o CPF digitado e tente novamente");
 		alert.showAndWait();
 	}	
+	
+	static void alertaDeNomeInvalido() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Nome inválido!");
+		alert.setHeaderText("Nome do Cliente inválido!");
+		alert.setContentText("Por favor, verifique o NOME digitado e tente novamente");
+		alert.showAndWait();
+	}
 
 	static void alertarWarning(String title, String header, String content) {
 		Alert alert = new Alert(AlertType.WARNING);

@@ -248,6 +248,7 @@ public class AtendendoClienteOverviewController {
 		String cpf = "";
 		String nome = "";
 		String notas = "";
+		
 		int id = 0;
 
 		// Gravando o cliente ao banco
@@ -256,6 +257,13 @@ public class AtendendoClienteOverviewController {
 			cpf = cpfTextField.getText();
 			nome = nomeClienteTextField.getText();
 			notas = notasClienteTextArea.getText();
+			
+			if(!ValidaCliente.validaNome(nome)){
+				AtendendoClienteOverViewAlertManagers.alertaDeNomeInvalido();
+				return;
+			}
+				
+			
 
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
 			resultSet = crud.getResultSet(
