@@ -137,9 +137,11 @@ public class HistoricoDeAtendimentosOverviewController {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					// Obtem o id do cliente selecionado
-					String id = atendimentosTableView.getSelectionModel().getSelectedItem().getIdCliente();
+					String idCli = atendimentosTableView.getSelectionModel().getSelectedItem().getIdCliente();
+					String idAte = atendimentosTableView.getSelectionModel().getSelectedItem().getIdAtendimento();
 					// Passa o id para o controller do AtendendoCliente
-					this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(id);
+					this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(idCli);
+					this.mainApp.getAtendendoClienteController().ConsultarAtendimentoPeloId(idAte);
 					// fecha o dialog do histórico
 					this.dialogStage.close();
 				}

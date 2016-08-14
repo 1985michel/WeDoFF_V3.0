@@ -15,9 +15,6 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.ValidaCliente;
 
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -28,7 +25,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -40,7 +36,6 @@ import javafx.scene.layout.VBox;
  */
 public class AtendendoClienteOverviewController {
 
-	
 	@FXML
 	TextFieldLimited cpfTextField;
 
@@ -98,11 +93,9 @@ public class AtendendoClienteOverviewController {
 	// Componentes do wait
 	@FXML
 	AnchorPane waitAnchorPane;
-	
+
 	@FXML
 	Pane faixaBackgroundPane;
-
-	
 
 	@FXML
 	ImageView imagemImageView;
@@ -143,7 +136,7 @@ public class AtendendoClienteOverviewController {
 			dataParaSolucionarPendenciaDatePicker.setDisable(!isPendenteCheckBox.isSelected());
 			if (isPendenteCheckBox.isSelected())
 				setDataSolucacaoPendenciaParaDaqui30Dias();
-		});				
+		});
 	}
 
 	/**
@@ -152,12 +145,12 @@ public class AtendendoClienteOverviewController {
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
-	
+
 	@FXML
 	void handleReceberSat() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	/**
 	 * 
 	 * 
@@ -165,27 +158,16 @@ public class AtendendoClienteOverviewController {
 	 * 
 	 * 
 	 * 
-	 * */
-	
+	 */
+
 	/**
 	 * Método que gerencia status do formulário de clientes
 	 */
 
 	private void setStatusDoFormCliente(int status) {
-		switch (status) {
-		case 1:
-			uiManager.setFormClienteStatusInicial();
-			break;
-		case 2:
-			uiManager.setFormClienteStatusNovoCliente();
-			break;
-		case 3:
-			uiManager.setFormClienteStatusAtendendo();
-			break;
-		}
+		uiManager.setStatusDoFormCliente(status);
 	}
 
-	
 	@FXML
 	void handleConsultarClientePeloCPF() {
 
@@ -235,7 +217,7 @@ public class AtendendoClienteOverviewController {
 					.getResultSet("SELECT * FROM CLIENTES where idCliente ='" + id + "'");
 			boolean achou = false;
 			while (resultSet.next()) {
-				showClienteNoFormularioDeAtendimento(resultSet);				
+				showClienteNoFormularioDeAtendimento(resultSet);
 				achou = true;
 				try {
 					resultSet.close();
@@ -260,6 +242,7 @@ public class AtendendoClienteOverviewController {
 
 	}
 
+	@FXML
 	void handleGravarCliente() {
 
 		String cpf = "";
@@ -308,14 +291,10 @@ public class AtendendoClienteOverviewController {
 
 	}
 
-
 	@FXML
 	void handleVerHistoricoDeAtendimentosDoCliente() {
 		mainApp.showHistoricoDeAtendimentosDoClienteOverview(idClienteAtual);
 	}
-
-	
-	
 
 	@FXML
 	void handleCancelarCadastramentoDoCliente() {
@@ -340,7 +319,6 @@ public class AtendendoClienteOverviewController {
 		}
 	}
 
-	
 	private void showClienteNoFormularioDeAtendimento(ResultSet resultSet) throws SQLException {
 
 		// Seta idClienteAtual
@@ -349,18 +327,14 @@ public class AtendendoClienteOverviewController {
 		// Carrega campos
 		nomeClienteTextField.setText(descriptografa(resultSet.getString("nomeCliente")));
 		notasClienteTextArea.setText(descriptografa(resultSet.getString("notasSobreCliente")));
+
 		
-		//Somente em alguns casos será necessário carregar o CPF, em outros ele já estará no campo apropriado
-		if(isCpfTextFieldVazio()) 
-			cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
+		cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
 
 		// Habilitando funções do menu
 		setStatusDoFormCliente(AtendendoClienteOverviewUIManager.ATENDENDO);
 
 	}
-
-	
-	
 
 	void handleCancelarAtendimentoDoCliente() {
 
@@ -385,7 +359,6 @@ public class AtendendoClienteOverviewController {
 
 	}
 
-
 	/**
 	 * O método abaixo seta o Id do cliente atual.
 	 * 
@@ -393,16 +366,19 @@ public class AtendendoClienteOverviewController {
 	public void setIdClienteAtual(int id) {
 		idClienteAtual = id + "";
 	}
-	
+
 	/**
 	 * O método abaixo seta o Id do cliente atual.
 	 * 
 	 */
-	private void setIdAtendimentoAtual(int id) {
+	void setIdAtendimentoAtual(int id) {
 		idAtendimentoAtual = id + "";
 	}
-	
-	public void limparClienteEAtendimentoAtual(){
+	void setIdAtendimentoAtual(String id) {
+		idAtendimentoAtual = id;
+	}
+
+	public void limparClienteEAtendimentoAtual() {
 		setIdAtendimentoAtual(0);
 		setIdClienteAtual(0);
 	}
@@ -435,13 +411,9 @@ public class AtendendoClienteOverviewController {
 
 		} else {
 			AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
-			
+
 		}
 	}
-
-	
-
-	
 
 	private void atualizaClienteNaLista(String cpf, String nome, String notas, Cliente u) {
 		u.setCpf(cpf);
@@ -471,29 +443,37 @@ public class AtendendoClienteOverviewController {
 
 	}
 
+	/**
+	 * 
+	 * 
+	 * Operações sobre o Atendimento
+	 * 
+	 * 
+	 */
+
 	@FXML
-	private void handleGravarAtendimento() {
-		
-		
-			//Se for um novo cliente já pesquisado
-			if(consultarClientePeloCpfButton.getTooltip().getText().equalsIgnoreCase("Novo Cliente")){
-				handleGravarCliente();
-			}else if(!isClienteConhecido()){
-				AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
-				return;
-			}
-		
-		
-		//Atualizando o cliente automaticamente
-		if(receberSatButton.getText().equalsIgnoreCase("Atualizar Cliente")) handleAtualizaCliente();
+	void handleGravarAtendimento() {
+
+		// Se for um novo cliente já pesquisado
+		if (consultarClientePeloCpfButton.getTooltip().getText().equalsIgnoreCase("Novo Cliente")) {
+			handleGravarCliente();
+		}
+		if (!isClienteConhecido()) {
+			AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
+			return;
+		}
+
+		// Atualizando o cliente automaticamente
+		if (receberSatButton.getText().equalsIgnoreCase("Atualizar Cliente"))
+			handleAtualizaCliente();
 
 		ResultSet resultSet = null;
 		try {
 			// Primeiro vamos captar os dados informados
 			String nb = nbTextField.getText();
 			String notas = notasSobreAtendimentoTextArea.getText();
-			
-			if(!isNotasSobreAtendimentoInformada(notas)){
+
+			if (!isNotasSobreAtendimentoInformada(notas)) {
 				AtendendoClienteOverViewAlertManagers.alertaNotasSobreAtendimentoNaoInformada();
 				return;
 			}
@@ -503,8 +483,6 @@ public class AtendendoClienteOverviewController {
 
 			boolean isPendente = isPendenteCheckBox.isSelected();
 			boolean isAgendamento = isAgendamentoCheckBox.isSelected();
-			
-			
 
 			// Se o atendimento estiver pendente, será obrigatório informar uma
 			// data de solução
@@ -544,28 +522,27 @@ public class AtendendoClienteOverviewController {
 							+ idClienteAtual + "','" + isPendente + "','" + isAgendamento + "','" + nbCripto + "','"
 							+ data + "','" + notasCripto + "','" + dataSolucao + "');CALL IDENTITY();");
 
-			int id =0;
+			int id = 0;
 			if (resultSet.next())
 				id = resultSet.getInt(1);// obtendo o idretornado CALL
 											// IDENTITY();
-			
+
 			// Adicionando o cliente à ObservableLIst
-			try {				
+			try {
 				String idString = "" + id;
-				Atendimento newAtendimento = new Atendimento(idString,idClienteAtual,isAgendamento,isPendente,nb,notas,data,dataSolucao);
+				Atendimento newAtendimento = new Atendimento(idString, idClienteAtual, isAgendamento, isPendente, nb,
+						notas, data, dataSolucao);
 				mainApp.getAtendimentoData().add(newAtendimento);
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//setStatusDoFormAtendimento(AtendendoClienteOverviewUIManager.ATENDENDO);
-			uiManager.limparAtendendoClienteOverview();
+			// setStatusDoFormAtendimento(AtendendoClienteOverviewUIManager.ATENDENDO);
+			uiManager.atendimentoConcluido();
 
-			setIdAtendimentoAtual(id);
-			
 			uiManager.showGifCRUDConfirmado();
 		} catch (Exception e) {
-			if (isClienteConhecido()) {
+			if (!isClienteConhecido()) {
 				AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
 			}
 			e.printStackTrace();
@@ -579,13 +556,180 @@ public class AtendendoClienteOverviewController {
 		}
 
 	}
-	
+
+	@FXML
+	void ConsultarAtendimentoPeloId(String id) {
+
+		ResultSet resultSet = null;
+		try {
+			resultSet = new CRUD(mainApp.getUsuarioAtivo())
+					.getResultSet("SELECT * FROM atendimentos where idatendimento ='" + id + "'");
+
+			while (resultSet.next()) {
+				showAtendimentoNoFormularioDeAtendimento(resultSet);
+
+				try {
+					resultSet.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return;
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void showAtendimentoNoFormularioDeAtendimento(ResultSet resultSet) {
+		// idString,idClienteAtual,isAgendamento,isPendente,nb,notas,data,dataSolucao
+		try {
+			nbTextField.setText(descriptografa(resultSet.getString("nb")));
+			isAgendamentoCheckBox.setSelected(resultSet.getBoolean("isAgendamento"));
+			dataDoAtendimentoDatePicker.setValue(LocalDate.parse(resultSet.getString("dataatendimento")));
+			isPendenteCheckBox.setSelected(resultSet.getBoolean("isPendente"));
+			if (isPendenteCheckBox.isSelected()) {
+				dataParaSolucionarPendenciaDatePicker.setDisable(false);
+				dataParaSolucionarPendenciaDatePicker.setValue(LocalDate.parse(resultSet.getString("dataSolucao")));
+			}
+
+			notasSobreAtendimentoTextArea.setText(descriptografa(resultSet.getString("notassobreatendimento")));
+			registrarAtendimentoButton.setOnAction((event) -> handleAtualizaAtendimento());
+			registrarAtendimentoButton.setText("Atualizar Atendimento");
+			setIdAtendimentoAtual(resultSet.getString("idAtendimento"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Falha ao carregar o atendimento para o form");
+		}
+
+	}
+
+	@FXML
+	void handleAtualizaAtendimento() {
+
+		// Se for um novo cliente já pesquisado
+		if (consultarClientePeloCpfButton.getTooltip().getText().equalsIgnoreCase("Novo Cliente")) {
+			handleGravarCliente();
+		}
+		if (!isClienteConhecido()) {
+			AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
+			return;
+		}
+
+		// Atualizando o cliente automaticamente
+		if (receberSatButton.getText().equalsIgnoreCase("Atualizar Cliente"))
+			handleAtualizaCliente();
+
+		ResultSet resultSet = null;
+		try {
+			// Primeiro vamos captar os dados informados
+			String nb = nbTextField.getText();
+			String notas = notasSobreAtendimentoTextArea.getText();
+
+			if (!isNotasSobreAtendimentoInformada(notas)) {
+				AtendendoClienteOverViewAlertManagers.alertaNotasSobreAtendimentoNaoInformada();
+				return;
+			}
+
+			String nbCripto = criptografa(nb);
+			String notasCripto = criptografa(notas);
+
+			boolean isPendente = isPendenteCheckBox.isSelected();
+			boolean isAgendamento = isAgendamentoCheckBox.isSelected();
+
+			// Se o atendimento estiver pendente, será obrigatório informar uma
+			// data de solução
+			String dataSolucao = "";
+			if (isPendente) {
+				try {
+					if (!isDataParaSolucionarPendenciaInformada()) {
+						AtendendoClienteOverViewAlertManagers.alertDataDeSolucaoNaoInformada();
+						return;
+					} else {
+						dataSolucao = dataParaSolucionarPendenciaDatePicker.getValue().toString();
+					}
+
+				} catch (Exception e) {
+					AtendendoClienteOverViewAlertManagers.alertDataDeSolucaoNaoInformada();
+					return;
+				}
+
+			}
+
+			// A data do atendimento séra sempre obrigatória
+			String data = "";
+			try {
+				if (!isDataDoAtendimentoInformada()) {
+					AtendendoClienteOverViewAlertManagers.alertaDataDoAtendimentoNaoInformada();
+					return;
+				} else {
+					data = dataDoAtendimentoDatePicker.getValue().toString();
+				}
+			} catch (Exception e) {
+				return;
+			}
+
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+			
+			
+			System.out.println("ID DE ATENDIMENTO ATUAL DE TRABALHO: "+ idAtendimentoAtual);
+			
+			resultSet = crud.getResultSet(
+					"UPDATE atendimentos SET nb= '" + nbCripto
+					+ "', notassobreatendimento= '" + notasCripto + "', datasolucao= '" + dataSolucao
+					+ "', dataatendimento= '" + data + "', ispendente= '" + isPendente + "', isagendamento= '"
+					+ isAgendamento + "' WHERE idatendimento='" + idAtendimentoAtual + "'");
+
+			
+			
+			atualizaAtendimentoNaLista(new Atendimento(idAtendimentoAtual, idClienteAtual, isAgendamento, isPendente, nb, notas, data, dataSolucao));
+
+			uiManager.showGifCRUDConfirmado();
+		} catch (Exception e) {
+			if (!isClienteConhecido()) {
+				AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void atualizaAtendimentoNaLista(Atendimento atendimento) {
+		mainApp.getAtendimentoData().forEach(atd ->{
+			if(atd.getIdAtendimento().equalsIgnoreCase(atendimento.getIdAtendimento())){
+				atd.setDataAtendimento(atendimento.getDataAtendimento());
+				atd.setIsAgendamento(atendimento.getIsAgendamento());
+				atd.setNb(atendimento.getNb());
+				atd.setNotasSobreAtendimento(atendimento.getNotasSobreAtendimento());
+				atd.setIsPendente(atendimento.getIsPendente());
+				if(atd.getIsPendente()) atd.setDataSolucao(atendimento.getDataSolucao());
+			}
+		});
+		
+	}
+
 	/**
 	 * Validacoes
-	 * */
+	 */
 
 	private boolean isClienteConhecido() {
-		return idClienteAtual != null && idClienteAtual != "" && idAtendimentoAtual!="0";
+		return idClienteAtual != null && idClienteAtual != "" && idAtendimentoAtual != "0";
 	}
 
 	private boolean isDataDoAtendimentoInformada() {
@@ -599,43 +743,13 @@ public class AtendendoClienteOverviewController {
 	}
 
 	private boolean isNotasSobreAtendimentoInformada(String notas) {
-		return notas!="" && notas != null && notas.length()>=2;
+		return notas != "" && notas != null && notas.length() >= 2;
 	}
-	
+
 	private boolean isCpfTextFieldVazio() {
 		return cpfTextField.getText().equalsIgnoreCase("") || cpfTextField.getText() == null;
 	}
-	
 
-
-
-
-	/**
-	 * Limpando todos os campos ao salvar um atendimento
-	 */
-
-	private void limparCamposAoConcluirAtendiemnto() {
-
-		setStatusDoFormCliente(AtendendoClienteOverviewUIManager.INICIAL);
-
-		// limpa idClienteAtual
-		setIdClienteAtual(0);
-
-		// Limpa os campos do formulário de cliente
-		nomeClienteTextField.setText("");
-		cpfTextField.setText("");
-		notasClienteTextArea.setText("");
-
-		// Limpa os campos do formulário de Atendimento
-		nbTextField.setText("");
-		isAgendamentoCheckBox.setSelected(false);
-		setaDataAtendimentoHoje();
-		isPendenteCheckBox.setSelected(false);
-		dataParaSolucionarPendenciaDatePicker.setDisable(true);
-		// Não é preciso setar a data da solução pois ela é automática
-		notasSobreAtendimentoTextArea.setText("");
-
-	}
 
 	@FXML
 	private void handleCancelarAtendimento() {
@@ -646,13 +760,10 @@ public class AtendendoClienteOverviewController {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			limparCamposAoConcluirAtendiemnto();
+			uiManager.atendimentoConcluido();
 		}
 
 	}
-	
-	
-	
 
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
@@ -664,7 +775,7 @@ public class AtendendoClienteOverviewController {
 		return cripto.descriptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
 
-	private void setaDataAtendimentoHoje() {
+	public void setaDataAtendimentoHoje() {
 		LocalDate date = LocalDate.now();
 		dataDoAtendimentoDatePicker.setValue(date);
 	}

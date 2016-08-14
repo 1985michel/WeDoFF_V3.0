@@ -11,19 +11,46 @@ import javafx.scene.layout.AnchorPane;
 public class AtendendoClienteOverviewUIManager {
 
 	private AtendendoClienteOverviewController controller;
-	
-	//Possíveis status do formulário cliente
+
+	// Possíveis status do formulário cliente
 	public static final int INICIAL = 1;
-	public static final int NOVO_CLIENTE =2;
+	public static final int NOVO_CLIENTE = 2;
 	public static final int ATENDENDO = 3;
-	
+
+	// Possíveis status do formulário de Atendimento
+	public static final int HA_CLIENTE = 1;
+	public static final int NAO_HA_CLIENTE = 0;
 
 	public AtendendoClienteOverviewUIManager(AtendendoClienteOverviewController controller) {
 		this.controller = controller;
 	}
+	
+	public void atendimentoConcluido(){
+		// limpando os ids de Cliente e Atendimento
+		this.controller.limparClienteEAtendimentoAtual();
+		setFormClienteStatusInicial();
+		limparFormAtendimento();
+		
+	}
+
+	public void setStatusDoFormCliente(int status) {
+		switch (status) {
+		case 1:
+			setFormClienteStatusInicial();
+			break;
+		case 2:
+			setFormClienteStatusNovoCliente();
+			break;
+		case 3:
+			setFormClienteStatusAtendendo();
+			break;
+		}
+	}
 
 	// Tela inicial quando a aplicação é carregada
-	public void setFormClienteStatusInicial() {
+	private void setFormClienteStatusInicial() {
+
+		
 
 		controller.setIdClienteAtual(0);
 		controller.cpfTextField.setText("");
@@ -37,12 +64,13 @@ public class AtendendoClienteOverviewUIManager {
 		controller.receberSatButton.setOnAction((event) -> controller.handleReceberSat());
 		controller.verHistoricoDeAtendimentosDoClienteButton.setDisable(true);
 		controller.verHistoricoDeAtendimentosDoClienteButton.setText("Ver Atendimentos do Cliente");
-		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
+		controller.verHistoricoDeAtendimentosDoClienteButton
+				.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
 
 	}
 
 	// Quando foi pesquisado o CPF mas não foi encontrado
-	public void setFormClienteStatusNovoCliente() {
+	private void setFormClienteStatusNovoCliente() {
 
 		// A pesquisa foi feita para aquela cpf
 		// então vamos garantir que ele não será alterado
@@ -71,10 +99,10 @@ public class AtendendoClienteOverviewUIManager {
 
 	}
 
-	public void setFormClienteStatusAtendendo() {
+	private void setFormClienteStatusAtendendo() {
 
 		controller.cpfTextField.setEditable(false);
-		
+
 		controller.consultarClientePeloCpfButton.setDisable(false);
 		controller.consultarClientePeloCpfButton.setText("X");
 		controller.consultarClientePeloCpfButton.setOnAction(event -> controller.handleCancelarAtendimentoDoCliente());
@@ -89,32 +117,28 @@ public class AtendendoClienteOverviewUIManager {
 		// habilita ver histórico
 		controller.verHistoricoDeAtendimentosDoClienteButton.setDisable(false);
 		controller.verHistoricoDeAtendimentosDoClienteButton.setText("Ver Atendimentos do Cliente");
-		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
+		controller.verHistoricoDeAtendimentosDoClienteButton
+				.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
 
 	}
 	
-	public void limparAtendendoClienteOverview(){
-		
-		//limpando os ids de Cliente e Atendimento
-		this.controller.limparClienteEAtendimentoAtual();
-		
-		// Limpando lado cliente
-		setFormClienteStatusInicial();
-		
-		//Limpando lado Atendimento
-		this.controller.cpfTextField.setText("");
-		this.controller.notasSobreAtendimentoTextArea.setText("");
-		this.controller.nbTextField.setText("");
-		this.controller.isAgendamentoCheckBox.setSelected(false);
-		this.controller.isPendenteCheckBox.setSelected(false);
-		
+	public void limparFormAtendimento(){
+		controller.nbTextField.setText("");
+		controller.isAgendamentoCheckBox.setSelected(false);
+		controller.setaDataAtendimentoHoje();
+		controller.notasSobreAtendimentoTextArea.setText("");
+		controller.isPendenteCheckBox.setSelected(false);
+		controller.setIdAtendimentoAtual(0);
+		controller.registrarAtendimentoButton.setOnAction((event)-> controller.handleGravarAtendimento());
+		controller.registrarAtendimentoButton.setText("Registrar Atendimento");
 	}
-	
+
+
 	// Mostra o gif do wait
-	public void showGifCRUDConfirmado(){
+	public void showGifCRUDConfirmado() {
 		waitSomeTime();
 	}
-	
+
 	private void showWait() {
 		Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
 		controller.imagemImageView.setImage(img);
