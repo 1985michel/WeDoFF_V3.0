@@ -2,6 +2,8 @@ package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
@@ -57,7 +59,7 @@ public class HistoricoDeAtendimentosOverviewController {
 
 	@FXML
 	private Label notasSobreAtendimentoTextArea;
-	
+
 	@FXML
 	private HBox acoesSobreAtendimentoHBox;
 
@@ -93,21 +95,22 @@ public class HistoricoDeAtendimentosOverviewController {
 	 */
 	@FXML
 	private void initialize() {
-		
+
 		idAtendimentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().idAtendimentoProperty());
 		idClienteTableColumn.setCellValueFactory(cellData -> cellData.getValue().idClienteProperty());
 		nbTableColumn.setCellValueFactory(cellData -> cellData.getValue().nbProperty());
-		//Informando o foramto de datas que quero que seja apresentado na tabela
-		dataAtendimentoTableColumn.setCellValueFactory(cellData -> EstruturaData.estruturaData(cellData.getValue().dataAtendimentoProperty()));
+		// Informando o foramto de datas que quero que seja apresentado na
+		// tabela
+		dataAtendimentoTableColumn.setCellValueFactory(
+				cellData -> EstruturaData.estruturaData(cellData.getValue().dataAtendimentoProperty()));
 		isAgendamentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().isAgendamentoProperty());
 		isPendenteTableColumn.setCellValueFactory(cellData -> cellData.getValue().isPendenteProperty());
-		
-		
 
 		// limpa os detalhes do atendimento
 		showAtendimentoDetails(null);
 
-		// Detecta mudanças de seleção e mostra os detalhes do Atendimento quando
+		// Detecta mudanças de seleção e mostra os detalhes do Atendimento
+		// quando
 		// algum é selecionado
 		atendimentosTableView.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showAtendimentoDetails(newValue));
@@ -118,10 +121,11 @@ public class HistoricoDeAtendimentosOverviewController {
 
 		// Detecta mudanças no campo de busca e se ele ficar vazio, apresenta
 		// todo os histórico
-		/*searchTextField.setOnKeyPressed((event) -> {
-			if (searchTextField.getText().length() == 0)
-				clientesTableView.setItems(mainApp.getClienteData());
-		});*/
+		/*
+		 * searchTextField.setOnKeyPressed((event) -> { if
+		 * (searchTextField.getText().length() == 0)
+		 * clientesTableView.setItems(mainApp.getClienteData()); });
+		 */
 
 		// Detecta o duplo click do mouse e apresenta o alert perguntando se
 		// quer atender aquele cliente.
@@ -149,7 +153,7 @@ public class HistoricoDeAtendimentosOverviewController {
 		});
 
 	}
-	
+
 	/**
 	 * Ligando ao main
 	 */
@@ -160,28 +164,28 @@ public class HistoricoDeAtendimentosOverviewController {
 		atendimentosTableView.setItems(list);
 
 	}
-	
+
 	/**
 	 * Passando uma nova observableList para trabalho
-	 * */
-	public void setObservableList(ObservableList<Atendimento> OLAtendimentos){
+	 */
+	public void setObservableList(ObservableList<Atendimento> OLAtendimentos) {
 		this.OLAtendimentos = OLAtendimentos;
 		atendimentosTableView.setItems(this.OLAtendimentos);
 	}
-	
-	 /**
-     * Define o palco deste dialog.
-     * Usado para fecha-lo, por exemplo
-     * @param dialogStage
-     */
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
+
+	/**
+	 * Define o palco deste dialog. Usado para fecha-lo, por exemplo
+	 * 
+	 * @param dialogStage
+	 */
+	public void setDialogStage(Stage dialogStage) {
+		this.dialogStage = dialogStage;
+	}
 
 	public void handleShowHistoricoDeClientes() {
 		mainApp.showHistoricoDeClientesOverview();
 	}
-	
+
 	private void showAtendimentoDetails(Atendimento atendimento) {
 
 		if (atendimento != null) {
@@ -190,21 +194,21 @@ public class HistoricoDeAtendimentosOverviewController {
 			notasSobreAtendimentoTextArea.setText("");
 		}
 	}
-	
+
 	/**
 	 * Método que habilitará e desabilitará as ações sobre o cliente Se houver
 	 * ou não um cliente selecionado na tabela
 	 */
 	private void permitirAcoes(Atendimento atendimento) {
-		
+
 		if (atendimento != null)
 			acoesSobreAtendimentoHBox.setDisable(false);
 		else
 			acoesSobreAtendimentoHBox.setDisable(true);
 	}
-	
+
 	/**
-	 * Deleção de clientes
+	 * Deleção de Atendimento
 	 */
 	@FXML
 	private void handleDeleteAtendimento() {
@@ -234,9 +238,9 @@ public class HistoricoDeAtendimentosOverviewController {
 	}
 
 	private void deletarAtendimentoDoBancoDeDados() {
-		
+
 		String selectedId = atendimentosTableView.getSelectionModel().getSelectedItem().getIdAtendimento();
-		
+
 		ResultSet resultSet = null;
 		try {
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
@@ -252,8 +256,11 @@ public class HistoricoDeAtendimentosOverviewController {
 		}
 	}
 	
+
+
 	/**
-	 * Atualizando {@link Atendimento} Chamado quando o usuário clica em "editar cliente"
+	 * Atualizando {@link Atendimento} Chamado quando o usuário clica em "editar
+	 * cliente"
 	 */
 	@FXML
 	private void handleAtualizaAtendimento() {
@@ -276,9 +283,11 @@ public class HistoricoDeAtendimentosOverviewController {
 			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
 
 			resultSet = crud.getResultSet("UPDATE atendimentos SET nb= '" + criptografa(atendimento.getNb())
-			+ "', notassobreatendimento= '" + criptografa(atendimento.getNotasSobreAtendimento()) + "', datasolucao= '" + atendimento.getDataSolucao()
-			+ "', dataatendimento= '" + atendimento.getDataAtendimento() + "', ispendente= '" + atendimento.getIsPendente()+ "', isagendamento= '"
-			+ atendimento.getIsAgendamento() + "' WHERE idatendimento='" + atendimento.getIdAtendimento() + "'");
+					+ "', notassobreatendimento= '" + criptografa(atendimento.getNotasSobreAtendimento())
+					+ "', datasolucao= '" + atendimento.getDataSolucao() + "', dataatendimento= '"
+					+ atendimento.getDataAtendimento() + "', ispendente= '" + atendimento.getIsPendente()
+					+ "', isagendamento= '" + atendimento.getIsAgendamento() + "' WHERE idatendimento='"
+					+ atendimento.getIdAtendimento() + "'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -296,6 +305,5 @@ public class HistoricoDeAtendimentosOverviewController {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
-
 
 }

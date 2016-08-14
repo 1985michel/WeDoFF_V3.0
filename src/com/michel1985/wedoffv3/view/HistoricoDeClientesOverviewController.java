@@ -206,10 +206,18 @@ public class HistoricoDeClientesOverviewController {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
+			
+			//Removendo todos os atendimentos daquele cliente
+			String idCliente = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
+			System.out.println("Estamos querendo deletar os atendimentos do cliente de id: "+idCliente);
+			this.mainApp.getAtendendoClienteController().deletarTodosOsAtendimentosDeUmCliente(idCliente);
+			
 			deletarClienteDoBancoDeDados();
 
 			// Removendo o cliente da observableList
 			deletarClienteDaClienteData();
+			
+			
 		}
 	}
 

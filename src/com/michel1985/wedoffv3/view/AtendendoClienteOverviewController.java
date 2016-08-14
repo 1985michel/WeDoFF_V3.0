@@ -6,6 +6,8 @@ package com.michel1985.wedoffv3.view;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
@@ -775,6 +777,10 @@ public class AtendendoClienteOverviewController {
 		}
 
 	}
+	
+	//void deletarTodosOsAtendimentosDeUmCliente(String idCliente){
+	//	new HistoricoDeAtendimentosOverviewController().deletarTodosOsAtendimentosDeUmCliente(idCliente);
+	//}
 
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
@@ -794,6 +800,62 @@ public class AtendendoClienteOverviewController {
 	private void setDataSolucacaoPendenciaParaDaqui30Dias() {
 		LocalDate date = LocalDate.now();
 		dataParaSolucionarPendenciaDatePicker.setValue(date.plusMonths(1));
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Método invocado ao deletar um cliente
+	 * */	
+	void deletarTodosOsAtendimentosDeUmCliente(String idCliente){
+		//System.out.println("No historico de atendimentos chegou a ordem para deletar os atendimentos do cliente"+idCliente);
+		deletarTodosOsAtendimentosDeUmClienteDaObservableList(idCliente);
+		deletarTodosOsAtendimentosDeUmClienteDoBancoDeDados(idCliente);
+	}
+	
+	private void deletarTodosOsAtendimentosDeUmClienteDaObservableList(String idCliente){
+		List<Atendimento> paraDeletar = new ArrayList<>();
+		try {
+			mainApp.getAtendimentoData().forEach(atd ->{
+				if(atd.getIdCliente().equalsIgnoreCase(idCliente)) paraDeletar.add(atd);
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Vamos deletar: "+ paraDeletar.size()+ " atendimentos");
+		mainApp.getAtendimentoData().removeAll(paraDeletar);
+	}
+
+	private void deletarTodosOsAtendimentosDeUmClienteDoBancoDeDados(String idCliente) {
+
+		
+		
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+			resultSet = crud.getResultSet("DELETE FROM ATENDIMENTOS WHERE idcliente = '" + idCliente + "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }
