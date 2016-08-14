@@ -78,7 +78,7 @@
                   <Label fx:id="notasSobreClienteTituloLabel" layoutX="14.0" layoutY="14.0" text="Notas Sobre Cliente:" />
                   <HBox fx:id="acoesSobreClienteHBox" alignment="CENTER_RIGHT" disable="true" layoutX="14.0" layoutY="371.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
-                        <Button fx:id="verAtendimentosDoClienteButton" defaultButton="true" mnemonicParsing="false" text="Ver Atendimentos do Cliente" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="verAtendimentosDoClienteButton" defaultButton="true" mnemonicParsing="false" onAction="#handleVerAtendimentosDoCliente" text="Ver Atendimentos do Cliente" HBox.hgrow="ALWAYS" />
                         <MenuButton fx:id="acoesMenuButton" mnemonicParsing="false" text="Ações" HBox.hgrow="ALWAYS">
                           <items>
                             <MenuItem fx:id="editarClienteMenuItem" mnemonicParsing="false" onAction="#handleAtualizaCliente" text="Editar Cliente" />
