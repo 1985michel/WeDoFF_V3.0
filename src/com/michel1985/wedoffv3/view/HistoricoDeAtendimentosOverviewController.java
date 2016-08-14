@@ -78,7 +78,7 @@ public class HistoricoDeAtendimentosOverviewController {
 	 */
 
 	// Observable list que conterá o resultado das pesquisas
-	public ObservableList<Atendimento> result = FXCollections.observableArrayList();
+	public ObservableList<Atendimento> OLAtendimentos = FXCollections.observableArrayList();
 
 	// Palco desse dialog
 	private Stage dialogStage;
@@ -97,6 +97,7 @@ public class HistoricoDeAtendimentosOverviewController {
 		idAtendimentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().idAtendimentoProperty());
 		idClienteTableColumn.setCellValueFactory(cellData -> cellData.getValue().idClienteProperty());
 		nbTableColumn.setCellValueFactory(cellData -> cellData.getValue().nbProperty());
+		//Informando o foramto de datas que quero que seja apresentado na tabela
 		dataAtendimentoTableColumn.setCellValueFactory(cellData -> EstruturaData.estruturaData(cellData.getValue().dataAtendimentoProperty()));
 		isAgendamentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().isAgendamentoProperty());
 		isPendenteTableColumn.setCellValueFactory(cellData -> cellData.getValue().isPendenteProperty());
@@ -150,12 +151,20 @@ public class HistoricoDeAtendimentosOverviewController {
 	/**
 	 * Ligando ao main
 	 */
-	public void setMainApp(MainApp main) {
+	public void setMainApp(MainApp main, ObservableList<Atendimento> list) {
 		this.mainApp = main;
 
 		// Adiciona os dados da observable list à tabela
-		atendimentosTableView.setItems(main.getAtendimentoData());
+		atendimentosTableView.setItems(list);
 
+	}
+	
+	/**
+	 * Passando uma nova observableList para trabalho
+	 * */
+	public void setObservableList(ObservableList<Atendimento> OLAtendimentos){
+		this.OLAtendimentos = OLAtendimentos;
+		atendimentosTableView.setItems(this.OLAtendimentos);
 	}
 	
 	 /**
@@ -185,7 +194,7 @@ public class HistoricoDeAtendimentosOverviewController {
 	 * ou não um cliente selecionado na tabela
 	 */
 	private void permitirAcoes(Atendimento atendimento) {
-		// TODO Auto-generated method stub
+		
 		if (atendimento != null)
 			acoesSobreAtendimentoHBox.setDisable(false);
 		else

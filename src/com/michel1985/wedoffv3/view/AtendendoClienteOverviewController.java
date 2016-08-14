@@ -242,7 +242,7 @@ public class AtendendoClienteOverviewController {
 
 	@FXML
 	void handleVerAtendimentosDoCliente() {
-		// TODO Auto-generated method stub
+		mainApp.showHistoricoDeAtendimentosDoClienteOverview(idClienteAtual);
 	}
 
 	/**
@@ -692,6 +692,9 @@ public class AtendendoClienteOverviewController {
 		}
 
 	}
+	
+	
+	
 
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();

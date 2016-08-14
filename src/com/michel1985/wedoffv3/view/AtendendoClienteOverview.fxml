@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.michel1985.wedoffv3.view.TextFieldLimited?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
@@ -91,7 +92,7 @@
                                     <Tooltip text="Na tela do SAT pressione: CTRL+A e depois CTRL+C" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="verHistoricoDeAtendimentosDoClienteButton" contentDisplay="CENTER" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="212.0" text="Ver Atendimentos do Cliente" textAlignment="CENTER">
+                              <Button fx:id="verHistoricoDeAtendimentosDoClienteButton" contentDisplay="CENTER" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleVerAtendimentosDoCliente" prefHeight="25.0" prefWidth="212.0" text="Ver Atendimentos do Cliente" textAlignment="CENTER">
                                  <tooltip>
                                     <Tooltip text="Histórico de Atendimentos desse Cliente" />
                                  </tooltip>

@@ -240,7 +240,7 @@ public class MainApp extends Application {
 			try {
 				resultSet = new CRUD(this.usuarioAtivo)
 						.getResultSet("SELECT * FROM atendimentos ORDER BY IDCLIENTE DESC");
-				adicionaTodosAtendimentosFromDBNaDataAtendimentos(resultSet);
+				adicionaTodosAtendimentosFromDBNaObservableList(resultSet,atendimentoData);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -254,22 +254,22 @@ public class MainApp extends Application {
 		}
 	}
 
-	private void adicionaTodosAtendimentosFromDBNaDataAtendimentos(ResultSet resultSet) throws SQLException {
+	private void adicionaTodosAtendimentosFromDBNaObservableList(ResultSet resultSet, ObservableList<Atendimento> ol) throws SQLException {
 		ArrayList<Atendimento> atendimentos = new ArrayList<>();
-
+		int count =0;
 		while (resultSet.next()) {
 			// public Atendimento(String id, String idCli, boolean agendamento,
 			// boolean pendente, String nb, String notas, String data, String
 			// datasolu){
-
+			count++;
 			atendimentos.add(new Atendimento(resultSet.getString("idatendimento"), resultSet.getString("idcliente"),
 					resultSet.getBoolean("isagendamento"), resultSet.getBoolean("isPendente"),
 					descriptografa(resultSet.getString("nb")),
 					descriptografa(resultSet.getString("notassobreatendimento")),
 					resultSet.getString("dataatendimento"), resultSet.getString("datasolucao")));
 		}
-
-		atendimentoData.addAll(FXCollections.observableArrayList(atendimentos));
+		System.out.println("Encontramos "+count+" atendimentos no resultSet");
+		ol.addAll(FXCollections.observableArrayList(atendimentos));
 	}
 
 	private String descriptografa(String texto) {
@@ -369,7 +369,7 @@ public class MainApp extends Application {
 
 			// Dá ao controlador acesso ao MainApp
 			HistoricoDeAtendimentosOverviewController controller = loader.getController();
-			controller.setMainApp(this);
+			controller.setMainApp(this, this.getAtendimentoData());
 
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
@@ -430,6 +430,85 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public void showHistoricoDeAtendimentosDoClienteOverview(String idClienteAtual) {
+		try {
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeAtendimentosOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			HistoricoDeAtendimentosOverviewController controller = loader.getController();
+			
+			
+			
+			//A linha abaixo é retirada para que eu possa passar uma nova observableList para o exibição
+			ObservableList<Atendimento> OLHistoricoDeAtendimentosDoCliente = FXCollections.observableArrayList();
+			
+			System.out.println("idClienteAtual fornecido: "+idClienteAtual);
+			//Colocando somente os atendimentos do cliente na observable list
+			carregaHistoricoDeAtendimentosDoClienteOverview(idClienteAtual, OLHistoricoDeAtendimentosDoCliente);
+			
+			//Passando a observable list para o controller
+			controller.setObservableList(OLHistoricoDeAtendimentosDoCliente);
+			System.out.println("Encontrados "+ OLHistoricoDeAtendimentosDoCliente.size() +" atendimentos para esse cliente");
+			
+			controller.setMainApp(this,OLHistoricoDeAtendimentosDoCliente);
+			
+			
+			
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			OLHistoricoDeAtendimentosDoCliente.sort(
+					(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Histórico de Atendimentos");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void carregaHistoricoDeAtendimentosDoClienteOverview(String idClienteAtual, ObservableList<Atendimento> oLA) {
+		if (this.usuarioAtivo != null) {
+			ResultSet resultSet = null;
+
+			try {
+				resultSet = new CRUD(this.usuarioAtivo)
+						.getResultSet("SELECT * FROM atendimentos where idcliente='" + idClienteAtual + "' ORDER BY IDCLIENTE DESC");
+				adicionaTodosAtendimentosFromDBNaObservableList(resultSet,oLA);//parametro null pois a O.L. tem visibilidade direta
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					resultSet.close();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
