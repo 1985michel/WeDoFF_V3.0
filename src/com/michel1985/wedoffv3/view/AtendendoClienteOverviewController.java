@@ -40,6 +40,7 @@ import javafx.scene.layout.VBox;
  */
 public class AtendendoClienteOverviewController {
 
+	
 	@FXML
 	TextFieldLimited cpfTextField;
 
@@ -97,9 +98,11 @@ public class AtendendoClienteOverviewController {
 	// Componentes do wait
 	@FXML
 	AnchorPane waitAnchorPane;
-
+	
 	@FXML
 	Pane faixaBackgroundPane;
+
+	
 
 	@FXML
 	ImageView imagemImageView;
@@ -139,9 +142,8 @@ public class AtendendoClienteOverviewController {
 		isPendenteCheckBox.setOnAction((event) -> {
 			dataParaSolucionarPendenciaDatePicker.setDisable(!isPendenteCheckBox.isSelected());
 			if (isPendenteCheckBox.isSelected())
-				setaDataSolucacaoPendenciaParaDaqui30Dias();
-		});
-		
+				setDataSolucacaoPendenciaParaDaqui30Dias();
+		});				
 	}
 
 	/**
@@ -150,21 +152,46 @@ public class AtendendoClienteOverviewController {
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
-
+	
+	@FXML
+	void handleReceberSat() {
+		// TODO Auto-generated method stub
+	}
+	
 	/**
-	 * Método chamado quando o usuário consulta a existência de um cliente pelo
-	 * cpf
+	 * 
+	 * 
+	 * Operações sobre o cliente e seus campos no formulário
+	 * 
+	 * 
+	 * 
+	 * */
+	
+	/**
+	 * Método que gerencia status do formulário de clientes
 	 */
+
+	private void setStatusDoFormCliente(int status) {
+		switch (status) {
+		case 1:
+			uiManager.setFormClienteStatusInicial();
+			break;
+		case 2:
+			uiManager.setFormClienteStatusNovoCliente();
+			break;
+		case 3:
+			uiManager.setFormClienteStatusAtendendo();
+			break;
+		}
+	}
+
+	
 	@FXML
 	void handleConsultarClientePeloCPF() {
 
 		String cpf = cpfTextField.getText();
 		if (!ValidaCliente.validaCPF(cpf)) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("");
-			alert.setHeaderText("CPF inválido!");
-			alert.setContentText("Por favor, verifique o CPF digitado e tente novamente");
-			alert.showAndWait();
+			AtendendoClienteOverViewAlertManagers.alertaDeCPFInvalido();
 			return;
 		}
 		ResultSet resultSet = null;
@@ -175,7 +202,7 @@ public class AtendendoClienteOverviewController {
 				String cpfDesc = descriptografa(resultSet.getString("cpfCliente"));
 				if (cpfDesc.equalsIgnoreCase(cpf)) {
 
-					showCliente(resultSet);
+					showClienteNoFormularioDeAtendimento(resultSet);
 					achou = true;
 					try {
 						resultSet.close();
@@ -186,7 +213,6 @@ public class AtendendoClienteOverviewController {
 				}
 			}
 			if (!achou) {
-
 				setStatusDoFormCliente(AtendendoClienteOverviewUIManager.NOVO_CLIENTE);
 			}
 		} catch (Exception e) {
@@ -209,8 +235,7 @@ public class AtendendoClienteOverviewController {
 					.getResultSet("SELECT * FROM CLIENTES where idCliente ='" + id + "'");
 			boolean achou = false;
 			while (resultSet.next()) {
-				showCliente(resultSet);
-				showCpf(resultSet);
+				showClienteNoFormularioDeAtendimento(resultSet);				
 				achou = true;
 				try {
 					resultSet.close();
@@ -235,131 +260,7 @@ public class AtendendoClienteOverviewController {
 
 	}
 
-	@FXML
-	void handleReceberSat() {
-		// TODO Auto-generated method stub
-	}
-
-	@FXML
-	void handleVerAtendimentosDoCliente() {
-		mainApp.showHistoricoDeAtendimentosDoClienteOverview(idClienteAtual);
-	}
-
-	/**
-	 * O formulário de clientes terá três status possíveis: 1 - Inicial ( vazio
-	 * ); 2 - Cadastrando Cliente ( já pesquisamos e o cliente não foi
-	 * encontrado, então deve-se preencher o form) 3 - Cliente localizado e os
-	 * dados são exibidos em seus referiso campos
-	 */
-
-	private void setStatusDoFormCliente(int status) {
-		switch (status) {
-		case 1:
-			uiManager.setFormClienteStatusInicial();
-			break;
-		case 2:
-			uiManager.setFormClienteStatusNovoCliente();
-			break;
-		case 3:
-			uiManager.setFormClienteStatusAtendendo();
-			break;
-		}
-	}
-	
-	
-	private void setStatusDoFormAtendimento(int status) {
-		//ToDo
-		switch (status) {
-		case 1:
-			//uiManager.setFormClienteStatusInicial();
-			break;
-		case 2:
-			//uiManager.setFormClienteStatusNovoCliente();
-			break;
-		case 3:
-			//uiManager.setFormClienteStatusAtendendo();
-			break;
-		}
-	}
-
-	@FXML
-	void handleCancelarCadastramentoDoCliente() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Cancelar e Limpar");
-		alert.setHeaderText("Deseja cancelar o atendimento ao Cliente?");
-		alert.setContentText("Limpar dados?");
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
-
-			// habilitarAcoesClienteVBox(false);
-			setStatusDoFormCliente(AtendendoClienteOverviewUIManager.INICIAL);
-
-			// limpa idClienteAtual
-			setIdClienteAtual(0);
-
-			// Limpa os campos do formulário de cliente
-			nomeClienteTextField.setText("");
-			cpfTextField.setText("");
-			notasClienteTextArea.setText("");
-		}
-	}
-
-	/**
-	 * Método que carrega o cliente no AtendendoClienteOverview para permitir
-	 * realiza o atendimento
-	 * 
-	 * @throws SQLException
-	 */
-	private void showCliente(ResultSet resultSet) throws SQLException {
-
-		// Seta idClienteAtual
-		idClienteAtual = resultSet.getString("idcliente");
-
-		// Carrega campos
-		nomeClienteTextField.setText(descriptografa(resultSet.getString("nomeCliente")));
-		notasClienteTextArea.setText(descriptografa(resultSet.getString("notasSobreCliente")));
-
-		// Habilitando funções do menu
-		setStatusDoFormCliente(AtendendoClienteOverviewUIManager.ATENDENDO);
-
-	}
-
-	/**
-	 * O método showCliente não precisa setar o campo CPF, pois ele já está no
-	 * textField apropriado no nomento da consulta. Então, estou criando um
-	 * método showCpf para ser invoncado por métodos secundários que utilizam
-	 * essa funcionalidade
-	 * 
-	 */
-	private void showCpf(ResultSet resultSet) throws SQLException {
-		cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
-	}
-
-	void handleCancelarAtendimentoDoCliente() {
-
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Cancelar e Limpar");
-		alert.setHeaderText("Deseja cancelar o atendimento ao Cliente?");
-		alert.setContentText("Limpar dados?");
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
-
-			setStatusDoFormCliente(AtendendoClienteOverviewUIManager.INICIAL);
-
-			// limpa idClienteAtual
-			setIdClienteAtual(0);
-
-			// Limpa os campos do formulário de cliente
-			nomeClienteTextField.setText("");
-			cpfTextField.setText("");
-			notasClienteTextArea.setText("");
-		}
-
-	}
-
-	void gravarCliente() {
+	void handleGravarCliente() {
 
 		String cpf = "";
 		String nome = "";
@@ -407,11 +308,89 @@ public class AtendendoClienteOverviewController {
 
 	}
 
+
+	@FXML
+	void handleVerHistoricoDeAtendimentosDoCliente() {
+		mainApp.showHistoricoDeAtendimentosDoClienteOverview(idClienteAtual);
+	}
+
+	
+	
+
+	@FXML
+	void handleCancelarCadastramentoDoCliente() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Cancelar e Limpar");
+		alert.setHeaderText("Deseja cancelar o atendimento ao Cliente?");
+		alert.setContentText("Limpar dados?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+
+			// habilitarAcoesClienteVBox(false);
+			setStatusDoFormCliente(AtendendoClienteOverviewUIManager.INICIAL);
+
+			// limpa idClienteAtual
+			setIdClienteAtual(0);
+
+			// Limpa os campos do formulário de cliente
+			nomeClienteTextField.setText("");
+			cpfTextField.setText("");
+			notasClienteTextArea.setText("");
+		}
+	}
+
+	
+	private void showClienteNoFormularioDeAtendimento(ResultSet resultSet) throws SQLException {
+
+		// Seta idClienteAtual
+		idClienteAtual = resultSet.getString("idcliente");
+
+		// Carrega campos
+		nomeClienteTextField.setText(descriptografa(resultSet.getString("nomeCliente")));
+		notasClienteTextArea.setText(descriptografa(resultSet.getString("notasSobreCliente")));
+		
+		//Somente em alguns casos será necessário carregar o CPF, em outros ele já estará no campo apropriado
+		if(isCpfTextFieldVazio()) 
+			cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
+
+		// Habilitando funções do menu
+		setStatusDoFormCliente(AtendendoClienteOverviewUIManager.ATENDENDO);
+
+	}
+
+	
+	
+
+	void handleCancelarAtendimentoDoCliente() {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Cancelar e Limpar");
+		alert.setHeaderText("Deseja cancelar o atendimento ao Cliente?");
+		alert.setContentText("Limpar dados?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+
+			setStatusDoFormCliente(AtendendoClienteOverviewUIManager.INICIAL);
+
+			// limpa idClienteAtual
+			setIdClienteAtual(0);
+
+			// Limpa os campos do formulário de cliente
+			nomeClienteTextField.setText("");
+			cpfTextField.setText("");
+			notasClienteTextArea.setText("");
+		}
+
+	}
+
+
 	/**
 	 * O método abaixo seta o Id do cliente atual.
 	 * 
 	 */
-	private void setIdClienteAtual(int id) {
+	public void setIdClienteAtual(int id) {
 		idClienteAtual = id + "";
 	}
 	
@@ -438,7 +417,7 @@ public class AtendendoClienteOverviewController {
 		String nome = nomeClienteTextField.getText();
 		String notas = notasClienteTextArea.getText();
 
-		if (idClienteAtual != null && idClienteAtual != "") {
+		if (isClienteConhecido()) {
 
 			// for com lambda
 			mainApp.getClienteData().forEach(u -> {
@@ -455,14 +434,14 @@ public class AtendendoClienteOverviewController {
 			});
 
 		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Quem estamos atendendo?");
-			alert.setHeaderText("Ocorreu um erro na aplicação.");
-			alert.setContentText(
-					"A aplicação não sabe qual cliente está sendo atendido. Por favor feche a aplicação e tente nomvamente.\nFavor relatar o problema ao suporte técnico.");
-			alert.showAndWait();
+			AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
+			
 		}
 	}
+
+	
+
+	
 
 	private void atualizaClienteNaLista(String cpf, String nome, String notas, Cliente u) {
 		u.setCpf(cpf);
@@ -494,6 +473,19 @@ public class AtendendoClienteOverviewController {
 
 	@FXML
 	private void handleGravarAtendimento() {
+		
+		
+			//Se for um novo cliente já pesquisado
+			if(consultarClientePeloCpfButton.getTooltip().getText().equalsIgnoreCase("Novo Cliente")){
+				handleGravarCliente();
+			}else if(!isClienteConhecido()){
+				AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
+				return;
+			}
+		
+		
+		//Atualizando o cliente automaticamente
+		if(receberSatButton.getText().equalsIgnoreCase("Atualizar Cliente")) handleAtualizaCliente();
 
 		ResultSet resultSet = null;
 		try {
@@ -501,13 +493,8 @@ public class AtendendoClienteOverviewController {
 			String nb = nbTextField.getText();
 			String notas = notasSobreAtendimentoTextArea.getText();
 			
-			if(notas=="" || notas == null || notas.length()<2){
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Contradição...");
-				alert.setHeaderText("O que foi feito neste atendimento?");
-				alert.setContentText(
-						"Se não é para registrar dados sobre atendimentos realizados, para que serve esta aplicação?\nInforme no campo \"Notas\" o que foi feito neste atendimento.");
-				alert.showAndWait();
+			if(!isNotasSobreAtendimentoInformada(notas)){
+				AtendendoClienteOverViewAlertManagers.alertaNotasSobreAtendimentoNaoInformada();
 				return;
 			}
 
@@ -524,18 +511,15 @@ public class AtendendoClienteOverviewController {
 			String dataSolucao = "";
 			if (isPendente) {
 				try {
-					if (dataParaSolucionarPendenciaDatePicker.getValue() == null
-							|| dataParaSolucionarPendenciaDatePicker.getValue().toString().equalsIgnoreCase("")) {
-						alertarWarning("Data de Solução?", "Quando este atendimento deve ser concluído?",
-								"Você informou que o atendimento ficou pendente.\nQuando ele deve ser concluido?");
+					if (!isDataParaSolucionarPendenciaInformada()) {
+						AtendendoClienteOverViewAlertManagers.alertDataDeSolucaoNaoInformada();
 						return;
 					} else {
 						dataSolucao = dataParaSolucionarPendenciaDatePicker.getValue().toString();
 					}
 
 				} catch (Exception e) {
-					alertarWarning("Data de Solução?", "Quando este atendimento deve ser concluído?",
-							"Você informou que o atendimento ficou pendente.\nQuando ele deve ser concluido?");
+					AtendendoClienteOverViewAlertManagers.alertDataDeSolucaoNaoInformada();
 					return;
 				}
 
@@ -544,10 +528,8 @@ public class AtendendoClienteOverviewController {
 			// A data do atendimento séra sempre obrigatória
 			String data = "";
 			try {
-				if (dataDoAtendimentoDatePicker.getValue() == null
-						|| dataDoAtendimentoDatePicker.getValue().toString().equalsIgnoreCase("")) {
-					alertarWarning("Data do Atendimento?", "O cliente está sendo atendido hoje?",
-							"Favor informar a data do atendimento.");
+				if (!isDataDoAtendimentoInformada()) {
+					AtendendoClienteOverViewAlertManagers.alertaDataDoAtendimentoNaoInformada();
 					return;
 				} else {
 					data = dataDoAtendimentoDatePicker.getValue().toString();
@@ -568,11 +550,7 @@ public class AtendendoClienteOverviewController {
 											// IDENTITY();
 			
 			// Adicionando o cliente à ObservableLIst
-			try {
-
-//public Atendimento(String id, String idCli, boolean agendamento,  boolean pendente, String nb, String notas, String data, String datasolu){
-
-				
+			try {				
 				String idString = "" + id;
 				Atendimento newAtendimento = new Atendimento(idString,idClienteAtual,isAgendamento,isPendente,nb,notas,data,dataSolucao);
 				mainApp.getAtendimentoData().add(newAtendimento);
@@ -580,20 +558,15 @@ public class AtendendoClienteOverviewController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			setStatusDoFormAtendimento(AtendendoClienteOverviewUIManager.ATENDENDO);
+			//setStatusDoFormAtendimento(AtendendoClienteOverviewUIManager.ATENDENDO);
 			uiManager.limparAtendendoClienteOverview();
 
 			setIdAtendimentoAtual(id);
 			
-			waitSomeTime();
+			uiManager.showGifCRUDConfirmado();
 		} catch (Exception e) {
-			if (idClienteAtual == "") {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Quem estamos atendendo?");
-				alert.setHeaderText("Ocorreu um erro na aplicação.");
-				alert.setContentText(
-						"A aplicação não sabe qual cliente está sendo atendido.\nPor favor feche a aplicação e tente nomvamente.\nFavor relatar o problema ao suporte técnico.");
-				alert.showAndWait();
+			if (isClienteConhecido()) {
+				AtendendoClienteOverViewAlertManagers.alertaClienteAtualDesconhecido();
 			}
 			e.printStackTrace();
 		} finally {
@@ -606,51 +579,36 @@ public class AtendendoClienteOverviewController {
 		}
 
 	}
+	
+	/**
+	 * Validacoes
+	 * */
 
+	private boolean isClienteConhecido() {
+		return idClienteAtual != null && idClienteAtual != "" && idAtendimentoAtual!="0";
+	}
+
+	private boolean isDataDoAtendimentoInformada() {
+		return dataDoAtendimentoDatePicker.getValue() != null
+				&& !dataDoAtendimentoDatePicker.getValue().toString().equalsIgnoreCase("");
+	}
+
+	private boolean isDataParaSolucionarPendenciaInformada() {
+		return dataParaSolucionarPendenciaDatePicker.getValue() != null
+				&& !dataParaSolucionarPendenciaDatePicker.getValue().toString().equalsIgnoreCase("");
+	}
+
+	private boolean isNotasSobreAtendimentoInformada(String notas) {
+		return notas!="" && notas != null && notas.length()>=2;
+	}
+	
+	private boolean isCpfTextFieldVazio() {
+		return cpfTextField.getText().equalsIgnoreCase("") || cpfTextField.getText() == null;
+	}
 	
 
-	private void alertarWarning(String title, String header, String content) {
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
-		alert.showAndWait();
-	}
 
-	// Mostra o gif do wait
-	private void showWait() {
-		Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
-		imagemImageView.setImage(img);
-		waitAnchorPane.toFront();
-	}
 
-	private void waitSomeTime() {
-		showWait();
-		Task<Void> sleeper = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				try {
-					Thread.sleep(2300);
-				} catch (InterruptedException e) {
-				}
-				return null;
-			}
-		};
-		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				hideWait();
-			}
-		});
-		new Thread(sleeper).start();
-	}
-
-	// Oculta o gif do wait
-	private void hideWait() {
-		waitAnchorPane.toBack();
-		imagemImageView.setImage(null);
-
-	}
 
 	/**
 	 * Limpando todos os campos ao salvar um atendimento
@@ -711,7 +669,7 @@ public class AtendendoClienteOverviewController {
 		dataDoAtendimentoDatePicker.setValue(date);
 	}
 
-	private void setaDataSolucacaoPendenciaParaDaqui30Dias() {
+	private void setDataSolucacaoPendenciaParaDaqui30Dias() {
 		LocalDate date = LocalDate.now();
 		dataParaSolucionarPendenciaDatePicker.setValue(date.plusMonths(1));
 	}

@@ -1,7 +1,11 @@
 package com.michel1985.wedoffv3.view;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
 public class AtendendoClienteOverviewUIManager {
@@ -21,6 +25,7 @@ public class AtendendoClienteOverviewUIManager {
 	// Tela inicial quando a aplicação é carregada
 	public void setFormClienteStatusInicial() {
 
+		controller.setIdClienteAtual(0);
 		controller.cpfTextField.setText("");
 		controller.cpfTextField.setEditable(true);
 		controller.consultarClientePeloCpfButton.setDisable(false);
@@ -32,7 +37,7 @@ public class AtendendoClienteOverviewUIManager {
 		controller.receberSatButton.setOnAction((event) -> controller.handleReceberSat());
 		controller.verHistoricoDeAtendimentosDoClienteButton.setDisable(true);
 		controller.verHistoricoDeAtendimentosDoClienteButton.setText("Ver Atendimentos do Cliente");
-		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerAtendimentosDoCliente());
+		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
 
 	}
 
@@ -59,7 +64,7 @@ public class AtendendoClienteOverviewUIManager {
 		controller.receberSatButton.setText("Gravar Cliente");
 
 		// Alterando o método do botão [com lambda!]
-		controller.receberSatButton.setOnAction(event -> controller.gravarCliente());
+		controller.receberSatButton.setOnAction(event -> controller.handleGravarCliente());
 
 		// Desabilita o textField de edição do CPF
 		controller.cpfTextField.setEditable(false);
@@ -84,7 +89,7 @@ public class AtendendoClienteOverviewUIManager {
 		// habilita ver histórico
 		controller.verHistoricoDeAtendimentosDoClienteButton.setDisable(false);
 		controller.verHistoricoDeAtendimentosDoClienteButton.setText("Ver Atendimentos do Cliente");
-		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerAtendimentosDoCliente());
+		controller.verHistoricoDeAtendimentosDoClienteButton.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
 
 	}
 	
@@ -103,6 +108,45 @@ public class AtendendoClienteOverviewUIManager {
 		this.controller.isAgendamentoCheckBox.setSelected(false);
 		this.controller.isPendenteCheckBox.setSelected(false);
 		
+	}
+	
+	// Mostra o gif do wait
+	public void showGifCRUDConfirmado(){
+		waitSomeTime();
+	}
+	
+	private void showWait() {
+		Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
+		controller.imagemImageView.setImage(img);
+		controller.waitAnchorPane.toFront();
+	}
+
+	private void waitSomeTime() {
+		showWait();
+		Task<Void> sleeper = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				try {
+					Thread.sleep(2300);
+				} catch (InterruptedException e) {
+				}
+				return null;
+			}
+		};
+		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				hideWait();
+			}
+		});
+		new Thread(sleeper).start();
+	}
+
+	// Oculta o gif do wait
+	private void hideWait() {
+		controller.waitAnchorPane.toBack();
+		controller.imagemImageView.setImage(null);
+
 	}
 
 }
