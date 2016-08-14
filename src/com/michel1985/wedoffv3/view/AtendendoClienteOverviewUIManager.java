@@ -52,7 +52,7 @@ public class AtendendoClienteOverviewUIManager {
 
 		
 
-		controller.setIdClienteAtual(0);
+		controller.setIdClienteAtual(null);
 		controller.cpfTextField.setText("");
 		controller.cpfTextField.setEditable(true);
 		controller.consultarClientePeloCpfButton.setDisable(false);
@@ -128,7 +128,7 @@ public class AtendendoClienteOverviewUIManager {
 		controller.setaDataAtendimentoHoje();
 		controller.notasSobreAtendimentoTextArea.setText("");
 		controller.isPendenteCheckBox.setSelected(false);
-		controller.setIdAtendimentoAtual(0);
+		controller.setIdAtendimentoAtual(null);
 		controller.registrarAtendimentoButton.setOnAction((event)-> controller.handleGravarAtendimento());
 		controller.registrarAtendimentoButton.setText("Registrar Atendimento");
 	}

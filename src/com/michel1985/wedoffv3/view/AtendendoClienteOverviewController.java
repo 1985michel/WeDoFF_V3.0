@@ -374,6 +374,9 @@ public class AtendendoClienteOverviewController {
 	public void setIdClienteAtual(int id) {
 		idClienteAtual = id + "";
 	}
+	public void setIdClienteAtual(String id){
+		idClienteAtual=id;
+	}
 
 	/**
 	 * O método abaixo seta o Id do cliente atual.
@@ -387,8 +390,8 @@ public class AtendendoClienteOverviewController {
 	}
 
 	public void limparClienteEAtendimentoAtual() {
-		setIdAtendimentoAtual(0);
-		setIdClienteAtual(0);
+		setIdAtendimentoAtual(null);
+		setIdClienteAtual(null);
 	}
 
 	/**
