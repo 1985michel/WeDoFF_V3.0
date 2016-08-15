@@ -141,6 +141,7 @@ public class LoginOverviewController {
 		
 		imagemImageView.toFront();
 		imagemImageView.setVisible(true);
+		fundoPrincipalVBox.setVisible(false);
 		
 		//Obtendo a quantidade de clientes e criando uma Task	
 		int qtd = getQtdDeClientes();
@@ -179,7 +180,7 @@ public class LoginOverviewController {
 
 	public void seguraTempo(int qtd) throws InterruptedException {
 		//A minha idéia é esperar 5 segundos
-		Thread.sleep(qtd<100 ? 50 : 8000/qtd);
+		Thread.sleep(qtd<100 ? 50 : 5);
 	}
 	
 	//Método que retorna a quantidade de clientes
