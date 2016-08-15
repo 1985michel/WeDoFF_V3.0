@@ -149,10 +149,6 @@ public class AtendendoClienteOverviewController {
 		this.mainApp = mainApp;
 	}
 
-	@FXML
-	void handleReceberSat() {
-		// TODO Auto-generated method stub
-	}
 
 	/**
 	 * 
@@ -812,6 +808,13 @@ public class AtendendoClienteOverviewController {
 		new CascadeDeDelecao().deletarTodosOsAtendimentosDeUmCliente(idCliente, mainApp.getAtendimentoData(),mainApp.getUsuarioAtivo());
 	}
 	
+	/**
+	 * Método responsável por receber os dados so SAT ( área de transferência do SO e preencher os campos)
+	 * */
+	@FXML
+	void handleReceberSat(){
+		uiManager.receberSat();
+	}
 	
 
 }

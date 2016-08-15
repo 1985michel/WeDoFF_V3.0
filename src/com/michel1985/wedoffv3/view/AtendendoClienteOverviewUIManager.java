@@ -1,5 +1,8 @@
 package com.michel1985.wedoffv3.view;
 
+import com.michel1985.wedoffv3.model.ObjetoSAT;
+import com.michel1985.wedoffv3.util.ManipuladoraDeClipBoard;
+
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -171,6 +174,14 @@ public class AtendendoClienteOverviewUIManager {
 		controller.waitAnchorPane.toBack();
 		controller.imagemImageView.setImage(null);
 
+	}
+
+	public void receberSat() {
+		ObjetoSAT obSat = ManipuladoraDeClipBoard.getSAT();
+		controller.cpfTextField.setText(obSat.getCpf());
+		controller.nomeClienteTextField.setText(obSat.getNome());
+		controller.notasClienteTextArea.setText(obSat.getNit());
+		controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
 	}
 
 }
