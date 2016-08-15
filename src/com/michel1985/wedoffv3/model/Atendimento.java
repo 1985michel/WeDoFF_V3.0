@@ -1,10 +1,6 @@
 package com.michel1985.wedoffv3.model;
 
 
-import java.time.format.DateTimeFormatter;
-
-import com.michel1985.wedoffv3.util.EstruturaData;
-
 import javafx.beans.property.*;
 
 

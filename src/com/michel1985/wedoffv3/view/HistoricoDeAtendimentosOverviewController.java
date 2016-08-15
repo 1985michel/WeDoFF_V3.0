@@ -1,16 +1,12 @@
 package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
-import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.EstruturaData;
 

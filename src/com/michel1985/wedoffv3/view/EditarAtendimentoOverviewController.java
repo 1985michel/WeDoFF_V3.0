@@ -3,9 +3,6 @@ package com.michel1985.wedoffv3.view;
 import java.time.LocalDate;
 
 import com.michel1985.wedoffv3.model.Atendimento;
-import com.michel1985.wedoffv3.model.Cliente;
-import com.michel1985.wedoffv3.util.ValidaCliente;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;

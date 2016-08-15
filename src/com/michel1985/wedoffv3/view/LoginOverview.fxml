@@ -7,7 +7,6 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -79,9 +78,6 @@
                <viewport>
                   <Rectangle2D />
                </viewport>
-               <image>
-                  <Image url="@../../../../../resources/images/load04.gif" />
-               </image>
             </ImageView>
          </children>
       </GridPane>

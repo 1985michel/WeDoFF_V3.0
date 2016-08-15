@@ -104,6 +104,7 @@ public class LoginMiddle {
 			alert.showAndWait();
 
 		} else if (resultado) {
+			controller.mostraGif();
 			controller.loginConfirmado();			
 		}
 	}

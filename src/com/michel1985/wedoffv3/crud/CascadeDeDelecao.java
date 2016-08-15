@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Usuario;
 

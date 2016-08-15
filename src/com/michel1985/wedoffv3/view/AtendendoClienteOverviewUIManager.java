@@ -1,15 +1,15 @@
 package com.michel1985.wedoffv3.view;
 
+import java.io.InputStream;
+
 import com.michel1985.wedoffv3.model.ObjetoSAT;
 import com.michel1985.wedoffv3.util.ManipuladoraDeClipBoard;
 
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 
 public class AtendendoClienteOverviewUIManager {
 
@@ -143,8 +143,10 @@ public class AtendendoClienteOverviewUIManager {
 	}
 
 	private void showWait() {
-		Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
-		controller.imagemImageView.setImage(img);
+		//Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
+		InputStream url = this.getClass().getResourceAsStream("/arquivadoCentralizado.gif");
+		//imagemImageView.setImage(new Image(url));
+		controller.imagemImageView.setImage(new Image(url));
 		controller.waitAnchorPane.toFront();
 	}
 
