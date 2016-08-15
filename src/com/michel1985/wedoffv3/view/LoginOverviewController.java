@@ -179,7 +179,7 @@ public class LoginOverviewController {
 
 	public void seguraTempo(int qtd) throws InterruptedException {
 		//A minha idéia é esperar 5 segundos
-		Thread.sleep(qtd<100 ? 50 : 5000/100);
+		Thread.sleep(qtd<100 ? 50 : 8000/qtd);
 	}
 	
 	//Método que retorna a quantidade de clientes
