@@ -15,6 +15,7 @@ import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.crud.CascadeDeDelecao;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
+import com.michel1985.wedoffv3.model.TextFieldLimited;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.ValidaCliente;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.michel1985.wedoffv3.view.TextFieldLimited?>
+<?import com.michel1985.wedoffv3.model.TextFieldLimited?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>

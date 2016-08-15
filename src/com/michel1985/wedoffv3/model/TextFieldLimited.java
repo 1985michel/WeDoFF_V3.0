@@ -1,4 +1,4 @@
-package com.michel1985.wedoffv3.view;
+package com.michel1985.wedoffv3.model;
 
 /**
  * ATENÇÃO!!!
