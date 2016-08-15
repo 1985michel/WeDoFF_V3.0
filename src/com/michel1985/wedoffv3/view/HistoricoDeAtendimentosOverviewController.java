@@ -3,6 +3,7 @@ package com.michel1985.wedoffv3.view;
 import java.sql.ResultSet;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -225,17 +226,40 @@ public class HistoricoDeAtendimentosOverviewController {
 			deletarAtendimentoDoBancoDeDados();
 
 			// Removendo o cliente da observableList
-			deletarAtendimentoDaAtendimentoData();
+			deletarAtendimentoDaListaCorrente();
 		}
 	}
 
-	private void deletarAtendimentoDaAtendimentoData() {
+	private void deletarAtendimentoDaListaCorrente() {
 		try {
-			mainApp.getAtendimentoData().remove(atendimentosTableView.getSelectionModel().getSelectedItem());
+			String id = atendimentosTableView.getSelectionModel().getSelectedItem().getIdAtendimento();
+			System.out.println("estamos aqui e queremos deletar o atd d id "+id);
+			//Atendimento atd = ;
+			
+			//mainApp.getAtendimentoData().remove(atendimentosTableView.getSelectionModel().getSelectedItem());
+			
+			//Deletando atendimento da lista especifica ( de histórico de atendimentos do cliente, por exemplo)
+			OLAtendimentos.remove(atendimentosTableView.getSelectionModel().getSelectedItem());
+			deletarAtendimentoDaListaPrincipal(id);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	//Não gosto desse método mas o lambda não obteve sucesso 
+	private void deletarAtendimentoDaListaPrincipal(String id){
+		Atendimento aRemover = null;
+		for (Iterator iterator = mainApp.getAtendimentoData().iterator(); iterator.hasNext();) {
+			Atendimento atd = (Atendimento) iterator.next();
+			if(atd.getIdAtendimento().equalsIgnoreCase(id))
+				aRemover = atd;
+		}
+		mainApp.getAtendimentoData().remove(aRemover);	
+		
+	}
+	
+	
 
 	private void deletarAtendimentoDoBancoDeDados() {
 
