@@ -809,7 +809,7 @@ public class AtendendoClienteOverviewController {
 	 * */	
 	void deletarTodosOsAtendimentosDeUmCliente(String idCliente){
 		//System.out.println("No historico de atendimentos chegou a ordem para deletar os atendimentos do cliente"+idCliente);
-		new CascadeDeDelecao().deletarTodosOsAtendimentosDeUmCliente(idCliente, mainApp);
+		new CascadeDeDelecao().deletarTodosOsAtendimentosDeUmCliente(idCliente, mainApp.getAtendimentoData(),mainApp.getUsuarioAtivo());
 	}
 	
 	
