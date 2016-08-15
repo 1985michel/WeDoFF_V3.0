@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- COMENTAR A LINHA ABAIXO PARA ABRIR NO SCHENE BUILDER -->
 <?import com.michel1985.wedoffv3.model.TextFieldLimited?>
 
 <?import javafx.geometry.Insets?>
@@ -87,7 +88,7 @@
                            </tooltip></TextArea>
                         <VBox fx:id="acoesClienteVBox" spacing="2.0">
                            <children>
-                              <Button fx:id="receberSatButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Receber SAT" VBox.vgrow="ALWAYS">
+                              <Button fx:id="receberSatButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleReceberSat" text="Receber SAT" VBox.vgrow="ALWAYS">
                                  <tooltip>
                                     <Tooltip text="Na tela do SAT pressione: CTRL+A e depois CTRL+C" />
                                  </tooltip>
