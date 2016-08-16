@@ -1,6 +1,7 @@
 package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
+import java.util.Iterator;
 import java.util.Optional;
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
@@ -68,9 +69,6 @@ public class HistoricoDeClientesOverviewController {
 
 	@FXML
 	private Button searchButton;
-	
-	
-	
 
 	/**
 	 * Buscas
@@ -78,8 +76,8 @@ public class HistoricoDeClientesOverviewController {
 
 	// Observable list que conterá o resultado das pesquisas
 	public ObservableList<Cliente> result = FXCollections.observableArrayList();
-	
-	//Palco desse dialog
+
+	// Palco desse dialog
 	private Stage dialogStage;
 
 	private MainApp mainApp;
@@ -115,39 +113,40 @@ public class HistoricoDeClientesOverviewController {
 			if (searchTextField.getText().length() == 0)
 				clientesTableView.setItems(mainApp.getClienteData());
 		});
-		
-		//Detecta o duplo click do mouse e apresenta o alert perguntando se quer atender aquele cliente.
-		//Caso ok, o cliente é carregado no formulário
+
+		// Detecta o duplo click do mouse e apresenta o alert perguntando se
+		// quer atender aquele cliente.
+		// Caso ok, o cliente é carregado no formulário
 		clientesTableView.setOnMousePressed((event) -> {
 			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Necessária confirmação");
 				alert.setHeaderText("Você deseja atender esse cliente?");
-				alert.setContentText("Ao clicar em \"Ok\" os dados desse cliente serão carregados para atendimento sobrepondo os dados atuais.");
+				alert.setContentText(
+						"Ao clicar em \"Ok\" os dados desse cliente serão carregados para atendimento sobrepondo os dados atuais.");
 
 				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK){
-					//Obtem o id do cliente selecionado
+				if (result.get() == ButtonType.OK) {
+					// Obtem o id do cliente selecionado
 					String id = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
-					//Passa o id para o controller do AtendendoCliente
+					// Passa o id para o controller do AtendendoCliente
 					this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(id);
-					//fecha o dialog do histórico
+					// fecha o dialog do histórico
 					this.dialogStage.close();
-				}                  
-	        }
+				}
+			}
 		});
 
-		
 	}
-	
-	 /**
-     * Define o palco deste dialog.
-     * Usado para fecha-lo, por exemplo
-     * @param dialogStage
-     */
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
+
+	/**
+	 * Define o palco deste dialog. Usado para fecha-lo, por exemplo
+	 * 
+	 * @param dialogStage
+	 */
+	public void setDialogStage(Stage dialogStage) {
+		this.dialogStage = dialogStage;
+	}
 
 	/**
 	 * Método que habilitará e desabilitará as ações sobre o cliente Se houver
@@ -206,18 +205,17 @@ public class HistoricoDeClientesOverviewController {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			
-			//Removendo todos os atendimentos daquele cliente
+
+			// Removendo todos os atendimentos daquele cliente
 			String idCliente = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
-			System.out.println("Estamos querendo deletar os atendimentos do cliente de id: "+idCliente);
+			System.out.println("Estamos querendo deletar os atendimentos do cliente de id: " + idCliente);
 			this.mainApp.getAtendendoClienteController().deletarTodosOsAtendimentosDeUmCliente(idCliente);
-			
+
 			deletarClienteDoBancoDeDados();
 
 			// Removendo o cliente da observableList
 			deletarClienteDaClienteData();
-			
-			
+
 		}
 	}
 
@@ -297,13 +295,53 @@ public class HistoricoDeClientesOverviewController {
 	@FXML
 	private void handleConsultarCliente() {
 
+		/*
+		 * result.clear(); String termo = searchTextField.getText(); if (new
+		 * ValidaCPF().validarCPF(termo)) consultarClientePorCpf(termo); else
+		 * consultarClientePorNome(termo); consultarClientePorNotas(termo);
+		 * clientesTableView.setItems(result);
+		 */
+
 		result.clear();
-		String termo = searchTextField.getText();
-		if (new ValidaCPF().validarCPF(termo))
-			consultarClientePorCpf(termo);
+		String termoBase = searchTextField.getText();
+		if (!termoBase.contains("+")) {
+			buscaSimples(termoBase);
+			return;
+		}
+		termoBase = termoBase.replaceAll("[+]", "+");
+		String[] termos = termoBase.split("[+]");
+		
+		
+		result.addAll(mainApp.getClienteData());
+		
+		for (int i = 0; i < termos.length; i++) {
+			consultarClienteBuscaAvancada(termos[i].trim());
+		}
+
+		clientesTableView.setItems(result);
+	}
+	
+	private void consultarClienteBuscaAvancada(String termo) {
+		System.out.println("buscando "+termo);
+		ObservableList<Cliente> busca = FXCollections.observableArrayList();
+
+		result.forEach(cliente ->{
+			 if(isNomeTemTermo(cliente, termo))
+				 busca.add(cliente);			
+		});
+		result = busca;
+	}
+	
+	private boolean isNomeTemTermo(Cliente cliente, String termo){
+		return cliente.getNome().toLowerCase().contains(termo.toLowerCase());
+	}
+
+	private void buscaSimples(String termoBase) {
+		if (new ValidaCPF().validarCPF(termoBase))
+			consultarClientePorCpf(termoBase);
 		else
-			consultarClientePorNome(termo);
-		consultarClientePorNotas(termo);
+			consultarClientePorNome(termoBase);
+		consultarClientePorNotas(termoBase);
 		clientesTableView.setItems(result);
 	}
 
@@ -344,7 +382,10 @@ public class HistoricoDeClientesOverviewController {
 		});
 		// clientesTableView.setItems(result);
 	}
+
 	
+
+
 	@FXML
 	void handleVerAtendimentosDoCliente() {
 		String selectedId = clientesTableView.getSelectionModel().getSelectedItem().getIdCliente();
