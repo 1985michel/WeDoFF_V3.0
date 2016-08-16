@@ -1,6 +1,7 @@
 package com.michel1985.wedoffv3;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -54,7 +55,10 @@ public class MainApp extends Application {
 		this.primaryStage.setTitle("WeDoFF V3.0");
 
 		// Set the application icon.
-		this.primaryStage.getIcons().add(new Image("file:resources/images/security-app-shield-icon.png"));
+		
+		this.primaryStage.getIcons().add(
+				new Image(this.getClass().getResourceAsStream("/security-app-shield-icon.png"))
+				);
 
 		initRootLayout();
 
