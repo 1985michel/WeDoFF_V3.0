@@ -131,6 +131,7 @@ public class AtendendoClienteOverviewUIManager {
 		controller.setaDataAtendimentoHoje();
 		controller.notasSobreAtendimentoTextArea.setText("");
 		controller.isPendenteCheckBox.setSelected(false);
+		controller.dataParaSolucionarPendenciaDatePicker.setDisable(true);
 		controller.setIdAtendimentoAtual(null);
 		controller.registrarAtendimentoButton.setOnAction((event)-> controller.handleGravarAtendimento());
 		controller.registrarAtendimentoButton.setText("Registrar Atendimento");
