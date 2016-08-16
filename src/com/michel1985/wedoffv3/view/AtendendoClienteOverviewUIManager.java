@@ -225,6 +225,7 @@ public class AtendendoClienteOverviewUIManager {
 		controller.nomeClienteTextField.setText(obSat.getNome());
 		controller.notasClienteTextArea.setText(obSat.getNit());
 		controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
+		
 	}
 
 }

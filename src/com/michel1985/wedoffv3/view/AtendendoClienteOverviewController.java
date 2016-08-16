@@ -828,6 +828,7 @@ public class AtendendoClienteOverviewController {
 	@FXML
 	void handleReceberSat(){
 		uiManager.receberSat();
+		handleConsultarClientePeloCPF();
 	}
 	
 
