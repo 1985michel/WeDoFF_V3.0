@@ -324,10 +324,14 @@ public class HistoricoDeClientesOverviewController {
 	private void consultarClienteBuscaAvancada(String termo) {
 		System.out.println("buscando "+termo);
 		ObservableList<Cliente> busca = FXCollections.observableArrayList();
-
+				
 		result.forEach(cliente ->{
 			 if(isNomeTemTermo(cliente, termo)) busca.add(cliente);
 			 else if(isNotasSobreClienteTemTermo(cliente, termo)) busca.add(cliente);
+			 else if(new ValidaCPF().validarCPF(termo)){
+				 isCpfTemTermo(cliente, termo);
+			 }		 
+			 
 		});
 		result = busca;
 	}
@@ -338,7 +342,9 @@ public class HistoricoDeClientesOverviewController {
 	private boolean isNotasSobreClienteTemTermo(Cliente cliente, String termo){
 		return cliente.getNotasSobreCLiente().toLowerCase().contains(termo.toLowerCase());
 	}
-	
+	private boolean isCpfTemTermo(Cliente cliente, String termo){
+		return cliente.getCpf().contains(termo);
+	}
 
 	private void buscaSimples(String termoBase) {
 		if (new ValidaCPF().validarCPF(termoBase))
