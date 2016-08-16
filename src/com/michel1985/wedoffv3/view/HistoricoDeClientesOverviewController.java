@@ -326,8 +326,8 @@ public class HistoricoDeClientesOverviewController {
 		ObservableList<Cliente> busca = FXCollections.observableArrayList();
 
 		result.forEach(cliente ->{
-			 if(isNomeTemTermo(cliente, termo))
-				 busca.add(cliente);			
+			 if(isNomeTemTermo(cliente, termo)) busca.add(cliente);
+			 else if(isNotasSobreClienteTemTermo(cliente, termo)) busca.add(cliente);
 		});
 		result = busca;
 	}
@@ -335,6 +335,10 @@ public class HistoricoDeClientesOverviewController {
 	private boolean isNomeTemTermo(Cliente cliente, String termo){
 		return cliente.getNome().toLowerCase().contains(termo.toLowerCase());
 	}
+	private boolean isNotasSobreClienteTemTermo(Cliente cliente, String termo){
+		return cliente.getNotasSobreCLiente().toLowerCase().contains(termo.toLowerCase());
+	}
+	
 
 	private void buscaSimples(String termoBase) {
 		if (new ValidaCPF().validarCPF(termoBase))
