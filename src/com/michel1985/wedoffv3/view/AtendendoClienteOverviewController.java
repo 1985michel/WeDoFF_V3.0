@@ -29,6 +29,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -101,6 +102,17 @@ public class AtendendoClienteOverviewController {
 
 	@FXML
 	ImageView imagemImageView;
+	
+	//Wait do lado cliente
+	
+	@FXML
+	Pane faixaBackgroundPaneCliente;
+	
+	@FXML
+	ImageView imagemImageViewCliente;
+	
+	@FXML
+	GridPane waitClienteGridPane;
 
 	// Referência ao Main
 	private MainApp mainApp;
@@ -128,6 +140,7 @@ public class AtendendoClienteOverviewController {
 		setaDataAtendimentoHoje();
 
 		faixaBackgroundPane.setStyle("-fx-background-color: #181A1C;");
+		faixaBackgroundPaneCliente.setStyle("-fx-background-color: #181A1C;");
 
 		// Tonando o dataPicker desabilitado inicialmente
 		dataParaSolucionarPendenciaDatePicker.setDisable(true);
@@ -274,6 +287,7 @@ public class AtendendoClienteOverviewController {
 			setStatusDoFormCliente(AtendendoClienteOverviewUIManager.ATENDENDO);
 
 			setIdClienteAtual(id);
+			uiManager.showGifCRUDConfirmadoCliente();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -440,6 +454,7 @@ public class AtendendoClienteOverviewController {
 					+ "', nomecliente= '" + criptografa(cliente.getNome()) + "', notassobrecliente= '"
 					+ criptografa(cliente.getNotasSobreCLiente()) + "' WHERE idcliente='" + cliente.getIdCliente()
 					+ "'");
+			uiManager.showGifCRUDConfirmadoCliente();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

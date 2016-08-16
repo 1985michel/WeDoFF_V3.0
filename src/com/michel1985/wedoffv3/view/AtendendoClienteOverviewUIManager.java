@@ -142,6 +142,10 @@ public class AtendendoClienteOverviewUIManager {
 	public void showGifCRUDConfirmado() {
 		waitSomeTime();
 	}
+	
+	public void showGifCRUDConfirmadoCliente(){
+		waitSomeTimeCliente();
+	}
 
 	private void showWait() {
 		//Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
@@ -176,6 +180,42 @@ public class AtendendoClienteOverviewUIManager {
 	private void hideWait() {
 		controller.waitAnchorPane.toBack();
 		controller.imagemImageView.setImage(null);
+
+	}
+	
+	private void showWaitCliente() {
+		//Image img = new Image("file:resources/images/arquivadoCentralizado.gif");
+		InputStream url = this.getClass().getResourceAsStream("/arquivadoCentralizado.gif");
+		//imagemImageView.setImage(new Image(url));
+		controller.imagemImageViewCliente.setImage(new Image(url));
+		controller.waitClienteGridPane.toFront();
+	}
+
+	private void waitSomeTimeCliente() {
+		showWaitCliente();
+		Task<Void> sleeper = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				try {
+					Thread.sleep(2300);
+				} catch (InterruptedException e) {
+				}
+				return null;
+			}
+		};
+		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				hideWaitCliente();
+			}
+		});
+		new Thread(sleeper).start();
+	}
+
+	// Oculta o gif do wait
+	private void hideWaitCliente() {
+		controller.waitClienteGridPane.toBack();
+		controller.imagemImageViewCliente.setImage(null);
 
 	}
 
