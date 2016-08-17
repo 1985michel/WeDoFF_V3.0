@@ -21,6 +21,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -75,6 +76,11 @@ public class HistoricoDeAtendimentosOverviewController {
 	/**
 	 * Buscas
 	 */
+	@FXML
+	private TextField searchTextField;
+
+	@FXML
+	private Button searchButton;
 
 	// Observable list que conterá o resultado das pesquisas
 	public ObservableList<Atendimento> OLAtendimentos = FXCollections.observableArrayList();
@@ -325,5 +331,8 @@ public class HistoricoDeAtendimentosOverviewController {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
+	
+	@FXML
+	private void handleConsultarAtendimento(){}
 
 }
