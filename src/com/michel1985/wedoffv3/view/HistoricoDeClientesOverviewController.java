@@ -300,18 +300,9 @@ public class HistoricoDeClientesOverviewController {
 		result.clear();
 		String termoBase = searchTextField.getText();
 		if (!termoBase.contains("+")) {
-			search.buscaSimples(termoBase);
-			return;
+			search.buscaSimples(termoBase);			
 		}else{
-			termoBase = termoBase.replaceAll("[+]", "+");
-			String[] termos = termoBase.split("[+]");
-			
-			
-			result.addAll(mainApp.getClienteData());
-			
-			for (int i = 0; i < termos.length; i++) {
-				search.consultarClienteBuscaAvancada(termos[i].trim());
-			}
+			search.consultarClienteBuscaAvancada(termoBase);
 		}
 		clientesTableView.setItems(result);
 	}
