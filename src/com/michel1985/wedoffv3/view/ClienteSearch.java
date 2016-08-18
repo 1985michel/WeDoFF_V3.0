@@ -61,7 +61,7 @@ public class ClienteSearch {
 		return cliente.getCpf().contains(termo);
 	}
 
-	public void buscaSimples(String termoBase) {
+	public void consultarClienteBuscaSimples(String termoBase) {
 		termoBase = removedora.clean(termoBase);
 
 		if (new ValidaCPF().validarCPF(termoBase))

@@ -300,7 +300,7 @@ public class HistoricoDeClientesOverviewController {
 		result.clear();
 		String termoBase = searchTextField.getText();
 		if (!termoBase.contains("+")) {
-			search.buscaSimples(termoBase);			
+			search.consultarClienteBuscaSimples(termoBase);			
 		}else{
 			search.consultarClienteBuscaAvancada(termoBase);
 		}
