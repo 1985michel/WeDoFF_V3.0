@@ -7,8 +7,10 @@ import java.util.Optional;
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
+import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.EstruturaData;
+import com.michel1985.wedoffv3.util.ValidaCPF;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,12 +125,11 @@ public class HistoricoDeAtendimentosOverviewController {
 				.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
 
 		// Detecta mudanças no campo de busca e se ele ficar vazio, apresenta
-		// todo os histórico
-		/*
-		 * searchTextField.setOnKeyPressed((event) -> { if
-		 * (searchTextField.getText().length() == 0)
-		 * clientesTableView.setItems(mainApp.getClienteData()); });
-		 */
+				// todo os histórico
+				searchTextField.setOnKeyPressed((event) -> {
+					if (searchTextField.getText().length() == 0)
+						atendimentosTableView.setItems(mainApp.getAtendimentoData());
+				});
 
 		// Detecta o duplo click do mouse e apresenta o alert perguntando se
 		// quer atender aquele cliente.
@@ -333,6 +334,70 @@ public class HistoricoDeAtendimentosOverviewController {
 	}
 	
 	@FXML
-	private void handleConsultarAtendimento(){}
+	private void handleConsultarAtendimento(){
+				
+		OLAtendimentos.clear();
+		String termoBase = searchTextField.getText();
+		if (!termoBase.contains("+")) {
+			buscaSimples(termoBase);
+			return;
+		}
+		termoBase = termoBase.replaceAll("[+]", "+");
+		String[] termos = termoBase.split("[+]");
+		
+		
+		OLAtendimentos.addAll(mainApp.getAtendimentoData());
+		
+		for (int i = 0; i < termos.length; i++) {
+			consultarAtendimentoBuscaAvancada(termos[i].trim());
+		}
+
+		atendimentosTableView.setItems(OLAtendimentos);
+	}
+	
+	private void consultarAtendimentoBuscaAvancada(String termo) {
+		System.out.println("buscando "+termo);
+		ObservableList<Atendimento> busca = FXCollections.observableArrayList();
+				
+		OLAtendimentos.forEach(atd ->{
+			 if(isNbTemTermo(atd, termo)) busca.add(atd);
+			 else if(isNotasTemTermo(atd, termo)) busca.add(atd);
+			 			 
+		});
+		OLAtendimentos = busca;
+	}
+	
+	private boolean isNbTemTermo(Atendimento atd, String termo){
+		return atd.getNb().toLowerCase().contains(termo.toLowerCase());
+	}
+	private boolean isNotasTemTermo(Atendimento atd, String termo){
+		return atd.getNotasSobreAtendimento().toLowerCase().contains(termo.toLowerCase());
+	}
+
+	private void buscaSimples(String termoBase) {
+		//O termo base pode ser um protocolo, por exemplo, então não filtrar só dados numéricos
+		consultarAtendimentoPorNB(termoBase);
+		consultarAtendimentoPorNotas(termoBase);
+		atendimentosTableView.setItems(OLAtendimentos);
+	}
+	
+	private void consultarAtendimentoPorNB(String nb) {
+		mainApp.getAtendimentoData().forEach(atd -> {
+			if (atd.getNb().toLowerCase().contains(nb.toLowerCase())) {
+				if (!OLAtendimentos.contains(atd))
+					OLAtendimentos.add(atd);
+			}
+		});
+		// clientesTableView.setItems(result);
+	}
+	private void consultarAtendimentoPorNotas(String termo) {
+		mainApp.getAtendimentoData().forEach(atd -> {
+			if (atd.getNotasSobreAtendimento().toLowerCase().contains(termo.toLowerCase())) {
+				if (!OLAtendimentos.contains(atd))
+					OLAtendimentos.add(atd);
+			}
+		});
+		// clientesTableView.setItems(result);
+	}
 
 }
