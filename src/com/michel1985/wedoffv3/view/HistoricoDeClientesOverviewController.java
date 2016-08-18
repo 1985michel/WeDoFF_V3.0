@@ -299,11 +299,11 @@ public class HistoricoDeClientesOverviewController {
 
 		result.clear();
 		String termoBase = searchTextField.getText();
-		if (!termoBase.contains("+")) {
+		if (!termoBase.contains("+"))
 			search.consultarClienteBuscaSimples(termoBase);			
-		}else{
+		else
 			search.consultarClienteBuscaAvancada(termoBase);
-		}
+		
 		clientesTableView.setItems(result);
 	}
 	

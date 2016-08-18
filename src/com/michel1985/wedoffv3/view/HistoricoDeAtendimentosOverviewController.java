@@ -339,14 +339,10 @@ public class HistoricoDeAtendimentosOverviewController {
 		
 		OLAtendimentos.clear();
 		String termoBase = searchTextField.getText();
-		if (!termoBase.contains("+")) {
+		if (!termoBase.contains("+"))
 			search.consultarAtendimentoBuscaSimples(termoBase);
-			return;
-		}else{
+		else
 			search.consultarAtendimentoBuscaAvancada(termoBase);
-		}
-		
-
 		atendimentosTableView.setItems(OLAtendimentos);
 	}
 	

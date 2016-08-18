@@ -37,8 +37,7 @@ public class AtendimentoSearch {
 		
 		controller.OLAtendimentos.forEach(atd ->{
 			 if(isNbTemTermo(atd, termo)) busca.add(atd);
-			 else if(isNotasTemTermo(atd, termo)) busca.add(atd);
-			 			 
+			 else if(isNotasTemTermo(atd, termo)) busca.add(atd);			 			 
 		});
 		controller.OLAtendimentos = busca;
 	}
@@ -50,13 +49,10 @@ public class AtendimentoSearch {
 		return removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase());
 	}
 
-	void consultarAtendimentoBuscaSimples(String termoBase) {
-		
-		termoBase = removedora.clean(termoBase);
-		
+	void consultarAtendimentoBuscaSimples(String termoBase) {		
+		termoBase = removedora.clean(termoBase);		
 		consultarAtendimentoPorNB(termoBase);
-		consultarAtendimentoPorNotas(termoBase);
-		controller.atendimentosTableView.setItems(controller.OLAtendimentos);
+		consultarAtendimentoPorNotas(termoBase);		
 	}
 	
 	private void consultarAtendimentoPorNB(String nb) {
