@@ -80,7 +80,7 @@ public class HistoricoDeClientesOverviewController {
 	// Palco desse dialog
 	private Stage dialogStage;
 
-	private MainApp mainApp;
+	MainApp mainApp;
 
 	public HistoricoDeClientesOverviewController() {
 	}
@@ -295,106 +295,27 @@ public class HistoricoDeClientesOverviewController {
 	@FXML
 	private void handleConsultarCliente() {
 
-		/*
-		 * result.clear(); String termo = searchTextField.getText(); if (new
-		 * ValidaCPF().validarCPF(termo)) consultarClientePorCpf(termo); else
-		 * consultarClientePorNome(termo); consultarClientePorNotas(termo);
-		 * clientesTableView.setItems(result);
-		 */
+		ClienteSearch search = new ClienteSearch(this);
 
 		result.clear();
 		String termoBase = searchTextField.getText();
 		if (!termoBase.contains("+")) {
-			buscaSimples(termoBase);
+			search.buscaSimples(termoBase);
 			return;
+		}else{
+			termoBase = termoBase.replaceAll("[+]", "+");
+			String[] termos = termoBase.split("[+]");
+			
+			
+			result.addAll(mainApp.getClienteData());
+			
+			for (int i = 0; i < termos.length; i++) {
+				search.consultarClienteBuscaAvancada(termos[i].trim());
+			}
 		}
-		termoBase = termoBase.replaceAll("[+]", "+");
-		String[] termos = termoBase.split("[+]");
-		
-		
-		result.addAll(mainApp.getClienteData());
-		
-		for (int i = 0; i < termos.length; i++) {
-			consultarClienteBuscaAvancada(termos[i].trim());
-		}
-
 		clientesTableView.setItems(result);
 	}
 	
-	private void consultarClienteBuscaAvancada(String termo) {
-		System.out.println("buscando "+termo);
-		ObservableList<Cliente> busca = FXCollections.observableArrayList();
-				
-		result.forEach(cliente ->{
-			 if(isNomeTemTermo(cliente, termo)) busca.add(cliente);
-			 else if(isNotasSobreClienteTemTermo(cliente, termo)) busca.add(cliente);
-			 else if(new ValidaCPF().validarCPF(termo)){
-				 isCpfTemTermo(cliente, termo);
-			 }		 
-			 
-		});
-		result = busca;
-	}
-	
-	private boolean isNomeTemTermo(Cliente cliente, String termo){
-		return cliente.getNome().toLowerCase().contains(termo.toLowerCase());
-	}
-	private boolean isNotasSobreClienteTemTermo(Cliente cliente, String termo){
-		return cliente.getNotasSobreCLiente().toLowerCase().contains(termo.toLowerCase());
-	}
-	private boolean isCpfTemTermo(Cliente cliente, String termo){
-		return cliente.getCpf().contains(termo);
-	}
-
-	private void buscaSimples(String termoBase) {
-		if (new ValidaCPF().validarCPF(termoBase))
-			consultarClientePorCpf(termoBase);
-		else
-			consultarClientePorNome(termoBase);
-		consultarClientePorNotas(termoBase);
-		clientesTableView.setItems(result);
-	}
-
-	/**
-	 * O método abaixo realiza pesquisa do termo fornecido no campo nome
-	 */
-	private void consultarClientePorNome(String nome) {
-		mainApp.getClienteData().forEach(cli -> {
-			if (cli.getNome().toLowerCase().contains(nome.toLowerCase())) {
-				if (!result.contains(cli))
-					result.add(cli);
-			}
-		});
-		// clientesTableView.setItems(result);
-	}
-
-	/**
-	 * O método abaixo implementa pesquisa por cpf
-	 */
-	private void consultarClientePorCpf(String termo) {
-		mainApp.getClienteData().forEach(cli -> {
-			if (cli.getCpf().equals(termo))
-				if (!result.contains(cli))
-					result.add(cli);
-		});
-		// clientesTableView.setItems(result);
-	}
-
-	/**
-	 * O método abaixo implementa pesquisa nas notas sobre cliente
-	 */
-	private void consultarClientePorNotas(String nome) {
-		mainApp.getClienteData().forEach(cli -> {
-			if (cli.getNotasSobreCLiente().toLowerCase().contains(nome.toLowerCase())) {
-				if (!result.contains(cli))
-					result.add(cli);
-			}
-		});
-		// clientesTableView.setItems(result);
-	}
-
-	
-
 
 	@FXML
 	void handleVerAtendimentosDoCliente() {
