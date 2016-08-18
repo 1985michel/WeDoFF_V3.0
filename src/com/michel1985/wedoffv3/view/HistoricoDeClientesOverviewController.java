@@ -288,7 +288,7 @@ public class HistoricoDeClientesOverviewController {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
-
+	
 	/**
 	 * Métodos relativos a consulta
 	 */
