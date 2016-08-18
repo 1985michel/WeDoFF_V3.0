@@ -33,8 +33,7 @@ public class HistoricoDeAtendimentosOverviewController {
 	@FXML
 	private Label historicoDeAtendimentosTituloLabel;
 
-	@FXML
-	private TableView<Atendimento> atendimentosTableView;
+	@FXML TableView<Atendimento> atendimentosTableView;
 
 	@FXML
 	private TableColumn<Atendimento, String> idAtendimentoTableColumn;
@@ -90,7 +89,7 @@ public class HistoricoDeAtendimentosOverviewController {
 	// Palco desse dialog
 	private Stage dialogStage;
 
-	private MainApp mainApp;
+	MainApp mainApp;
 
 	public HistoricoDeAtendimentosOverviewController() {
 	}
@@ -335,11 +334,13 @@ public class HistoricoDeAtendimentosOverviewController {
 	
 	@FXML
 	private void handleConsultarAtendimento(){
-				
+		
+		AtendimentoSearch search = new AtendimentoSearch(this);
+		
 		OLAtendimentos.clear();
 		String termoBase = searchTextField.getText();
 		if (!termoBase.contains("+")) {
-			buscaSimples(termoBase);
+			search.buscaSimples(termoBase);
 			return;
 		}
 		termoBase = termoBase.replaceAll("[+]", "+");
@@ -349,55 +350,12 @@ public class HistoricoDeAtendimentosOverviewController {
 		OLAtendimentos.addAll(mainApp.getAtendimentoData());
 		
 		for (int i = 0; i < termos.length; i++) {
-			consultarAtendimentoBuscaAvancada(termos[i].trim());
+			search.consultarAtendimentoBuscaAvancada(termos[i].trim());
 		}
 
 		atendimentosTableView.setItems(OLAtendimentos);
 	}
 	
-	private void consultarAtendimentoBuscaAvancada(String termo) {
-		System.out.println("buscando "+termo);
-		ObservableList<Atendimento> busca = FXCollections.observableArrayList();
-				
-		OLAtendimentos.forEach(atd ->{
-			 if(isNbTemTermo(atd, termo)) busca.add(atd);
-			 else if(isNotasTemTermo(atd, termo)) busca.add(atd);
-			 			 
-		});
-		OLAtendimentos = busca;
-	}
-	
-	private boolean isNbTemTermo(Atendimento atd, String termo){
-		return atd.getNb().toLowerCase().contains(termo.toLowerCase());
-	}
-	private boolean isNotasTemTermo(Atendimento atd, String termo){
-		return atd.getNotasSobreAtendimento().toLowerCase().contains(termo.toLowerCase());
-	}
 
-	private void buscaSimples(String termoBase) {
-		//O termo base pode ser um protocolo, por exemplo, então não filtrar só dados numéricos
-		consultarAtendimentoPorNB(termoBase);
-		consultarAtendimentoPorNotas(termoBase);
-		atendimentosTableView.setItems(OLAtendimentos);
-	}
-	
-	private void consultarAtendimentoPorNB(String nb) {
-		mainApp.getAtendimentoData().forEach(atd -> {
-			if (atd.getNb().toLowerCase().contains(nb.toLowerCase())) {
-				if (!OLAtendimentos.contains(atd))
-					OLAtendimentos.add(atd);
-			}
-		});
-		// clientesTableView.setItems(result);
-	}
-	private void consultarAtendimentoPorNotas(String termo) {
-		mainApp.getAtendimentoData().forEach(atd -> {
-			if (atd.getNotasSobreAtendimento().toLowerCase().contains(termo.toLowerCase())) {
-				if (!OLAtendimentos.contains(atd))
-					OLAtendimentos.add(atd);
-			}
-		});
-		// clientesTableView.setItems(result);
-	}
 
 }
