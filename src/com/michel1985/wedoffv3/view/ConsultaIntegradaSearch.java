@@ -1,10 +1,7 @@
 package com.michel1985.wedoffv3.view;
 
-import java.sql.ResultSet;
 import java.util.Iterator;
 
-import com.michel1985.wedoffv3.MainApp;
-import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.ConsultaIntegradaObject;

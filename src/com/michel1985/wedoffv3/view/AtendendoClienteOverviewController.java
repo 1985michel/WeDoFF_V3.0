@@ -15,8 +15,11 @@ import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.TextFieldLimited;
 import com.michel1985.wedoffv3.seguranca.Cripto;
+import com.michel1985.wedoffv3.util.RemoveCaracteresEspeciais;
 import com.michel1985.wedoffv3.util.ValidaCliente;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -830,6 +833,33 @@ public class AtendendoClienteOverviewController {
 		uiManager.receberSat();
 		handleConsultarClientePeloCPF();
 	}
+	
+	@FXML
+	void handleConsultarNb(){
+		String nb = nbTextField.getText();
+		RemoveCaracteresEspeciais removedora = new RemoveCaracteresEspeciais();
+		ObservableList<Atendimento> atdList = FXCollections.observableArrayList();
+		consultarAtendimentosPeloNb(nb, removedora, atdList);
+		this.mainApp.showHistoricoDeAtendimentosOverview(atdList);
+		
+	}
+	
+	private void consultarAtendimentosPeloNb(String nb, RemoveCaracteresEspeciais removedora, ObservableList<Atendimento> atdList) {
+		this.mainApp.getAtendimentoData().forEach(atd -> {
+			if (removedora.clean(atd.getNb().toLowerCase()).contains(nb.toLowerCase())) {
+				if (!atdList.contains(atd))
+					atdList.add(atd);
+			}
+			if (removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(nb.toLowerCase())) {
+				if (!atdList.contains(atd))
+					atdList.add(atd);
+			}
+		});
+		// clientesTableView.setItems(result);
+	}
+
+	
+	
 	
 
 }
