@@ -162,7 +162,7 @@ public class ConsultasIntegradasOverviewController {
 		this.mainApp = main;
 
 		// Adiciona os dados da observable list à tabela
-		//resultadoTableView.setItems(list);
+		resultadoTableView.setItems(null);
 
 	}
 	
