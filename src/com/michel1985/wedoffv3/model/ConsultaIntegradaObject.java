@@ -1,26 +1,66 @@
 package com.michel1985.wedoffv3.model;
 
+import java.util.ArrayList;
 
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
+public class ConsultaIntegradaObject {
+	
+		private Cliente cliente;
+		private Atendimento atd;
+		
+		public ConsultaIntegradaObject(){}
+		
+		public ConsultaIntegradaObject(Cliente cli){
+			this.cliente = cli;
+		}
+		
+		public ConsultaIntegradaObject(Cliente cli, Atendimento atd){
+			this(cli);
+			this.atd = atd;
+		}
 
-public class Atendimento {
+		public Cliente getCliente() {
+			return cliente;
+		}
+
+		public void setCliente(Cliente cliente) {
+			this.cliente = cliente;
+		}
+
+		public Atendimento getAtd() {
+			return atd;
+		}
+
+		public void setAtd(Atendimento atd) {
+			this.atd = atd;
+		}
+		
+		
+		
+		
 	
 	
-	private StringProperty idAtendimento;
+
+		/*
+		  
+		  private StringProperty idAtendimento;
 	private StringProperty idCliente;
+	private final StringProperty nome;
 	private BooleanProperty isAgendamento;
 	private BooleanProperty isPendente;
 	private StringProperty nb;
 	private StringProperty notasSobreAtendimento;
 	private StringProperty dataAtendimento;
 	private StringProperty dataSolucao;
-
-
 		
-		public Atendimento(String id, String idCli, boolean agendamento,  boolean pendente, String nb, String notas, String data, String datasolu){
+		public ConsultaIntegradaObject(String id, String idCli, String nome, boolean agendamento,  boolean pendente, String nb, String notas, String data, String datasolu){
 			this.idAtendimento = new SimpleStringProperty(id);
 			this.idCliente = new SimpleStringProperty(idCli);
+			this.nome = new SimpleStringProperty(nome);
 			this.nb = new SimpleStringProperty(nb);
 			this.notasSobreAtendimento = new SimpleStringProperty(notas);
 			this.dataAtendimento = new SimpleStringProperty(data);
@@ -51,6 +91,17 @@ public class Atendimento {
 			this.idCliente.set(idCliente);
 		}
 
+		public String getNome(){
+			return this.nome.get();
+		}
+		
+		public void setNome(String nome){
+			this.nome.set(nome);
+		}
+		
+		public StringProperty nomeProperty(){
+			return this.nome;
+		}
 
 		public boolean getIsAgendamento() {
 			return isAgendamento.getValue();
@@ -117,6 +168,5 @@ public class Atendimento {
 			this.dataSolucao.set(dataSolucao);
 		}
 		
-			
-
+		*/
 }

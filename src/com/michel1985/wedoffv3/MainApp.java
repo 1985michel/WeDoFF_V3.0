@@ -12,6 +12,7 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.ConsultasIntegradasOverviewController;
 import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController;
@@ -402,6 +403,54 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * Mostra o HistoricoDeClienteOverview
+	 */
+	public void showConsultasIntegradasOverview() {
+		try {
+			System.out.println("chegou aqui");
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/ConsultasIntegradasOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			ConsultasIntegradasOverviewController controller = loader.getController();
+			
+			//A çosta começa vazia
+			controller.setMainApp(this);
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			//atendimentoData.sort(
+			//		(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Consulta Integrada");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	/**
 	 * Apresenta o dialog para edição do cliente

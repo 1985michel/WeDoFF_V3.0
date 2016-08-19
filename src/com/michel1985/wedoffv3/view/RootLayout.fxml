@@ -20,12 +20,10 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeAtendimentos" text="Todos Atendimentos" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Buscar Registro">
+            <Menu mnemonicParsing="false" text="Consulta Integrada">
                <items>
-                  <MenuItem mnemonicParsing="false" text="por Cliente" />
-                  <MenuItem mnemonicParsing="false" text="por Atendimento" />
-               </items>
-            </Menu>
+                  <MenuItem mnemonicParsing="false" onAction="#handleConsultasIntegradas" text="Consultar" />
+               </items></Menu>
             <Menu mnemonicParsing="false" text="Estatísticas">
                <items>
                   <MenuItem mnemonicParsing="false" text="Consultar" />

@@ -91,8 +91,7 @@ public class HistoricoDeAtendimentosOverviewController {
 
 	MainApp mainApp;
 
-	public HistoricoDeAtendimentosOverviewController() {
-	}
+	public HistoricoDeAtendimentosOverviewController(){}
 
 	/**
 	 * Inicializa a classe controller. Método chamado ao carregar o fxml

@@ -64,5 +64,14 @@ public class RootLayoutController {
 	private void handleHistoricoDeAtendimentos(){
 		mainApp.showHistoricoDeAtendimentosOverview();
 	}
+	
+	/**
+	 * Exibe o dialog com o histórico de atendimentos
+	 * */
+	@FXML
+	private void handleConsultasIntegradas(){
+		System.out.println("chamou aqui");
+		mainApp.showConsultasIntegradasOverview();
+	}
 
 }
