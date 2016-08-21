@@ -70,8 +70,7 @@ public class RootLayoutController {
 	 * */
 	@FXML
 	private void handleConsultasIntegradas(){
-		System.out.println("chamou aqui");
-		mainApp.showConsultasIntegradasOverview();
+		System.out.println("chamou aqui");		
 	}
 
 }
