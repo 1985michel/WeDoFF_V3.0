@@ -42,7 +42,9 @@ public class ClienteSearch {
 			else if (isNotasSobreClienteTemTermo(cliente, termo))
 				busca.add(cliente);
 			else if (new ValidaCPF().validarCPF(termo)) {
-				isCpfTemTermo(cliente, termo);
+				if(isCpfTemTermo(cliente, termo))
+					busca.add(cliente);
+					
 			}
 
 		});

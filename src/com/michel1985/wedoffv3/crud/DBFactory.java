@@ -22,10 +22,7 @@ public class DBFactory {
 
 		this.comandosDeCriacao.add(criarTabelaUsuarios);
 
-		// String criarTabelaClientes = "CREATE TABLE CLIENTES (" + "idcliente
-		// INTEGER IDENTITY PRIMARY KEY,"
-		// + "nomeCliente VARCHAR(300)," + "cpfCliente VARCHAR(11)," +
-		// "notasSobreCliente VARCHAR(50000)," + ");";
+		
 		String criarTabelaClientes = "CREATE TABLE CLIENTES (" + "idcliente INTEGER IDENTITY PRIMARY KEY,"
 				+ "nomeCliente VARCHAR(300)," + "cpfCliente VARCHAR(100)," + "notasSobreCliente VARCHAR(50000)," + ");";
 
@@ -35,16 +32,21 @@ public class DBFactory {
 				+ "idcliente VARCHAR(100)," + "isagendamento BOOLEAN," + "ispendente BOOLEAN," + "nb VARCHAR(100),"
 				+ "notassobreatendimento VARCHAR(50000)," + "dataatendimento VARCHAR(10)," + "datasolucao VARCHAR(10),"
 				+ ");";
-
-		/*
-		 * String criarTabelaAtendimentos = "CREATE TABLE ATENDIMENTOS (" +
-		 * "idatendimento INTEGER IDENTITY PRIMARY KEY," +
-		 * "idcliente VARCHAR(100)," + "isagendamento BOOLEAN," +
-		 * "ispendente BOOLEAN," + "nb VARCHAR(100)," +
-		 * "notassobreatendimento VARCHAR(50000)," +
-		 * "dataatendimento VARCHAR(10)," + "datasolucao VARCHAR(10)," + ");";
-		 */
+	
 		this.comandosDeCriacao.add(criarTabelaAtendimentos);
+		
+		String criarTabelaNotasAvulsas = "CREATE TABLE NOTASAVULSAS (" + "idNotaAvulsa INTEGER IDENTITY PRIMARY KEY,"
+				+ "TITULO VARCHAR(1000)," + "LINK VARCHAR(300)," + "DESCRICAO VARCHAR(50000)," + ");";
+
+		this.comandosDeCriacao.add(criarTabelaNotasAvulsas);
+	}
+	
+	public void criarTabelaNotasAvulsas(CRUD crud) throws ClassNotFoundException, SQLException, CRUDException{
+		String criarTabelaNotasAvulsas = "CREATE TABLE NOTASAVULSAS (" + "idNotaAvulsa INTEGER IDENTITY PRIMARY KEY,"
+				+ "TITULO VARCHAR(1000)," 
+				+ "LINK VARCHAR(300)," + "DESCRICAO VARCHAR(50000)," + ");";
+		
+		crud.getResultSet(criarTabelaNotasAvulsas);
 	}
 
 	public boolean criarBancos(CRUD crud) throws ClassNotFoundException, SQLException, CRUDException {
@@ -54,5 +56,7 @@ public class DBFactory {
 		}
 		return true;
 	}
+	
+
 
 }

@@ -72,5 +72,17 @@ public class RootLayoutController {
 	private void handleConsultasIntegradas(){
 		System.out.println("chamou aqui");		
 	}
+	
+    @FXML
+    void handleGravarNovaNota() {
+    	System.out.println("Chamando Gravar Nova Nota");
+    }
+    
+    @FXML
+    void handleConsultarNotas() {
+    	System.out.println("Chamando Consultar Notas");
+    	mainApp.showHistoricoDeNotasAvulsasOverview();
+
+    }
 
 }

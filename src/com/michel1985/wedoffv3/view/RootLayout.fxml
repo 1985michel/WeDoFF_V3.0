@@ -23,6 +23,12 @@
             <Menu mnemonicParsing="false" text="Consulta Integrada">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleConsultasIntegradas" text="Consultar" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Notas e Links">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleGravarNovaNota" text="Nova Nota" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleConsultarNotas" text="Consultar Notas" />
                </items></Menu>
             <Menu mnemonicParsing="false" text="Estatísticas">
                <items>

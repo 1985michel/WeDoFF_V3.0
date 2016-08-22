@@ -215,6 +215,7 @@ public class LoginOverviewController {
 	private void carregaListas(){
 		this.mainApp.carregaHistoricoDeClientes();
 		this.mainApp.carregaHistoricoDeAtendimentos();
+		this.mainApp.carregaHistoricoDeNotasAvulstas();
 	}
 	private void waitSomeTime() {
 		

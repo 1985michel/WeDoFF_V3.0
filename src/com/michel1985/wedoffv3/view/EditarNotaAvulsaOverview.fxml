@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="433.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.michel1985.wedoffv3.view.EditarNotaAvulsaOverviewController">
+   <children>
+      <VBox layoutX="5.0" layoutY="62.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <Label fx:id="tituloNotaAvulsaLabel" text="Edição de Nota Avulsa">
+               <padding>
+                  <Insets bottom="10.0" left="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="tituloDaNotaTextField" promptText="Título da Nota">
+               <tooltip>
+                  <Tooltip autoHide="true" text="Nome do Cliente" />
+               </tooltip>
+            </TextField>
+            <TextField fx:id="linkTextField" promptText="link">
+               <tooltip>
+                  <Tooltip autoHide="true" text="CPF do Cliente" />
+               </tooltip>
+            </TextField>
+            <TextArea fx:id="descricaoDaNotaTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Descrição da Nota" wrapText="true" VBox.vgrow="SOMETIMES">
+               <tooltip>
+                  <Tooltip autoHide="true" text="Notas Sobre Atendimento" />
+               </tooltip>
+            </TextArea>
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" spacing="5.0">
+               <children>
+                  <Button fx:id="salvarButton" defaultButton="true" mnemonicParsing="false" onAction="#handleOk" prefHeight="25.0" prefWidth="63.0" text="Salvar" />
+                  <Button fx:id="cancelarButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Cancelar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

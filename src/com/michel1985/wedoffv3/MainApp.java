@@ -1,21 +1,25 @@
 package com.michel1985.wedoffv3;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.michel1985.wedoffv3.crud.CRUD;
+import com.michel1985.wedoffv3.crud.NotasAvulsasTableExist;
+import com.michel1985.wedoffv3.exceptions.CRUDException;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
+import com.michel1985.wedoffv3.model.NotaAvulsa;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
+import com.michel1985.wedoffv3.view.EditarNotaAvulsaOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
+import com.michel1985.wedoffv3.view.HistoricoDeNotasAvulsasOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
 import com.michel1985.wedoffv3.view.RootLayoutController;
 
@@ -39,6 +43,7 @@ public class MainApp extends Application {
 
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Atendimento> atendimentoData = FXCollections.observableArrayList();
+	private ObservableList<NotaAvulsa> notaAvulsaData = FXCollections.observableArrayList();
 
 	private Usuario usuarioAtivo;
 
@@ -55,10 +60,9 @@ public class MainApp extends Application {
 		this.primaryStage.setTitle("WeDoFF V3.0");
 
 		// Set the application icon.
-		
-		this.primaryStage.getIcons().add(
-				new Image(this.getClass().getResourceAsStream("/security-app-shield-icon.png"))
-				);
+
+		this.primaryStage.getIcons()
+				.add(new Image(this.getClass().getResourceAsStream("/security-app-shield-icon.png")));
 
 		initRootLayout();
 
@@ -138,6 +142,8 @@ public class MainApp extends Application {
 		return this.atendendoClienteController;
 	}
 
+	
+
 	public void showAboutDialog() {
 		try {
 			// Load o FXML
@@ -180,6 +186,13 @@ public class MainApp extends Application {
 	 */
 	public ObservableList<Cliente> getClienteData() {
 		return this.clienteData;
+	}
+
+	/**
+	 * Obterndo a ObservableList de Clientes
+	 */
+	public ObservableList<NotaAvulsa> getNotaAvulsaData() {
+		return this.notaAvulsaData;
 	}
 
 	/**
@@ -244,7 +257,7 @@ public class MainApp extends Application {
 			try {
 				resultSet = new CRUD(this.usuarioAtivo)
 						.getResultSet("SELECT * FROM atendimentos ORDER BY IDCLIENTE DESC");
-				adicionaTodosAtendimentosFromDBNaObservableList(resultSet,atendimentoData);
+				adicionaTodosAtendimentosFromDBNaObservableList(resultSet, atendimentoData);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -258,9 +271,10 @@ public class MainApp extends Application {
 		}
 	}
 
-	private void adicionaTodosAtendimentosFromDBNaObservableList(ResultSet resultSet, ObservableList<Atendimento> ol) throws SQLException {
+	private void adicionaTodosAtendimentosFromDBNaObservableList(ResultSet resultSet, ObservableList<Atendimento> ol)
+			throws SQLException {
 		ArrayList<Atendimento> atendimentos = new ArrayList<>();
-		int count =0;
+		int count = 0;
 		while (resultSet.next()) {
 			// public Atendimento(String id, String idCli, boolean agendamento,
 			// boolean pendente, String nb, String notas, String data, String
@@ -272,7 +286,7 @@ public class MainApp extends Application {
 					descriptografa(resultSet.getString("notassobreatendimento")),
 					resultSet.getString("dataatendimento"), resultSet.getString("datasolucao")));
 		}
-		System.out.println("Encontramos "+count+" atendimentos no resultSet");
+		System.out.println("Encontramos " + count + " atendimentos no resultSet");
 		ol.addAll(FXCollections.observableArrayList(atendimentos));
 	}
 
@@ -402,7 +416,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Mostra o HistoricoDeClienteOverview
 	 */
@@ -445,9 +459,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Apresenta o dialog para edição do cliente
 	 */
@@ -491,24 +503,21 @@ public class MainApp extends Application {
 
 			// Dá ao controlador acesso ao MainApp
 			HistoricoDeAtendimentosOverviewController controller = loader.getController();
-			
-			
-			
-			//A linha abaixo é retirada para que eu possa passar uma nova observableList para o exibição
+
+			// A linha abaixo é retirada para que eu possa passar uma nova
+			// observableList para o exibição
 			ObservableList<Atendimento> OLHistoricoDeAtendimentosDoCliente = FXCollections.observableArrayList();
-			
-			System.out.println("idClienteAtual fornecido: "+idClienteAtual);
-			//Colocando somente os atendimentos do cliente na observable list
+
+			System.out.println("idClienteAtual fornecido: " + idClienteAtual);
+			// Colocando somente os atendimentos do cliente na observable list
 			carregaHistoricoDeAtendimentosDoClienteOverview(idClienteAtual, OLHistoricoDeAtendimentosDoCliente);
-			
-			//Passando a observable list para o controller
+
+			// Passando a observable list para o controller
 			controller.setObservableList(OLHistoricoDeAtendimentosDoCliente);
-			System.out.println("Encontrados "+ OLHistoricoDeAtendimentosDoCliente.size() +" atendimentos para esse cliente");
-			
-			controller.setMainApp(this,OLHistoricoDeAtendimentosDoCliente);
-			
-			
-			
+			System.out.println(
+					"Encontrados " + OLHistoricoDeAtendimentosDoCliente.size() + " atendimentos para esse cliente");
+
+			controller.setMainApp(this, OLHistoricoDeAtendimentosDoCliente);
 
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
@@ -536,17 +545,25 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public void carregaHistoricoDeAtendimentosDoClienteOverview(String idClienteAtual, ObservableList<Atendimento> oLA) {
+
+	public void carregaHistoricoDeAtendimentosDoClienteOverview(String idClienteAtual,
+			ObservableList<Atendimento> oLA) {
 		if (this.usuarioAtivo != null) {
 			ResultSet resultSet = null;
 
 			try {
-				resultSet = new CRUD(this.usuarioAtivo)
-						.getResultSet("SELECT * FROM atendimentos where idcliente='" + idClienteAtual + "' ORDER BY IDCLIENTE DESC");
-				adicionaTodosAtendimentosFromDBNaObservableList(resultSet,oLA);//parametro null pois a O.L. tem visibilidade direta
+				resultSet = new CRUD(this.usuarioAtivo).getResultSet(
+						"SELECT * FROM atendimentos where idcliente='" + idClienteAtual + "' ORDER BY IDCLIENTE DESC");
+				adicionaTodosAtendimentosFromDBNaObservableList(resultSet, oLA);// parametro
+																				// null
+																				// pois
+																				// a
+																				// O.L.
+																				// tem
+																				// visibilidade
+																				// direta
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -560,6 +577,129 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Mostra o HistoricoDeClienteOverview
+	 */
+	public void showHistoricoDeNotasAvulsasOverview() {
+		try {
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeNotasAvulsasOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			HistoricoDeNotasAvulsasOverviewController controller = loader.getController();
+			controller.setMainApp(this);
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			notaAvulsaData.sort((o1, o2) -> Integer.parseInt(o2.getIdNotaAvulsa()) - Integer.parseInt(o1.getIdNotaAvulsa()));
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Histórico de Notas Avulsas");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
+	/**
+	 * Apresenta o dialog para edição do cliente
+	 */
+	public boolean showEditarNotaAvulsaOverview(NotaAvulsa notaAvulsa) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/EditarNotaAvulsaOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Cria o palco
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Editar Nota Avulsa");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Passa o cliente a ser editado ao controller
+			EditarNotaAvulsaOverviewController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setNotaAvulsa(notaAvulsa);
+			
+
+			// Apresenta o dialog
+			dialogStage.showAndWait();
+
+			return controller.isOkCLicked();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void carregaHistoricoDeNotasAvulstas() {
+		if (this.usuarioAtivo != null) {
+			ResultSet resultSet = null;
+			
+			CRUD crud = new CRUD(this.usuarioAtivo);
+			
+			try {
+				//ESSA LINHA ABAIXO DEVE SER RETIRADA ASSIM QUE EU TIVER A CERTEZA DE QUE TODOS USUÁRIOS JÁ ATUALIZARAM PARA A NOVA VERSÃO
+				if(NotasAvulsasTableExist.isNotasAvulsasTableExist(crud)){
+					try {
+						resultSet = crud.getResultSet("SELECT * FROM NOTASAVULSAS ORDER BY IDNOTAAVULSA DESC");
+						adicionaTodasNotasAvulsasFromDBNaNotasAvulsasData(resultSet);
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						try {
+							resultSet.close();
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}else
+					return;
+				
+			} catch (ClassNotFoundException | SQLException | CRUDException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+		}
+	}
+
+	private void adicionaTodasNotasAvulsasFromDBNaNotasAvulsasData(ResultSet resultSet) throws SQLException {
+		ArrayList<NotaAvulsa> notas = new ArrayList<>();
+
+		while (resultSet.next()) {
+
+			notas.add(
+					new NotaAvulsa(resultSet.getString("idNotaAvulsa"), descriptografa(resultSet.getString("titulo")),
+							descriptografa(resultSet.getString("link")),
+							descriptografa(resultSet.getString("descricao"))));
+		}
+
+		notaAvulsaData.addAll(FXCollections.observableArrayList(notas));
+	}
+
 
 }
