@@ -29,12 +29,19 @@ public class OpenWebPage {
 	}
 	
 	public static void openUrl(String stringUrl) {
+		
+		if(!stringUrl.contains("http") || !stringUrl.contains("ftp")){
+			stringUrl="http://"+stringUrl;	
+		}
 		URL url = null;
 		try {
 			url = new URL(stringUrl);
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			
+		}finally {
+			
 		}
 	    try {
 	        openWebpage(url.toURI());
