@@ -30,7 +30,7 @@ public class OpenWebPage {
 	
 	public static void openUrl(String stringUrl) {
 		
-		if(!stringUrl.contains("http") || !stringUrl.contains("ftp")){
+		if(!stringUrl.contains("http") && !stringUrl.contains("ftp")){
 			stringUrl="http://"+stringUrl;	
 		}
 		URL url = null;

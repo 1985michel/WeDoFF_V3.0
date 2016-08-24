@@ -84,7 +84,7 @@ public class HistoricoDeNotasAvulsasOverviewController {
 	private void initialize() {
 
 		idNotasAvulsasTableColumn.setCellValueFactory(cellData -> cellData.getValue().idNotaAvulsaProperty());
-		tituloNotaAvulsaTableColumn.setCellValueFactory(cellData -> cellData.getValue().descricacaoProperty());
+		tituloNotaAvulsaTableColumn.setCellValueFactory(cellData -> cellData.getValue().tituloProperty());
 
 		// limpa os detalhes do cliente
 		showNotaAvulsaDetails(null);
@@ -110,7 +110,7 @@ public class HistoricoDeNotasAvulsasOverviewController {
 		// Caso ok, o cliente é carregado no formulário
 		notasAvulsasTableView.setOnMousePressed((event) -> {
 			
-			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+			if (event.isPrimaryButtonDown() && event.getClickCount() == 2 && temLink(notasAvulsasTableView.getSelectionModel().getSelectedItem())) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Necessária confirmação");
 				alert.setHeaderText("Abrir o link da Nota? ");
@@ -129,6 +129,13 @@ public class HistoricoDeNotasAvulsasOverviewController {
 			}
 		});
 
+	}
+	
+	private boolean temLink(NotaAvulsa notaAvulsa){
+		if(notaAvulsa.getLink()!= null && !notaAvulsa.getLink().equalsIgnoreCase(""))
+			return true;
+		
+		return false;
 	}
 
 	/**

@@ -7,18 +7,18 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class ConsultaIntegradaObject {
+public class PesquisaIntegradaObject {
 	
 		private Cliente cliente;
 		private Atendimento atd;
 		
-		public ConsultaIntegradaObject(){}
+		public PesquisaIntegradaObject(){}
 		
-		public ConsultaIntegradaObject(Cliente cli){
+		public PesquisaIntegradaObject(Cliente cli){
 			this.cliente = cli;
 		}
 		
-		public ConsultaIntegradaObject(Cliente cli, Atendimento atd){
+		public PesquisaIntegradaObject(Cliente cli, Atendimento atd){
 			this(cli);
 			this.atd = atd;
 		}

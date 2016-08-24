@@ -693,8 +693,8 @@ public class MainApp extends Application {
 		while (resultSet.next()) {
 
 			notas.add(
-					new NotaAvulsa(resultSet.getString("idNotaAvulsa"), descriptografa(resultSet.getString("titulo")),
-							descriptografa(resultSet.getString("link")),
+					new NotaAvulsa(resultSet.getString("idNotaAvulsa"), descriptografa(resultSet.getString("link")),
+							descriptografa(resultSet.getString("titulo")),
 							descriptografa(resultSet.getString("descricao"))));
 		}
 

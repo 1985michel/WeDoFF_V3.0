@@ -51,15 +51,15 @@ public class ClienteSearch {
 		controller.result = busca;
 	}
 
-	private boolean isNomeTemTermo(Cliente cliente, String termo) {
+	public boolean isNomeTemTermo(Cliente cliente, String termo) {
 		return removedora.clean(cliente.getNome().toLowerCase()).contains(termo.toLowerCase());
 	}
 
-	private boolean isNotasSobreClienteTemTermo(Cliente cliente, String termo) {
+	public boolean isNotasSobreClienteTemTermo(Cliente cliente, String termo) {
 		return removedora.clean(cliente.getNotasSobreCLiente().toLowerCase()).contains(termo.toLowerCase());
 	}
 
-	private boolean isCpfTemTermo(Cliente cliente, String termo) {
+	public boolean isCpfTemTermo(Cliente cliente, String termo) {
 		return cliente.getCpf().contains(termo);
 	}
 

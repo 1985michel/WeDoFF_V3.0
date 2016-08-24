@@ -18,7 +18,7 @@ public class AtendimentoSearch {
 	
 	void consultarAtendimentoBuscaAvancada(String termoBase) {
 		
-		controller.OLAtendimentos.addAll(controller.mainApp.getAtendimentoData());
+		controller.result.addAll(controller.mainApp.getAtendimentoData());
 		
 		termoBase = removedora.clean(termoBase);
 		
@@ -35,17 +35,17 @@ public class AtendimentoSearch {
 		
 		ObservableList<Atendimento> busca = FXCollections.observableArrayList();
 		
-		controller.OLAtendimentos.forEach(atd ->{
+		controller.result.forEach(atd ->{
 			 if(isNbTemTermo(atd, termo)) busca.add(atd);
 			 else if(isNotasTemTermo(atd, termo)) busca.add(atd);			 			 
 		});
-		controller.OLAtendimentos = busca;
+		controller.result = busca;
 	}
 	
-	private boolean isNbTemTermo(Atendimento atd, String termo){
+	public boolean isNbTemTermo(Atendimento atd, String termo){
 		return removedora.clean(atd.getNb().toLowerCase()).contains(termo.toLowerCase());
 	}
-	private boolean isNotasTemTermo(Atendimento atd, String termo){
+	public boolean isNotasTemTermo(Atendimento atd, String termo){
 		return removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase());
 	}
 
@@ -58,8 +58,8 @@ public class AtendimentoSearch {
 	private void consultarAtendimentoPorNB(String nb) {
 		controller.mainApp.getAtendimentoData().forEach(atd -> {
 			if (removedora.clean(atd.getNb().toLowerCase()).contains(nb.toLowerCase())) {
-				if (!controller.OLAtendimentos.contains(atd))
-					controller.OLAtendimentos.add(atd);
+				if (!controller.result.contains(atd))
+					controller.result.add(atd);
 			}
 		});
 		// clientesTableView.setItems(result);
@@ -67,8 +67,8 @@ public class AtendimentoSearch {
 	private void consultarAtendimentoPorNotas(String termo) {
 		controller.mainApp.getAtendimentoData().forEach(atd -> {
 			if (removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase())) {
-				if (!controller.OLAtendimentos.contains(atd))
-					controller.OLAtendimentos.add(atd);
+				if (!controller.result.contains(atd))
+					controller.result.add(atd);
 			}
 		});
 		// clientesTableView.setItems(result);

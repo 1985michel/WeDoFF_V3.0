@@ -84,7 +84,7 @@ public class HistoricoDeAtendimentosOverviewController {
 	private Button searchButton;
 
 	// Observable list que conterá o resultado das pesquisas
-	public ObservableList<Atendimento> OLAtendimentos = FXCollections.observableArrayList();
+	public ObservableList<Atendimento> result = FXCollections.observableArrayList();
 
 	// Palco desse dialog
 	private Stage dialogStage;
@@ -171,8 +171,8 @@ public class HistoricoDeAtendimentosOverviewController {
 	 * Passando uma nova observableList para trabalho
 	 */
 	public void setObservableList(ObservableList<Atendimento> OLAtendimentos) {
-		this.OLAtendimentos = OLAtendimentos;
-		atendimentosTableView.setItems(this.OLAtendimentos);
+		this.result = OLAtendimentos;
+		atendimentosTableView.setItems(this.result);
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class HistoricoDeAtendimentosOverviewController {
 			//mainApp.getAtendimentoData().remove(atendimentosTableView.getSelectionModel().getSelectedItem());
 			
 			//Deletando atendimento da lista especifica ( de histórico de atendimentos do cliente, por exemplo)
-			OLAtendimentos.remove(atendimentosTableView.getSelectionModel().getSelectedItem());
+			result.remove(atendimentosTableView.getSelectionModel().getSelectedItem());
 			deletarAtendimentoDaListaPrincipal(id);
 
 		} catch (Exception e) {
@@ -336,13 +336,13 @@ public class HistoricoDeAtendimentosOverviewController {
 		
 		AtendimentoSearch search = new AtendimentoSearch(this);
 		
-		OLAtendimentos.clear();
+		result.clear();
 		String termoBase = searchTextField.getText();
 		if (!termoBase.contains("+"))
 			search.consultarAtendimentoBuscaSimples(termoBase);
 		else
 			search.consultarAtendimentoBuscaAvancada(termoBase);
-		atendimentosTableView.setItems(OLAtendimentos);
+		atendimentosTableView.setItems(result);
 	}
 	
 
