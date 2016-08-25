@@ -153,7 +153,7 @@ public class HistoricoDeClientesOverviewController {
 	 * ou não um cliente selecionado na tabela
 	 */
 	private void permitirAcoes(Cliente cliente) {
-		// TODO Auto-generated method stub
+		
 		if (cliente != null)
 			acoesSobreClienteHBox.setDisable(false);
 		else

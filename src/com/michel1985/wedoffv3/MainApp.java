@@ -21,6 +21,7 @@ import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeNotasAvulsasOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
+import com.michel1985.wedoffv3.view.PesquisaIntegradaOverviewController;
 import com.michel1985.wedoffv3.view.RootLayoutController;
 
 import javafx.application.Application;
@@ -699,6 +700,45 @@ public class MainApp extends Application {
 		}
 
 		notaAvulsaData.addAll(FXCollections.observableArrayList(notas));
+	}
+	
+	/**
+	 * Mostra o HistoricoDeClienteOverview
+	 */
+	public void showPesquisaIntegradaOverview() {
+		try {
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/PesquisaIntegradaOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			PesquisaIntegradaOverviewController controller = loader.getController();
+			controller.setMainApp(this);
+
+			
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Pesquisa Integrada");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

@@ -14,41 +14,43 @@ public class PesquisaIntegradaSearch {
 	MainApp mainApp;
 	ClienteSearch cliSearch;
 	AtendimentoSearch atdSearch;
-	HistoricoDeClientesOverviewController histCliController;
-	HistoricoDeAtendimentosOverviewController histAtdController;
+	PesquisaIntegradaOverviewController controller;
 	RemoveCaracteresEspeciais removedora;
 	ObservableList<PesquisaIntegradaObject> pioResult;
 	
-	public PesquisaIntegradaSearch(MainApp mainApp){
+	public PesquisaIntegradaSearch(MainApp mainApp,PesquisaIntegradaOverviewController controller){
 		this.mainApp = mainApp;
-		this.histCliController = new HistoricoDeClientesOverviewController();
-		this.histAtdController = new HistoricoDeAtendimentosOverviewController();
-		this.cliSearch = new ClienteSearch(histCliController);
-		this.atdSearch = new AtendimentoSearch(histAtdController);
-		
-		this.pioResult = FXCollections.observableArrayList();
+		this.removedora = new RemoveCaracteresEspeciais();
+		this.pioResult = controller.resultFull;
+		this.controller = controller;
 	}
 	
 	public ObservableList<PesquisaIntegradaObject> buscaAvancada(String termoBase){
 		
-		
+		System.out.println("Aqui chegou "+termoBase);
 		termoBase = removedora.clean(termoBase);
+		
+		System.out.println("Removidos os acentos, ficou: "+termoBase);
+		
 		termoBase = termoBase.replaceAll("[+]", "+");
+		
+		System.out.println("Trocado o mais, ficou: "+termoBase);
 
 		String[] termos = termoBase.split("[+]");
 		
-		buscaSimplesEConstrucaoDaLista(termos);
-		
-		this.pioResult = removeDuplicidade();		
-		
-		for(PesquisaIntegradaObject pio : this.pioResult){
-			//fazer a pesquisa avancada aqui
-			if(!isPesquisaIntegradaObjectTemTODOSosTemos(pio,termos)){
-				this.pioResult.remove(pio);
-			}			
+		System.out.println("Dividido, ficou: ");
+		for (int i = 0; i < termos.length; i++) {
+			System.out.println(termos[i]);
 		}
 		
-		return null;
+				
+		//Agora vamos filtrar
+		ObservableList<PesquisaIntegradaObject> list = FXCollections.observableArrayList();
+		for(PesquisaIntegradaObject pio :pioResult){
+			if(isPesquisaIntegradaObjectTemTODOSosTemos(pio, termos)) list.add(pio);
+		}
+		pioResult = list;
+		return pioResult;
 	}
 	
 	public ObservableList<PesquisaIntegradaObject> removeDuplicidade(){
@@ -73,46 +75,17 @@ public class PesquisaIntegradaSearch {
 	
 	public boolean isPesquisaIntegradaObjectTemTermo(PesquisaIntegradaObject pio, String termo){
 		
-		if (this.atdSearch.isNbTemTermo(pio.getAtd(), termo)) return true;
-		else if(this.atdSearch.isNotasTemTermo(pio.getAtd(), termo)) return true;
-		else if(this.cliSearch.isCpfTemTermo(pio.getCliente(), termo)) return true;
-		else if(this.cliSearch.isNomeTemTermo(pio.getCliente(), termo)) return true;
-		else if(this.cliSearch.isNotasSobreClienteTemTermo(pio.getCliente(), termo)) return true;
-				
+		if (isNbTemTermo(pio.getAtd(), termo)) return true;
+		else if(isNotasTemTermo(pio.getAtd(), termo)) return true;
+		if(pio.getCliente()!=null){
+			if(isCpfTemTermo(pio.getCliente(), termo)) return true;
+			else if(isNomeTemTermo(pio.getCliente(), termo)) return true;
+			else if(isNotasSobreClienteTemTermo(pio.getCliente(), termo)) return true;		
+		}
+		
 		return false;
 	}
 
-	public void buscaSimplesEConstrucaoDaLista(String[] termos) {
-		//pesquisando cada um dos termos isoladamente
-		for (int i = 0; i < termos.length; i++) {
-			this.cliSearch.consultarClienteBuscaSimples(termos[i]);
-			this.atdSearch.consultarAtendimentoBuscaSimples(termos[i]);
-		}
-		
-		
-		//Montando a primeira lista bruta com todos os atendimentos e seus clientes
-		this.atdSearch.controller.result.forEach(atd->{
-			pioResult.add(new PesquisaIntegradaObject(getClientePeloId(this.mainApp.getClienteData(), atd.getIdCliente())));
-		});
-		
-		
-		//Verificando se há algum cliente que tem algum dos termos mas que não está na lista já levantada
-		//E ADICIONANDO TODOS OS ATENDIMENTOS DESSE CLIENTE NA LISTA 
-		for(Cliente cli : this.histCliController.result){
-			if(!isInThePesquisaIntegradaList(cli.getIdCliente())){
-				for(Atendimento atd : getAllAtendimentosDeUmCliente(cli.getIdCliente())){
-					pioResult.add(new PesquisaIntegradaObject(getClientePeloId(this.mainApp.getClienteData(), cli.getIdCliente()),atd));
-				}
-			}
-				
-		}
-		
-		//Essa lista resultado é composta por todos os atendimentos que possam estar relacionados mas ainda não passou de fato por uma filtragem avançada,
-		//somente pela filtragem simples e construção da lista
-		
-		//return this.pioResult;
-	}
-	
 	public Cliente getClientePeloId(ObservableList<Cliente> list, String id){
 		for (Cliente cliente : list) {
 			if(cliente.getIdCliente().equalsIgnoreCase(id))
@@ -138,6 +111,29 @@ public class PesquisaIntegradaSearch {
 				atdList.add(atd);
 		}
 		return atdList;
+	}
+	
+		
+	public boolean isNbTemTermo(Atendimento atd, String termo){
+		return removedora.clean(atd.getNb().toLowerCase()).contains(termo.toLowerCase());
+	}
+	public boolean isNotasTemTermo(Atendimento atd, String termo){
+		return removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase());
+	}
+	
+	public boolean isNomeTemTermo(Cliente cliente, String termo) {
+		return removedora.clean(cliente.getNome().toLowerCase()).contains(termo.toLowerCase());
+	}
+
+	public boolean isNotasSobreClienteTemTermo(Cliente cliente, String termo) {
+		return removedora.clean(cliente.getNotasSobreCLiente().toLowerCase()).contains(termo.toLowerCase());
+	}
+
+	public boolean isCpfTemTermo(Cliente cliente, String termo) {
+		
+		if(cliente.getCpf()!=null)
+			return cliente.getCpf().contains(termo);
+		return false;
 	}
 	
 	

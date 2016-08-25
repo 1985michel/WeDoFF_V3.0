@@ -84,5 +84,12 @@ public class RootLayoutController {
     	mainApp.showHistoricoDeNotasAvulsasOverview();
 
     }
+    
+    @FXML
+    void handlePesquisaIntegrada() {
+    	mainApp.showPesquisaIntegradaOverview();
+    }
+    
+    
 
 }
