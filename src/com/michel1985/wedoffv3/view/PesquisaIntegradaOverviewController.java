@@ -116,6 +116,33 @@ public class PesquisaIntegradaOverviewController {
 		// algum é selecionado
 		resultadoTableView.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showPIODetails(newValue));
+		
+		
+		// Detecta o duplo click do mouse e apresenta o alert perguntando se
+				// quer atender aquele cliente.
+				// Caso ok, o cliente é carregado no formulário
+		resultadoTableView.setOnMousePressed((event) -> {
+					if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+						Alert alert = new Alert(AlertType.CONFIRMATION);
+						alert.setTitle("Necessária confirmação");
+						alert.setHeaderText("Você deseja continuar com esse atendimento?");
+						alert.setContentText(
+								"Ao clicar em \"Ok\" os dados desse atendimento serão carregados na tela principal sobrepondo os dados atuais.");
+
+						Optional<ButtonType> result = alert.showAndWait();
+						if (result.get() == ButtonType.OK) {
+							// Obtem o id do cliente selecionado
+							String idCli = resultadoTableView.getSelectionModel().getSelectedItem().getCliente().getIdCliente();
+							String idAte = resultadoTableView.getSelectionModel().getSelectedItem().getAtd().getIdAtendimento();
+							// Passa o id para o controller do AtendendoCliente
+							this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(idCli);
+							this.mainApp.getAtendendoClienteController().ConsultarAtendimentoPeloId(idAte);
+							// fecha o dialog do histórico
+							this.dialogStage.close();
+						}
+					}
+				});
+
 
 	}
 

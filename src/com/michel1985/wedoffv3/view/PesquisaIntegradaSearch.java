@@ -27,22 +27,23 @@ public class PesquisaIntegradaSearch {
 	
 	public ObservableList<PesquisaIntegradaObject> buscaAvancada(String termoBase){
 		
-		System.out.println("Aqui chegou "+termoBase);
+		//System.out.println("Aqui chegou "+termoBase);
 		termoBase = removedora.clean(termoBase);
 		
-		System.out.println("Removidos os acentos, ficou: "+termoBase);
+		//System.out.println("Removidos os acentos, ficou: "+termoBase);
 		
 		termoBase = termoBase.replaceAll("[+]", "+");
 		
-		System.out.println("Trocado o mais, ficou: "+termoBase);
+		//System.out.println("Trocado o mais, ficou: "+termoBase);
 
 		String[] termos = termoBase.split("[+]");
 		
+		/*
 		System.out.println("Dividido, ficou: ");
 		for (int i = 0; i < termos.length; i++) {
 			System.out.println(termos[i]);
 		}
-		
+		*/
 				
 		//Agora vamos filtrar
 		ObservableList<PesquisaIntegradaObject> list = FXCollections.observableArrayList();
