@@ -39,7 +39,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" text="Vencidas" />
                   <MenuItem mnemonicParsing="false" text="a Vencer" />
-                  <MenuItem mnemonicParsing="false" text="Todas" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAtendimentosPendentes" text="Todas" />
                </items>
             </Menu>
           <Menu fx:id="configuracoesMenu" mnemonicParsing="false" text="Configurações">

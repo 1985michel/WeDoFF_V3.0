@@ -90,6 +90,11 @@ public class RootLayoutController {
     	mainApp.showPesquisaIntegradaOverview();
     }
     
+    @FXML
+    void handleAtendimentosPendentes(){
+    	mainApp.showHistoricoDeAtendimentosPendentesOverview();
+    }
+    
     
 
 }

@@ -18,6 +18,7 @@ import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarNotaAvulsaOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosOverviewController;
+import com.michel1985.wedoffv3.view.HistoricoDeAtendimentosPendentesOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeClientesOverviewController;
 import com.michel1985.wedoffv3.view.HistoricoDeNotasAvulsasOverviewController;
 import com.michel1985.wedoffv3.view.LoginOverviewController;
@@ -417,6 +418,60 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+
+	/**
+	 * Mostra o HistoricoDeClienteOverview
+	 */
+	public void showHistoricoDeAtendimentosPendentesOverview() {
+		try {
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeAtendimentosPendentesOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			HistoricoDeAtendimentosPendentesOverviewController controller = loader.getController();
+			controller.setMainApp(this, this.getAtendimentoData());
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 * 
+			 * 
+			 * 
+			 * preciso alterar o sort
+			 *
+			 * 
+			 * 
+			 */
+			// TODO Auto-generated catch block
+			atendimentoData.sort(
+					(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Atendimentos Pendentes");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	/**
 	 * Mostra o HistoricoDeClienteOverview
@@ -680,7 +735,7 @@ public class MainApp extends Application {
 					return;
 				
 			} catch (ClassNotFoundException | SQLException | CRUDException e1) {
-				// TODO Auto-generated catch block
+				
 				e1.printStackTrace();
 			}
 
