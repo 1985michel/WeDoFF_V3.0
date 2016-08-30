@@ -110,54 +110,52 @@ public class PesquisaIntegradaOverviewController {
 		// Detecta mudanças no campo de busca e se ele ficar vazio, apresenta
 		// todo os histórico
 		searchTextField.setOnKeyPressed((event) -> {
-			if (searchTextField.getText().length() == 0){
+			if (searchTextField.getText().length() == 0) {
 				resultadoTableView.setItems(this.resultFull);
 				showPIODetails(null);
 			}
-				
+
 		});
-		
+
 		// Detecta mudanças de seleção e habilita e desabilita as ações do HBox
 		resultadoTableView.getSelectionModel().selectedItemProperty()
-						.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
-		
+				.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
+
 		// Detecta mudanças de seleção e mostra os detalhes do cliente quando
 		// algum é selecionado
 		resultadoTableView.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showPIODetails(newValue));
-		
-		
+
 		// Detecta o duplo click do mouse e apresenta o alert perguntando se
-				// quer atender aquele cliente.
-				// Caso ok, o cliente é carregado no formulário
+		// quer atender aquele cliente.
+		// Caso ok, o cliente é carregado no formulário
 		resultadoTableView.setOnMousePressed((event) -> {
-					if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-						Alert alert = new Alert(AlertType.CONFIRMATION);
-						alert.setTitle("Necessária confirmação");
-						alert.setHeaderText("Você deseja continuar com esse atendimento?");
-						alert.setContentText(
-								"Ao clicar em \"Ok\" os dados desse atendimento serão carregados na tela principal sobrepondo os dados atuais.");
+			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Necessária confirmação");
+				alert.setHeaderText("Você deseja continuar com esse atendimento?");
+				alert.setContentText(
+						"Ao clicar em \"Ok\" os dados desse atendimento serão carregados na tela principal sobrepondo os dados atuais.");
 
-						Optional<ButtonType> result = alert.showAndWait();
-						if (result.get() == ButtonType.OK) {
-							// Obtem o id do cliente selecionado
-							String idCli = resultadoTableView.getSelectionModel().getSelectedItem().getCliente().getIdCliente();
-							String idAte = resultadoTableView.getSelectionModel().getSelectedItem().getAtd().getIdAtendimento();
-							// Passa o id para o controller do AtendendoCliente
-							this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(idCli);
-							this.mainApp.getAtendendoClienteController().ConsultarAtendimentoPeloId(idAte);
-							// fecha o dialog do histórico
-							this.dialogStage.close();
-						}
-					}
-				});
-
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK) {
+					// Obtem o id do cliente selecionado
+					String idCli = resultadoTableView.getSelectionModel().getSelectedItem().getCliente().getIdCliente();
+					String idAte = resultadoTableView.getSelectionModel().getSelectedItem().getAtd().getIdAtendimento();
+					// Passa o id para o controller do AtendendoCliente
+					this.mainApp.getAtendendoClienteController().ConsultarClientePeloId(idCli);
+					this.mainApp.getAtendendoClienteController().ConsultarAtendimentoPeloId(idAte);
+					// fecha o dialog do histórico
+					this.dialogStage.close();
+				}
+			}
+		});
 
 	}
 
 	private void showPIODetails(PesquisaIntegradaObject pio) {
 		if (pio != null) {
-			if(pio.getCliente()!=null){
+			if (pio.getCliente() != null) {
 				notasSobreClienteTextArea.setText(pio.getCliente().getNotasSobreCLiente());
 				notasSobreAtendimentoTextArea.setText(pio.getAtd().getNotasSobreAtendimento());
 			}
@@ -203,10 +201,10 @@ public class PesquisaIntegradaOverviewController {
 
 		return null;
 	}
-	
-	
-	// Trabalhando sobre a possibilidade de editar os atendimentos e clientes resultantes da pesquisa
-	
+
+	// Trabalhando sobre a possibilidade de editar os atendimentos e clientes
+	// resultantes da pesquisa
+
 	/**
 	 * Atualizando {@link Atendimento} Chamado quando o usuário clica em "editar
 	 * cliente"
@@ -222,12 +220,50 @@ public class PesquisaIntegradaOverviewController {
 			boolean okClicked = mainApp.showEditarAtendimentoOverview(selectedAtendimento);
 			if (okClicked) {
 				showPIODetails(pio);
-				atualizaNoBanco(selectedAtendimento);
+				atualizaAtendimentoNoBanco(selectedAtendimento);
+			}
+		}
+	}
+
+	@FXML
+	private void handleAtualizaCliente() {
+		PesquisaIntegradaObject pio = resultadoTableView.getSelectionModel().getSelectedItem();
+		Cliente selectedCliente = pio.getCliente();
+
+		if (selectedCliente != null) {
+
+			boolean okClicked = mainApp.showEditarClienteOverview(selectedCliente);
+			if (okClicked) {
+				showPIODetails(pio);
+				atualizaClienteNoBanco(selectedCliente);
 			}
 		}
 	}
 	
-	private void atualizaNoBanco(Atendimento atendimento) {
+	private void atualizaClienteNoBanco(Cliente cliente) {
+
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+
+			resultSet = crud.getResultSet("UPDATE clientes SET cpfcliente= '" + criptografa(cliente.getCpf())
+					+ "', nomecliente= '" + criptografa(cliente.getNome()) + "', notassobrecliente= '"
+					+ criptografa(cliente.getNotasSobreCLiente()) + "' WHERE idcliente='" + cliente.getIdCliente()
+					+ "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Nota: Como trata-se de uma observableList a atualização já foi feita
+		// na lista
+	}
+
+	private void atualizaAtendimentoNoBanco(Atendimento atendimento) {
 
 		ResultSet resultSet = null;
 		try {
@@ -251,12 +287,12 @@ public class PesquisaIntegradaOverviewController {
 		// Nota: Como trata-se de uma observableList a atualização já foi feita
 		// na lista
 	}
-	
+
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
-	
+
 	/**
 	 * Método que habilitará e desabilitará as ações sobre o cliente Se houver
 	 * ou não um cliente selecionado na tabela
