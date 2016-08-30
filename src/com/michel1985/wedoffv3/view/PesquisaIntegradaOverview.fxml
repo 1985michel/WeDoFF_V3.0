@@ -104,7 +104,7 @@
                   <HBox fx:id="acoesSobreAtendimentoHBox" alignment="CENTER_RIGHT" disable="true" layoutY="373.0" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
                         <Button fx:id="verClienteAtendidoButton" mnemonicParsing="false" text="Ver Cliente" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="verAtendimento" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Ver Atendimento" />
+                        <Button fx:id="verAtendimento" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAtualizaAtendimento" text="Ver Atendimento" />
                      </children>
                   </HBox>
                </children>

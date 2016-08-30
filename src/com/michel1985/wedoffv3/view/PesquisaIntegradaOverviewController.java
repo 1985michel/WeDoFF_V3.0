@@ -1,11 +1,16 @@
 package com.michel1985.wedoffv3.view;
 
+import java.sql.ResultSet;
 import java.util.Optional;
 
+import org.omg.CORBA.PERSIST_STORE;
+
 import com.michel1985.wedoffv3.MainApp;
+import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.PesquisaIntegradaObject;
+import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.EstruturaData;
 
 import javafx.collections.FXCollections;
@@ -112,6 +117,10 @@ public class PesquisaIntegradaOverviewController {
 				
 		});
 		
+		// Detecta mudanças de seleção e habilita e desabilita as ações do HBox
+		resultadoTableView.getSelectionModel().selectedItemProperty()
+						.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
+		
 		// Detecta mudanças de seleção e mostra os detalhes do cliente quando
 		// algum é selecionado
 		resultadoTableView.getSelectionModel().selectedItemProperty()
@@ -193,5 +202,70 @@ public class PesquisaIntegradaOverviewController {
 		}
 
 		return null;
+	}
+	
+	
+	// Trabalhando sobre a possibilidade de editar os atendimentos e clientes resultantes da pesquisa
+	
+	/**
+	 * Atualizando {@link Atendimento} Chamado quando o usuário clica em "editar
+	 * cliente"
+	 */
+	@FXML
+	public void handleAtualizaAtendimento() {
+		System.out.println("Estamos tentando abrir a nova janela de edição");
+		PesquisaIntegradaObject pio = resultadoTableView.getSelectionModel().getSelectedItem();
+		Atendimento selectedAtendimento = pio.getAtd();
+
+		if (selectedAtendimento != null) {
+
+			boolean okClicked = mainApp.showEditarAtendimentoOverview(selectedAtendimento);
+			if (okClicked) {
+				showPIODetails(pio);
+				atualizaNoBanco(selectedAtendimento);
+			}
+		}
+	}
+	
+	private void atualizaNoBanco(Atendimento atendimento) {
+
+		ResultSet resultSet = null;
+		try {
+			CRUD crud = new CRUD(mainApp.getUsuarioAtivo());
+
+			resultSet = crud.getResultSet("UPDATE atendimentos SET nb= '" + criptografa(atendimento.getNb())
+					+ "', notassobreatendimento= '" + criptografa(atendimento.getNotasSobreAtendimento())
+					+ "', datasolucao= '" + atendimento.getDataSolucao() + "', dataatendimento= '"
+					+ atendimento.getDataAtendimento() + "', ispendente= '" + atendimento.getIsPendente()
+					+ "', isagendamento= '" + atendimento.getIsAgendamento() + "' WHERE idatendimento='"
+					+ atendimento.getIdAtendimento() + "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Nota: Como trata-se de uma observableList a atualização já foi feita
+		// na lista
+	}
+	
+	public String criptografa(String texto) {
+		Cripto cripto = new Cripto();
+		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
+	}
+	
+	/**
+	 * Método que habilitará e desabilitará as ações sobre o cliente Se houver
+	 * ou não um cliente selecionado na tabela
+	 */
+	private void permitirAcoes(PesquisaIntegradaObject pio) {
+
+		if (pio != null)
+			acoesSobreAtendimentoHBox.setDisable(false);
+		else
+			acoesSobreAtendimentoHBox.setDisable(true);
 	}
 }
