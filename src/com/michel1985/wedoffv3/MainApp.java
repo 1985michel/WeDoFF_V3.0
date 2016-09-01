@@ -3,7 +3,9 @@ package com.michel1985.wedoffv3;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.crud.NotasAvulsasTableExist;
@@ -13,6 +15,7 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.NotaAvulsa;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
+import com.michel1985.wedoffv3.util.EstruturaData;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
@@ -446,8 +449,12 @@ public class MainApp extends Application {
 			 * 
 			 */
 			// TODO Auto-generated catch block
-			atendimentoData.sort(
-					(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+			//atendimentoData.sort(
+				//	(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
+			
+			controller.pendentesList.sort(
+					(o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
+
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -470,8 +477,30 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	public LocalDate geraData(String data){
+		System.out.println("data: "+data);
+		if(data!=null && data.length()==10){
+			
+			String[] estru = data.split("-");
+			int ano = Integer.parseInt(estru[0]);
+			int mes = Integer.parseInt(estru[1]);
+			int dia = Integer.parseInt(estru[2]);
+			LocalDate date =  LocalDate.of(ano, mes, dia);
+			return date;
+		}else
+			return null;
+		
+	}
 
 
+	public int comparaDatas(LocalDate data1, LocalDate data2){
+		if(data1.isEqual(data2))
+			return 0;
+		else if(data1.isBefore(data2))
+			return -1;
+		else return 1;
+	}
 
 	/**
 	 * Mostra o HistoricoDeClienteOverview
