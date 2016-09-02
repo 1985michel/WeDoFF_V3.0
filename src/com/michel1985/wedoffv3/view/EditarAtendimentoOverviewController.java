@@ -149,6 +149,7 @@ public class EditarAtendimentoOverviewController {
 			atendimento.setNotasSobreAtendimento(notas);
 			atendimento.setNb(nb);
 			atendimento.setIsAgendamento(isAgendamento);
+			atendimento.setIsPendente(isPendente);
 			if(isPendente) 	atendimento.setDataSolucao(dataSolucao);
 			
 			
