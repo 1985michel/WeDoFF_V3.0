@@ -1,31 +1,33 @@
 package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.Optional;
 
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
-import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.EstruturaData;
-import com.michel1985.wedoffv3.util.ValidaCPF;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class HistoricoDeAtendimentosPendentesOverviewController extends HistoricoDeAtendimentosOverviewController {
@@ -33,7 +35,8 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	@FXML
 	private Label historicoDeAtendimentosTituloLabel;
 
-	@FXML TableView<Atendimento> atendimentosTableView;
+	@FXML
+	TableView<Atendimento> atendimentosTableView;
 
 	@FXML
 	private TableColumn<Atendimento, String> idAtendimentoTableColumn;
@@ -46,7 +49,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 
 	@FXML
 	private TableColumn<Atendimento, String> dataAtendimentoTableColumn;
-	
+
 	@FXML
 	private TableColumn<Atendimento, String> dataSolucaoTableColumn;
 
@@ -88,8 +91,8 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 
 	// Observable list que conterá o resultado das pesquisas
 	public ObservableList<Atendimento> result = FXCollections.observableArrayList();
-	
-	//Lista com todos atendimentos pendentes
+
+	// Lista com todos atendimentos pendentes
 	public ObservableList<Atendimento> pendentesList = FXCollections.observableArrayList();
 
 	// Palco desse dialog
@@ -97,7 +100,8 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 
 	MainApp mainApp;
 
-	public HistoricoDeAtendimentosPendentesOverviewController(){}
+	public HistoricoDeAtendimentosPendentesOverviewController() {
+	}
 
 	/**
 	 * Inicializa a classe controller. Método chamado ao carregar o fxml
@@ -110,13 +114,44 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		nbTableColumn.setCellValueFactory(cellData -> cellData.getValue().nbProperty());
 		// Informando o foramto de datas que quero que seja apresentado na
 		// tabela
-		
+
 		dataAtendimentoTableColumn.setCellValueFactory(
 				cellData -> EstruturaData.estruturaData(cellData.getValue().dataAtendimentoProperty()));
 		dataSolucaoTableColumn.setCellValueFactory(
 				cellData -> EstruturaData.estruturaData(cellData.getValue().dataSolucaoProperty()));
+
+		dataSolucaoTableColumn.setCellFactory(column -> {
+			return new TableCell<Atendimento, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					if (item != null && item != "") {
+						super.updateItem(item, empty);
+
+						LocalDate data = geraData(item);
+						LocalDate hoje = LocalDate.now();
+						setText(item);
+
+						TableRow<Atendimento> currentRow = getTableRow();
+
+						if (currentRow != null) {
+							if (data.isBefore(hoje)) {// ou seja, se for data
+								// vencida
+								currentRow.setStyle("-fx-background-color: #FE7B51;");
+							} else if (data.equals(hoje)) {// vencendo hoje
+								currentRow.setStyle("-fx-background-color: #F7C809;");
+							} else if (data.isAfter(hoje)) {
+								//currentRow.setStyle("-fx-background-color: #ffffff;");
+							}
+						}
+
+					}
+				}
+			};
+		});
+
 		isAgendamentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().isAgendamentoProperty());
-		//isPendenteTableColumn.setCellValueFactory(cellData -> cellData.getValue().isPendenteProperty());
+		// isPendenteTableColumn.setCellValueFactory(cellData ->
+		// cellData.getValue().isPendenteProperty());
 
 		// limpa os detalhes do atendimento
 		showAtendimentoDetails(null);
@@ -132,11 +167,11 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 				.addListener((observable, oldValue, newValue) -> permitirAcoes(newValue));
 
 		// Detecta mudanças no campo de busca e se ele ficar vazio, apresenta
-				// todo os histórico
-				searchTextField.setOnKeyPressed((event) -> {
-					if (searchTextField.getText().length() == 0)
-						atendimentosTableView.setItems(pendentesList);
-				});
+		// todo os histórico
+		searchTextField.setOnKeyPressed((event) -> {
+			if (searchTextField.getText().length() == 0)
+				atendimentosTableView.setItems(pendentesList);
+		});
 
 		// Detecta o duplo click do mouse e apresenta o alert perguntando se
 		// quer atender aquele cliente.
@@ -176,13 +211,13 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		atendimentosTableView.setItems(pendentesList);
 
 	}
-	
+
 	/**
 	 * Construindo a lista só com os atendimentos pendentes
-	 * */
-	public void buildListPendentes(ObservableList<Atendimento> list){
+	 */
+	public void buildListPendentes(ObservableList<Atendimento> list) {
 		for (Atendimento atd : list) {
-			if(atd.getIsPendente())
+			if (atd.getIsPendente())
 				pendentesList.add(atd);
 		}
 	}
@@ -248,18 +283,21 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 
 			// Removendo o cliente da observableList
 			deletarAtendimentoDaListaCorrente();
+
 		}
+
 	}
 
 	private void deletarAtendimentoDaListaCorrente() {
 		try {
 			String id = atendimentosTableView.getSelectionModel().getSelectedItem().getIdAtendimento();
-			System.out.println("estamos aqui e queremos deletar o atd d id "+id);
-			//Atendimento atd = ;
-			
-			//mainApp.getAtendimentoData().remove(atendimentosTableView.getSelectionModel().getSelectedItem());
-			
-			//Deletando atendimento da lista especifica ( de histórico de atendimentos do cliente, por exemplo)
+			System.out.println("estamos aqui e queremos deletar o atd d id " + id);
+			// Atendimento atd = ;
+
+			// mainApp.getAtendimentoData().remove(atendimentosTableView.getSelectionModel().getSelectedItem());
+
+			// Deletando atendimento da lista especifica ( de histórico de
+			// atendimentos do cliente, por exemplo)
 			result.remove(atendimentosTableView.getSelectionModel().getSelectedItem());
 			pendentesList.remove(atendimentosTableView.getSelectionModel().getSelectedItem());
 			deletarAtendimentoDaListaPrincipal(id);
@@ -268,20 +306,18 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 			e.printStackTrace();
 		}
 	}
-	
-	//Não gosto desse método mas o lambda não obteve sucesso 
-	private void deletarAtendimentoDaListaPrincipal(String id){
+
+	// Não gosto desse método mas o lambda não obteve sucesso
+	private void deletarAtendimentoDaListaPrincipal(String id) {
 		Atendimento aRemover = null;
 		for (Iterator iterator = mainApp.getAtendimentoData().iterator(); iterator.hasNext();) {
 			Atendimento atd = (Atendimento) iterator.next();
-			if(atd.getIdAtendimento().equalsIgnoreCase(id))
+			if (atd.getIdAtendimento().equalsIgnoreCase(id))
 				aRemover = atd;
 		}
-		mainApp.getAtendimentoData().remove(aRemover);	
-		
+		mainApp.getAtendimentoData().remove(aRemover);
+
 	}
-	
-	
 
 	private void deletarAtendimentoDoBancoDeDados() {
 
@@ -301,8 +337,6 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 			}
 		}
 	}
-	
-
 
 	/**
 	 * Atualizando {@link Atendimento} Chamado quando o usuário clica em "editar
@@ -351,12 +385,12 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
-	
+
 	@FXML
-	private void handleConsultarAtendimento(){
-		
+	private void handleConsultarAtendimento() {
+
 		AtendimentoSearch search = new AtendimentoSearch(this);
-		
+
 		result.clear();
 		String termoBase = searchTextField.getText();
 		if (!termoBase.contains("+"))
@@ -365,7 +399,32 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 			search.consultarAtendimentoBuscaAvancada(termoBase);
 		atendimentosTableView.setItems(result);
 	}
-	
 
+	// metodo que recebe uma String baseadas em LocalDate e retorna o ano, mes e
+	// dia
+	public int[] estruturaData(String data) {
+
+		String[] dataStr = data.split("-");
+		int ano = Integer.parseInt(dataStr[0]);
+		int mes = Integer.parseInt(dataStr[1]);
+		int dia = Integer.parseInt(dataStr[2]);
+
+		return new int[] { ano, mes, dia };
+	}
+
+	public LocalDate geraData(String data) {
+		System.out.println("data: " + data);
+		if (data != null && data.length() == 10) {
+
+			String[] estru = data.split("/");
+			int ano = Integer.parseInt(estru[2]);
+			int mes = Integer.parseInt(estru[1]);
+			int dia = Integer.parseInt(estru[0]);
+			LocalDate date = LocalDate.of(ano, mes, dia);
+			return date;
+		} else
+			return null;
+
+	}
 
 }
