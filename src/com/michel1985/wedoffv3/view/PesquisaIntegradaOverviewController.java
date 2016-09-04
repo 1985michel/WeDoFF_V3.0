@@ -3,8 +3,6 @@ package com.michel1985.wedoffv3.view;
 import java.sql.ResultSet;
 import java.util.Optional;
 
-import org.omg.CORBA.PERSIST_STORE;
-
 import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;

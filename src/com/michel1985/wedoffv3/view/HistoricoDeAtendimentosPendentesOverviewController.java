@@ -2,7 +2,6 @@ package com.michel1985.wedoffv3.view;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -128,20 +127,13 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 						super.updateItem(item, empty);
 
 						LocalDate data = geraData(item);
-						LocalDate hoje = LocalDate.now();
+
 						setText(item);
 
 						TableRow<Atendimento> currentRow = getTableRow();
 
 						if (currentRow != null) {
-							if (data.isBefore(hoje)) {// ou seja, se for data
-								// vencida
-								currentRow.setStyle("-fx-background-color: #FE7B51;");
-							} else if (data.equals(hoje)) {// vencendo hoje
-								currentRow.setStyle("-fx-background-color: #F7C809;");
-							} else if (data.isAfter(hoje)) {
-								//currentRow.setStyle("-fx-background-color: #ffffff;");
-							}
+							setRowColorDoAtendimentoPendente(currentRow, data);
 						}
 
 					}
@@ -197,12 +189,32 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 				}
 			}
 		});
+		
+		
 
+	}
+
+	public void setRowColorDoAtendimentoPendente(TableRow<Atendimento> currentRow, LocalDate data) {
+		LocalDate hoje = LocalDate.now();
+		if (data.isBefore(hoje)) {// ou seja, se for data
+			// vencida
+			currentRow.setStyle("-fx-background-color: #FE7B51;");
+
+		} else if (data.equals(hoje)) {// vencendo hoje
+			currentRow.setStyle("-fx-background-color: #ffff33;");
+			
+
+		} else if (data.isAfter(hoje)) {
+			currentRow.setStyle("");
+			// A linha acima apesar de aparentemente não está fazendo nada
+			// É necessária para que a coloração das rows ficam inalteradas
+		}
 	}
 
 	/**
 	 * Ligando ao main
 	 */
+	@Override
 	public void setMainApp(MainApp main, ObservableList<Atendimento> list) {
 		this.mainApp = main;
 
@@ -225,6 +237,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	/**
 	 * Passando uma nova observableList para trabalho
 	 */
+	@Override
 	public void setObservableList(ObservableList<Atendimento> OLAtendimentos) {
 		this.result = OLAtendimentos;
 		atendimentosTableView.setItems(this.result);
@@ -235,10 +248,12 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	 * 
 	 * @param dialogStage
 	 */
+	@Override
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
 
+	@Override
 	public void handleShowHistoricoDeClientes() {
 		mainApp.showHistoricoDeClientesOverview();
 	}
@@ -353,6 +368,10 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 				showAtendimentoDetails(selectedAtendimento);
 				atualizaNoBanco(selectedAtendimento);
 			}
+
+			// ToDO
+			atendimentosTableView.setItems(pendentesList);
+			initialize();
 		}
 	}
 
@@ -381,6 +400,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		// na lista
 	}
 
+	@Override
 	public String criptografa(String texto) {
 		Cripto cripto = new Cripto();
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());

@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-
 import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.crud.NotasAvulsasTableExist;
 import com.michel1985.wedoffv3.exceptions.CRUDException;
@@ -15,7 +13,6 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.NotaAvulsa;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
-import com.michel1985.wedoffv3.util.EstruturaData;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;

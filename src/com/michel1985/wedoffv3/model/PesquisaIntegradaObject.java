@@ -1,12 +1,5 @@
 package com.michel1985.wedoffv3.model;
 
-import java.util.ArrayList;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class PesquisaIntegradaObject {
 	
 		private Cliente cliente;

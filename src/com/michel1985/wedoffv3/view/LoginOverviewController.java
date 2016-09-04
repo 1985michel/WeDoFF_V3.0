@@ -1,7 +1,6 @@
 package com.michel1985.wedoffv3.view;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 

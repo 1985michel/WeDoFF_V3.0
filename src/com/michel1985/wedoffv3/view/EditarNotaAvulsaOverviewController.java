@@ -1,14 +1,6 @@
 package com.michel1985.wedoffv3.view;
 
-import java.sql.ResultSet;
-
-import com.michel1985.wedoffv3.MainApp;
-import com.michel1985.wedoffv3.crud.CRUD;
-import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.NotaAvulsa;
-import com.michel1985.wedoffv3.seguranca.Cripto;
-import com.michel1985.wedoffv3.util.ValidaCliente;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
