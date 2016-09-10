@@ -13,19 +13,13 @@ public class CRUD {
 
 	static Usuario user;
 	public String address;
+	public static String diretorioDb = "D:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
 
 	public CRUD(Usuario user) {
-		CRUD.user = user;
-
-		address = "jdbc:hsqldb:file:D:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/" + user.getNome();
-		//address = "jdbc:hsqldb:file:C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/" + user.getNome();
-		//address = "jdbc:hsqldb:file:C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/"+user.getNome();
-
-
+		CRUD.user = user;				
+		address = "jdbc:hsqldb:file:"+diretorioDb + user.getNome();
+		//address = "jdbc:hsqldb:file:D:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/" + user.getNome();		
 	}
-
-	// static final String address =
-	// "jdbc:hsqldb:file:C:/ITA/workplace/hsqldb-2.3.3/hsqldb/db/crudfx";
 
 	public ResultSet getResultSet(String strSql) throws SQLException, ClassNotFoundException, CRUDException {
 		Connection connection = null;

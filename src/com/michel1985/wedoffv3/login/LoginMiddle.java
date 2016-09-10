@@ -84,7 +84,9 @@ public class LoginMiddle {
 
 	private boolean isUserNameInUse(String login) {
 		login = login + ".tmp";
-		File diretorio = new File("D:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/" + login);
+		//File diretorio = new File("D:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/" + login);
+		File diretorio = new File(CRUD.diretorioDb + login);
+
 		if (!diretorio.exists()) {
 			return false;
 		} else {
