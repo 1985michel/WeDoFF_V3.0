@@ -16,8 +16,8 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Histórico">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeClientes" text="Todos Clientes" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeAtendimentos" text="Todos Atendimentos" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeClientes" text="Clientes" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleHistoricoDeAtendimentos" text="Atendimentos" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Consulta Integrada">
@@ -27,8 +27,8 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Notas e Links">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleGravarNovaNota" text="Nova Nota" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleConsultarNotas" text="Consultar Notas" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleGravarNovaNota" text="Novo" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleConsultarNotas" text="Consultar" />
                </items></Menu>
             <Menu mnemonicParsing="false" text="Estatísticas">
                <items>
@@ -37,9 +37,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Pendências">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Vencidas" />
-                  <MenuItem mnemonicParsing="false" text="a Vencer" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleAtendimentosPendentes" text="Todas" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAtendimentosPendentes" text="Consultar" />
                </items>
             </Menu>
           <Menu fx:id="configuracoesMenu" mnemonicParsing="false" text="Configurações">
