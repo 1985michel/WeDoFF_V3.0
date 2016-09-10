@@ -228,6 +228,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	 * Construindo a lista só com os atendimentos pendentes
 	 */
 	public void buildListPendentes() {
+		pendentesList  = FXCollections.observableArrayList(); 
 		for (Atendimento atd : mainApp.getAtendimentoData()) {
 			if (atd.getIsPendente())
 				pendentesList.add(atd);
