@@ -701,6 +701,51 @@ public class MainApp extends Application {
 		}
 	}
 	
+	private Object[] showHistoricoDeNotasAvulsasOverviewRetornandoController(){
+		HistoricoDeNotasAvulsasOverviewController controller = null;
+		Stage dialogStage = null;
+		
+		try {
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeNotasAvulsasOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			controller = loader.getController();
+			controller.setMainApp(this);
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			notaAvulsaData.sort((o1, o2) -> Integer.parseInt(o2.getIdNotaAvulsa()) - Integer.parseInt(o1.getIdNotaAvulsa()));
+
+			// Criando o dialogStage
+			dialogStage = new Stage();
+			dialogStage.setTitle("Histórico de Notas Avulsas");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Object[] obj = {controller,dialogStage};
+		return obj;
+	}
+	
 	/**
 	 * Apresenta o dialog para edição do cliente
 	 */
@@ -718,7 +763,7 @@ public class MainApp extends Application {
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
 
-			// Passa o cliente a ser editado ao controller
+			// Passa a nota a ser editado ao controller
 			EditarNotaAvulsaOverviewController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setNotaAvulsa(notaAvulsa);
@@ -734,6 +779,9 @@ public class MainApp extends Application {
 		}
 		return false;
 	}
+	
+	
+	
 	
 	public void carregaHistoricoDeNotasAvulstas() {
 		if (this.usuarioAtivo != null) {
@@ -768,6 +816,8 @@ public class MainApp extends Application {
 			
 		}
 	}
+	
+	
 
 	private void adicionaTodasNotasAvulsasFromDBNaNotasAvulsasData(ResultSet resultSet) throws SQLException {
 		ArrayList<NotaAvulsa> notas = new ArrayList<>();

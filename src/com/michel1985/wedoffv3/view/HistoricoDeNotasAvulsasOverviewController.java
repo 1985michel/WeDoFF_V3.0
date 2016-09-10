@@ -253,6 +253,8 @@ public class HistoricoDeNotasAvulsasOverviewController {
 		}
 	}
 	
+	
+	
 
 	private void atualizaNoBanco(NotaAvulsa notaAvulsa) {
 
@@ -302,8 +304,8 @@ public class HistoricoDeNotasAvulsasOverviewController {
 	
 	
 
-	@FXML
-	private void handleNovaNotaAvulsa() {		
+	//@FXML
+	public void handleNovaNotaAvulsa() {		
 
 			NotaAvulsa notaAvulsa = new NotaAvulsa("","","");
 			boolean okClicked = mainApp.showEditarNotaAvulsaOverview(notaAvulsa);
@@ -314,6 +316,7 @@ public class HistoricoDeNotasAvulsasOverviewController {
 		
 	}
 	
+
 	private void gravarNovaNotaAvulsa(NotaAvulsa nota) {
 
 		System.out.println("Estamos tentando gravar a seguinte nota: ");
