@@ -112,7 +112,7 @@ public class EditarAtendimentoOverviewController {
 							}
 
 						} catch (Exception e) {
-							alertarWarning("Data de Solução?", "Quando este atendimento deve ser concluído?",
+							alertarWarning("Data de Solução?", "Data inválida. Quando este atendimento deve ser concluído?",
 									"Você informou que o atendimento ficou pendente.\nQuando ele deve ser concluido?");
 							return;
 						}

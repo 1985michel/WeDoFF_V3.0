@@ -10,6 +10,7 @@ import com.michel1985.wedoffv3.crud.CRUD;
 import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.util.EstruturaData;
+import com.michel1985.wedoffv3.util.RemoveCaracteresEspeciais;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -98,8 +99,10 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	private Stage dialogStage;
 
 	MainApp mainApp;
+	RemoveCaracteresEspeciais removedora;
 
 	public HistoricoDeAtendimentosPendentesOverviewController() {
+		this.removedora = new RemoveCaracteresEspeciais();
 	}
 
 	/**
@@ -189,8 +192,6 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 				}
 			}
 		});
-		
-		
 
 	}
 
@@ -202,7 +203,6 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 
 		} else if (data.equals(hoje)) {// vencendo hoje
 			currentRow.setStyle("-fx-background-color: #ffff33;");
-			
 
 		} else if (data.isAfter(hoje)) {
 			currentRow.setStyle("");
@@ -219,7 +219,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		this.mainApp = main;
 
 		// Adiciona os dados da observable list à tabela
-		buildListPendentes(list);
+		buildListPendentes();
 		atendimentosTableView.setItems(pendentesList);
 
 	}
@@ -227,11 +227,13 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	/**
 	 * Construindo a lista só com os atendimentos pendentes
 	 */
-	public void buildListPendentes(ObservableList<Atendimento> list) {
-		for (Atendimento atd : list) {
+	public void buildListPendentes() {
+		for (Atendimento atd : mainApp.getAtendimentoData()) {
 			if (atd.getIsPendente())
 				pendentesList.add(atd);
 		}
+		
+		mainApp.ordenaListaDeAtendimentosPendentes(pendentesList);
 	}
 
 	/**
@@ -367,11 +369,15 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 			if (okClicked) {
 				showAtendimentoDetails(selectedAtendimento);
 				atualizaNoBanco(selectedAtendimento);
+				// ToDO
+				// O código abaixo ainda não me parece redondo... pensar funcionalidades
+				buildListPendentes();
+				atendimentosTableView.setItems(pendentesList);
+				initialize();
 			}
-
-			// ToDO
-			atendimentosTableView.setItems(pendentesList);
-			initialize();
+			
+			
+			
 		}
 	}
 
@@ -406,19 +412,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		return cripto.criptografa(texto, mainApp.getUsuarioAtivo().getSenha());
 	}
 
-	@FXML
-	private void handleConsultarAtendimento() {
 
-		AtendimentoSearch search = new AtendimentoSearch(this);
-
-		result.clear();
-		String termoBase = searchTextField.getText();
-		if (!termoBase.contains("+"))
-			search.consultarAtendimentoBuscaSimples(termoBase);
-		else
-			search.consultarAtendimentoBuscaAvancada(termoBase);
-		atendimentosTableView.setItems(result);
-	}
 
 	// metodo que recebe uma String baseadas em LocalDate e retorna o ano, mes e
 	// dia
@@ -445,6 +439,87 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		} else
 			return null;
 
+	}
+	
+	@FXML
+	private void handleConsultarAtendimento() {
+
+		
+		//result.clear();
+		String termoBase = searchTextField.getText();
+		if (!termoBase.contains("+"))
+			consultarAtendimentoBuscaSimples(termoBase);
+		else
+			consultarAtendimentoBuscaAvancada(termoBase);
+		initialize();
+		atendimentosTableView.setItems(result);
+	}
+
+	void consultarAtendimentoBuscaSimples(String termoBase) {
+		// Limpando a lista que conterá os resultados
+		result = FXCollections.observableArrayList();
+		termoBase = removedora.clean(termoBase);
+		consultarAtendimentoPorNB(termoBase);
+		consultarAtendimentoPorNotas(termoBase);
+	}
+
+	private void consultarAtendimentoPorNB(String nb) {
+		pendentesList.forEach(atd -> {
+			if (removedora.clean(atd.getNb().toLowerCase()).contains(nb.toLowerCase())) {
+				if (!this.result.contains(atd))
+					this.result.add(atd);
+			}
+		});
+		// clientesTableView.setItems(result);
+	}
+
+	private void consultarAtendimentoPorNotas(String termo) {
+		pendentesList.forEach(atd -> {
+			if (removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase())) {
+				if (!this.result.contains(atd))
+					this.result.add(atd);
+			}
+		});
+		// clientesTableView.setItems(result);
+	}
+
+	void consultarAtendimentoBuscaAvancada(String termoBase) {
+
+		// Limpando a lista que conterá os resultados
+		result = FXCollections.observableArrayList();
+
+		result.addAll(this.pendentesList);
+
+		termoBase = removedora.clean(termoBase);
+
+		termoBase = termoBase.replaceAll("[+]", "+");
+		String[] termos = termoBase.split("[+]");
+
+		for (int i = 0; i < termos.length; i++) {
+			RealizandoBuscaAvancadaDoTermo(termos[i].trim());
+		}
+
+	}
+
+	private void RealizandoBuscaAvancadaDoTermo(String termo) {
+
+		ObservableList<Atendimento> busca = FXCollections.observableArrayList();
+
+		result.forEach(atd -> {
+			if (isNbTemTermo(atd, termo))
+				busca.add(atd);
+			else if (isNotasTemTermo(atd, termo))
+				busca.add(atd);
+		});
+		result = busca;
+	}
+
+	public boolean isNbTemTermo(Atendimento atd, String termo) {
+		return removedora.clean(atd.getNb().toLowerCase()).contains(termo.toLowerCase());
+	}
+
+	public boolean isNotasTemTermo(Atendimento atd, String termo) {
+		return removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase());
 	}
 
 }

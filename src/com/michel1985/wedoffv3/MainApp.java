@@ -821,6 +821,11 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	public void ordenaListaDeAtendimentosPendentes(ObservableList<Atendimento> list){
+		list.sort(
+				(o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
+	}
 
 
 }
