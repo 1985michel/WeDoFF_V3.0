@@ -28,6 +28,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class HistoricoDeAtendimentosPendentesOverviewController extends HistoricoDeAtendimentosOverviewController {
@@ -110,6 +111,8 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	 */
 	@FXML
 	private void initialize() {
+		
+		atendimentosTableView.setStyle(" .table-row-cell:selected { -fx-background-color: steelblue;}.table-row-cell:selected .text {-fx-fill: red ;}");
 
 		idAtendimentoTableColumn.setCellValueFactory(cellData -> cellData.getValue().idAtendimentoProperty());
 		idClienteTableColumn.setCellValueFactory(cellData -> cellData.getValue().idClienteProperty());
@@ -196,13 +199,18 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	}
 
 	public void setRowColorDoAtendimentoPendente(TableRow<Atendimento> currentRow, LocalDate data) {
+		
+		
+		
 		LocalDate hoje = LocalDate.now();
 		if (data.isBefore(hoje)) {// ou seja, se for data
 			// vencida
 			currentRow.setStyle("-fx-background-color: #FE7B51;");
 
 		} else if (data.equals(hoje)) {// vencendo hoje
-			currentRow.setStyle("-fx-background-color: #ffff33;");
+			currentRow.setStyle("-fx-background-color: #ffff33;-fx-light-text-color: steelblue ;");
+			
+			
 
 		} else if (data.isAfter(hoje)) {
 			currentRow.setStyle("");
