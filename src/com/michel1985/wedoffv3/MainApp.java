@@ -14,6 +14,7 @@ import com.michel1985.wedoffv3.model.NotaAvulsa;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
+import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsController;
 import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarNotaAvulsaOverviewController;
@@ -875,6 +876,39 @@ public class MainApp extends Application {
 	public void ordenaListaDeAtendimentosPendentes(ObservableList<Atendimento> list){
 		list.sort(
 				(o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
+	}
+	
+	/**
+	 * Opens a dialog to show birthday statistics.
+	 */
+	public void showAtendimentoDiarioStatistics() {
+	    try {
+	        // Load the fxml file and create a new stage for the popup.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/AtendimentoDiarioStatistics.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+	        
+	        
+	     // Set the persons into the controller.
+	        AtendimentoDiarioStatisticsController controller = loader.getController();
+	        controller.setMainApp(this);
+	        controller.setAndShowData();
+	        
+	        
+	        Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Birthday Statistics");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(primaryStage);
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+
+	        
+
+	        dialogStage.show();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 

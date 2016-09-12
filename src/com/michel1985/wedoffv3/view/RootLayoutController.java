@@ -96,6 +96,11 @@ public class RootLayoutController {
     	mainApp.showHistoricoDeAtendimentosPendentesOverview();
     }
     
+    @FXML
+    void handleShowStatistics(){
+    	mainApp.showAtendimentoDiarioStatistics();
+    }
+    
        
     
 

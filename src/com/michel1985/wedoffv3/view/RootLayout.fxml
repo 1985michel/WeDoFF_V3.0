@@ -31,7 +31,7 @@
                </items></Menu>
             <Menu mnemonicParsing="false" text="Estatísticas">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Consultar" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleShowStatistics" text="Consultar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Pendências">
