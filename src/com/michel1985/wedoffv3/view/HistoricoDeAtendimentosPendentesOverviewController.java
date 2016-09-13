@@ -28,7 +28,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class HistoricoDeAtendimentosPendentesOverviewController extends HistoricoDeAtendimentosOverviewController {

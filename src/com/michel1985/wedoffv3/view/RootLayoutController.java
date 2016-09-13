@@ -1,8 +1,6 @@
 package com.michel1985.wedoffv3.view;
 
 import com.michel1985.wedoffv3.MainApp;
-import com.michel1985.wedoffv3.model.NotaAvulsa;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 
