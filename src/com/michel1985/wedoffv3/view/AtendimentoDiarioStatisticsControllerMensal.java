@@ -17,16 +17,15 @@ import javafx.scene.chart.XYChart;
 
 /// Quero que o gráfico se parece com esse gráfico: http://docs.oracle.com/javafx/2/charts/css-styles.htm
 
-public class AtendimentoDiarioStatisticsController {
+public class AtendimentoDiarioStatisticsControllerMensal {
 
 	@FXML
 	private BarChart<String, Integer> barChart;
-	
-	
+
 	@FXML
 	private CategoryAxis xAxis;
 
-	private ObservableList<String> dias = FXCollections.observableArrayList();
+	private ObservableList<String> meses = FXCollections.observableArrayList();
 	HashMap<String, Integer> datasEValores;
 	HashMap<String, Integer> datasEQtdAgendamentos;
 
@@ -34,10 +33,6 @@ public class AtendimentoDiarioStatisticsController {
 
 	@FXML
 	private void initialize() {
-		// String[] diasArray = pegaTodasAsDatasDosAtendimentos();
-		// dias.addAll(diasArray);
-
-		// xAxis.setCategories(dias);
 	}
 
 	/**
@@ -50,36 +45,20 @@ public class AtendimentoDiarioStatisticsController {
 	// Coletando todas as datas em que houve atendimento
 	private ArrayList<String> pegaTodasAsDatasDosAtendimentos() {
 
-		ArrayList<String> datas = new ArrayList<>();
-		datasEValores = new HashMap<>();
-		datasEQtdAgendamentos = new HashMap<>();
-
 		ObservableList<Atendimento> listaAtd = mainApp.getAtendimentoData();
-		System.out.println("QTd de atendimentos: " + listaAtd.size());
+		ArrayList<String> datas = new ArrayList<>();
 
 		for (Atendimento atd : listaAtd) {
-			if (atd != null && isMesCorrente(atd.getDataAtendimento())) {
-				if (jaTemAData(datas, atd.getDataAtendimento())) {
-					int valor = datasEValores.get(atd.getDataAtendimento());
-					valor++;
-					datasEValores.replace(atd.getDataAtendimento(), valor);
-					
-						
-				} else {
-					datas.add(atd.getDataAtendimento());
-					datasEValores.put(atd.getDataAtendimento(), 1);
-					
-				}
-				
-				if(jaTemADataAgendamento(datasEQtdAgendamentos, atd.getDataAtendimento())){
-					if(atd.getIsAgendamento()){
-						int qtdAgendamentos = datasEQtdAgendamentos.get(atd.getDataAtendimento());
-						qtdAgendamentos++;
-						datasEQtdAgendamentos.replace(atd.getDataAtendimento(), qtdAgendamentos);
-					}
-				}else{
-					if(atd.getIsAgendamento())
-						datasEQtdAgendamentos.put(atd.getDataAtendimento(), 1);
+			if (atd != null && isAnoCorrente(atd.getDataAtendimento())) {
+
+				int valor = datasEValores.get(estruturaData(atd.getDataAtendimento())[1]);
+				valor++;
+				datasEValores.replace(estruturaData(atd.getDataAtendimento())[1] + "", valor);
+
+				if (atd.getIsAgendamento()) {
+					int qtdAgendamentos = datasEQtdAgendamentos.get(estruturaData(atd.getDataAtendimento())[1]);
+					qtdAgendamentos++;
+					datasEQtdAgendamentos.replace(estruturaData(atd.getDataAtendimento())[1] + "", qtdAgendamentos);
 				}
 
 			}
@@ -97,7 +76,7 @@ public class AtendimentoDiarioStatisticsController {
 
 		return tem;
 	}
-	
+
 	private boolean jaTemADataAgendamento(HashMap<String, Integer> map, String data) {
 		boolean tem = false;
 		Set<String> datas = map.keySet();
@@ -111,38 +90,45 @@ public class AtendimentoDiarioStatisticsController {
 
 	public void setAndShowData() {
 
-		//ArrayList<String> diasArray = pegaTodasAsDatasDosAtendimentos();
-		
-		pegaTodasAsDatasDosAtendimentos();
+		// Inicializando as listas
+		datasEValores = new HashMap<>();
+		datasEQtdAgendamentos = new HashMap<>();
+
+		// Criando o eixo x com os números dos meses
 		ArrayList<String> diasArray = new ArrayList<>();
-		
-		for(int i =1;i<=31;i++){
-			diasArray.add(i+"");
+		for (int i = 1; i <= 12; i++) {
+			diasArray.add(i + "");
 		}
-		
-		dias.addAll(diasArray);
+		meses.addAll(diasArray);
+		xAxis.setCategories(meses);
 
-		xAxis.setCategories(dias);
-
+		// Criando as colunas exibidas nos gráficos
 		XYChart.Series<String, Integer> series = new XYChart.Series<>();
 		series.setName("Atendimentos");
-		
 		XYChart.Series<String, Integer> seriesAgendamentos = new XYChart.Series<>();
 		seriesAgendamentos.setName("Agendamentos");
-		
-		barChart.setBarGap(1);
+
+		// colocando os Meses como Keys nos HashMaps
+		for (String dia : meses) {
+			datasEValores.clear();
+			datasEValores.put(dia, 0);
+			datasEQtdAgendamentos.clear();
+			datasEQtdAgendamentos.put(dia, 0);
+		}
+
+		// Varrendo os atendimentos, coletando os dados e colocando nos maps
+		pegaTodasAsDatasDosAtendimentos();
 
 		Set<String> keys = datasEValores.keySet();
 
 		for (String key : keys) {
-			//series.getData().add(new XYChart.Data<>(key, datasEValores.get(key)));
-			series.getData().add(new XYChart.Data<>(estruturaData(key)[2]+"", datasEValores.get(key)));
-			if(datasEQtdAgendamentos.containsKey(key))
-				seriesAgendamentos.getData().add(new XYChart.Data<>(estruturaData(key)[2]+"", datasEQtdAgendamentos.get(key)));
+
+			series.getData().add(new XYChart.Data<>(key + "", datasEValores.get(key)));
+			if (datasEQtdAgendamentos.containsKey(key))
+				seriesAgendamentos.getData()
+						.add(new XYChart.Data<>(key + "", datasEQtdAgendamentos.get(key)));
 
 		}
-		
-	
 
 		barChart.getData().add(series);
 		barChart.getData().add(seriesAgendamentos);
@@ -159,12 +145,12 @@ public class AtendimentoDiarioStatisticsController {
 
 		return new int[] { ano, mes, dia };
 	}
-	
-	public boolean isMesCorrente(String data){
-		LocalDate hoje = LocalDate.now();
-		int mesHoje = hoje.getMonthValue()+0;
-		
-		if(mesHoje == estruturaData(data)[1])
+
+	public boolean isAnoCorrente(String data) {
+
+		int anoHoje = 2016;
+
+		if (anoHoje == estruturaData(data)[2])
 			return true;
 		else
 			return false;

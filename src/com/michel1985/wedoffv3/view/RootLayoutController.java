@@ -99,6 +99,10 @@ public class RootLayoutController {
     	mainApp.showAtendimentoDiarioStatistics();
     }
     
+    @FXML
+    void handleShowStatisticsMensal(){
+    	mainApp.showAtendimentoDiarioStatisticsMensal();
+    }
        
     
 

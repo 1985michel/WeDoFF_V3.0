@@ -15,6 +15,7 @@ import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsController;
+import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsControllerMensal;
 import com.michel1985.wedoffv3.view.EditarAtendimentoOverviewController;
 import com.michel1985.wedoffv3.view.EditarClienteOverviewController;
 import com.michel1985.wedoffv3.view.EditarNotaAvulsaOverviewController;
@@ -896,7 +897,7 @@ public class MainApp extends Application {
 	        
 	        
 	        Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Birthday Statistics");
+	        dialogStage.setTitle("Atendimentos: Mês Corrente");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        Scene scene = new Scene(page);
@@ -909,6 +910,37 @@ public class MainApp extends Application {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	}
+
+	public void showAtendimentoDiarioStatisticsMensal() {
+		try {
+	        // Load the fxml file and create a new stage for the popup.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/AtendimentoDiarioStatisticsMensal.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+	        
+	        
+	     // Set the persons into the controller.
+	        AtendimentoDiarioStatisticsControllerMensal controller = loader.getController();
+	        controller.setMainApp(this);
+	        controller.setAndShowData();
+	        
+	        
+	        Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Estatísticas Mensais");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(primaryStage);
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+
+	        
+
+	        dialogStage.show();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		
 	}
 
 
