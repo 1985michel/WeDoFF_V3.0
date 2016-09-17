@@ -1,5 +1,6 @@
 package com.michel1985.wedoffv3.view;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -16,6 +17,11 @@ import javafx.scene.chart.XYChart;
 
 /// Quero que o gráfico se parece com esse gráfico: http://docs.oracle.com/javafx/2/charts/css-styles.htm
 
+/**
+ * Classe responsável por ser o controller para apresentação das estatísticas dos últimos 12 meses
+ * 
+ * */
+
 public class AtendimentoDiarioStatisticsControllerMensal {
 
 	@FXML
@@ -27,6 +33,7 @@ public class AtendimentoDiarioStatisticsControllerMensal {
 	private ObservableList<String> meses = FXCollections.observableArrayList();
 	HashMap<String, Integer> datasEValores;
 	HashMap<String, Integer> datasEQtdAgendamentos;
+	
 
 	private MainApp mainApp;
 
@@ -40,9 +47,42 @@ public class AtendimentoDiarioStatisticsControllerMensal {
 
 	// Criando a legenda do gráfico: os meses
 	private void criandoOsMeses() {
-		for (int i = 0; i <= 12; i++) {
+		LocalDate hoje = LocalDate.now();
+		int mesHoje = hoje.getMonthValue();
+		int i = mesHoje;
+		
+		for(int j=1;j<=12;j++){			
+			if(i==13) i=1; 
 			meses.add(i + "");
+			i++;	
+		}		
+	}
+	
+	public boolean isAtendimentoNosUltimos12Meses(Atendimento atd){
+		
+		//Descobrindo o Ano e Mês Atual
+		LocalDate hoje = LocalDate.now();
+		int anoHoje = hoje.getYear();
+		int mesHoje = hoje.getMonthValue();
+		
+		//Descobrindo o Ano e Mês do Atendimento
+		int[] dataAtd = estruturaData(atd.getDataAtendimento());
+		int anoAtd = dataAtd[0];
+		int mesAtd = dataAtd[1];
+		
+		//Comparando o ano atual
+		if(anoAtd==anoHoje) return true;
+		
+		if((anoHoje-anoAtd)>1) return false;
+		
+		if(anoAtd<anoHoje){
+			int mesesParaAnoAcabar = 12 - mesHoje;
+			mesesParaAnoAcabar-=1;
+			if((mesAtd+mesesParaAnoAcabar)==12) return true;			
 		}
+		
+		return false;
+
 	}
 	
 	private void colocandoOsMesesComoKeys(){
@@ -59,17 +99,19 @@ public class AtendimentoDiarioStatisticsControllerMensal {
 	private void categorizaAtendimentosPorMes(){		
 		
 		for(Atendimento atd: mainApp.getAtendimentoData()){
-			String mes = (estruturaData(atd.getDataAtendimento())[1])+"";
-			int valor = datasEValores.get(mes);
-			valor++;
-			datasEValores.replace(mes, valor);
+			if(isAtendimentoNosUltimos12Meses(atd)){
+				String mes = (estruturaData(atd.getDataAtendimento())[1])+"";
+				int valor = datasEValores.get(mes);
+				valor++;
+				datasEValores.replace(mes, valor);
+			}			
 		}
 	}
 	
 	//Pegando todos os agendamentos e separando-os por mês
 	private void categorizaAgendaimentosPorMes(){
 		for(Atendimento atd: mainApp.getAtendimentoData()){
-			if(atd.getIsAgendamento()){
+			if(atd.getIsAgendamento() && isAtendimentoNosUltimos12Meses(atd)){
 				String mes = (estruturaData(atd.getDataAtendimento())[1])+"";
 				int valor = datasEQtdAgendamentos.get(mes);
 				valor++;
