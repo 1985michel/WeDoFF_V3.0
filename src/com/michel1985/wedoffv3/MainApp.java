@@ -316,7 +316,7 @@ public class MainApp extends Application {
 
 			// Dá ao controlador acesso ao MainApp
 			HistoricoDeClientesOverviewController controller = loader.getController();
-			controller.setMainApp(this);
+			controller.setMainApp(this,this.getClienteData());
 
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
@@ -343,6 +343,63 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * Mostra o Cliente selecionado a partir do Atendimento
+	 */
+	public void showHistoricoDeClientesOverview(String idCLi) {
+		try {
+			
+			Cliente cliente = getClientePeloId(idCLi);
+
+			// Load o FXML
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/HistoricoDeClientesOverview.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Dá ao controlador acesso ao MainApp
+			HistoricoDeClientesOverviewController controller = loader.getController();
+			
+			ObservableList<Cliente> obListCliente = FXCollections.observableArrayList();
+			obListCliente.add(cliente);
+			controller.setMainApp(this,obListCliente);
+
+			/**
+			 * Reordenando a clienteData Utilizando lambda - Comparablea
+			 */
+			//clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente()) - Integer.parseInt(o1.getIdCliente()));
+
+			// Criando o dialogStage
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Histórico de Clientes");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			dialogStage.setResizable(true);
+			// dialogStage.getIcons().add(new
+			// Image("file:resources/images/edit.png"));
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Dando ao controlador poderes sobre seu próprio dialogStage
+			controller.setDialogStage(dialogStage);
+
+			// Show
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	private Cliente getClientePeloId(String idCLi) {
+		for(Cliente cli : clienteData){
+			if(cli.getIdCliente().equalsIgnoreCase(idCLi))
+				return cli;
+		}
+		return null;
 	}
 
 	/**

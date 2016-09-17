@@ -160,11 +160,11 @@ public class HistoricoDeClientesOverviewController {
 	/**
 	 * Ligando ao main
 	 */
-	public void setMainApp(MainApp main) {
+	public void setMainApp(MainApp main, ObservableList<Cliente> obListCliente) {
 		this.mainApp = main;
 
 		// Adiciona os dados da observable list à tabela
-		clientesTableView.setItems(main.getClienteData());
+		clientesTableView.setItems(obListCliente);
 
 	}
 

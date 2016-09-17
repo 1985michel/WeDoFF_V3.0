@@ -529,5 +529,11 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 	public boolean isNotasTemTermo(Atendimento atd, String termo) {
 		return removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase());
 	}
+	
+	@FXML
+	void handleVerClienteDoAtendimento() {
+		String selectedId = atendimentosTableView.getSelectionModel().getSelectedItem().getIdCliente();
+		mainApp.showHistoricoDeClientesOverview(selectedId);
+	}
 
 }

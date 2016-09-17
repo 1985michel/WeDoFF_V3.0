@@ -342,6 +342,12 @@ public class HistoricoDeAtendimentosOverviewController {
 		atendimentosTableView.setItems(result);
 	}
 	
+	@FXML
+	void handleVerClienteDoAtendimento() {
+		String selectedId = atendimentosTableView.getSelectionModel().getSelectedItem().getIdCliente();
+		mainApp.showHistoricoDeClientesOverview(selectedId);
+	}
+	
 
 
 }
