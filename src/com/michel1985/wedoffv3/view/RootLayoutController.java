@@ -3,6 +3,7 @@ package com.michel1985.wedoffv3.view;
 import com.michel1985.wedoffv3.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
+import javafx.scene.control.RadioMenuItem;
 
 public class RootLayoutController {
 
@@ -31,6 +32,23 @@ public class RootLayoutController {
 
 	@FXML
 	private Menu configuracoesMenu;
+	
+	@FXML
+	private RadioMenuItem optionModernaLight;
+
+	@FXML
+	private RadioMenuItem optionModernaDark;
+	
+	@FXML private void handleSelectCSS(){
+		if(optionModernaLight.isSelected()){
+			optionModernaDark.setSelected(false);
+			MainApp.selectedCss = "modernaLight";
+		}			
+		else if(optionModernaDark.isSelected()){
+			optionModernaLight.setSelected(false);
+			MainApp.selectedCss = "modernaDark";
+		}
+	}
 
 	/**
 	 * Abre uma Janela com informações sobre o Sistema
