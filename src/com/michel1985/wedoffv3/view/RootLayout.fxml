@@ -48,6 +48,7 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <RadioMenuItem disable="true" mnemonicParsing="false" text="Selecione um Tema:" />
                   <RadioMenuItem fx:id="optionModernaLight" mnemonicParsing="false" onAction="#handleSelectCSS" text="ModernaLight" />
+                  <RadioMenuItem fx:id="optionModernaPink" mnemonicParsing="false" onAction="#handleSelectCSS" text="ModernaPink" />
                   <RadioMenuItem fx:id="optionModernaDark" mnemonicParsing="false" onAction="#handleSelectCSS" text="ModernaDark" />
             </items>
           </Menu>

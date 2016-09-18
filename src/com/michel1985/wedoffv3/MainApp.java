@@ -46,13 +46,12 @@ public class MainApp extends Application {
 	private BorderPane rootLayout;
 	private AtendendoClienteOverviewController atendendoClienteController;
 
-	
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Atendimento> atendimentoData = FXCollections.observableArrayList();
 	private ObservableList<NotaAvulsa> notaAvulsaData = FXCollections.observableArrayList();
 
 	private Usuario usuarioAtivo;
-	
+
 	public static String selectedCss;// = "modernaDark";
 
 	public MainApp() {
@@ -87,17 +86,13 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
-			//rootLayout.setStyle("view/modernaDark.css");
-			
-			//rootLayout.getStylesheets().add("path/modernaDark.css");
-			//scene.getStylesheets().add("path/stylesheet.css");
+			// rootLayout.setStyle("view/modernaDark.css");
+
+			// rootLayout.getStylesheets().add("path/modernaDark.css");
+			// scene.getStylesheets().add("path/stylesheet.css");
 
 			// Give the controller access to the main app.
-			
-			
-			            
-			
-			
+
 			RootLayoutController controller = loader.getController();
 			controller.setMainApp(this);
 
@@ -105,27 +100,57 @@ public class MainApp extends Application {
 			Scene scene = new Scene(rootLayout);
 			addPersonalStyle(scene);
 
-			
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void setRootPersonalStyle(){
+		Scene rootScene = this.rootLayout.getScene();
+		addPersonalStyle(rootScene);
+	}
 
-	private void addPersonalStyle(Scene scene) {
-		if(MainApp.selectedCss=="modernaDark"){
-			this.rootLayout.getScene().getStylesheets().add(getClass().getResource("view/modenaDark.css").toExternalForm());
-			
-			scene.getStylesheets().clear();
-			setUserAgentStylesheet(null);
-			scene.getStylesheets().add(getClass().getResource("view/modenaDark.css").toExternalForm());
-		}else if(MainApp.selectedCss=="modernaLight"){
-			scene.getStylesheets().clear();
-			setUserAgentStylesheet(null);
-			
+	public void addPersonalStyle(Scene scene) {
+
+		if (MainApp.selectedCss == "modenaDark") {
+			try {
+				//this.rootLayout.getScene().getStylesheets().clear();
+			//	setUserAgentStylesheet(null);
+			//	this.rootLayout.getScene().getStylesheets()
+				//		.add(getClass().getResource("view/modenaDark.css").toExternalForm());
+				scene.getStylesheets().clear();
+				setUserAgentStylesheet(null);
+				scene.getStylesheets().add(getClass().getResource("view/modenaDark.css").toExternalForm());
+			} catch (Exception e) {
+				System.out.println("Erro ao aplicar css Dark");
+			}
+		} else if (MainApp.selectedCss == "modenaLight") {
+			try {
+				//this.rootLayout.getScene().getStylesheets().clear();
+				//setUserAgentStylesheet(null);
+				//this.rootLayout.getScene().getStylesheets()
+				//		.add(getClass().getResource("view/modenaLight.css").toExternalForm());
+				scene.getStylesheets().clear();
+				setUserAgentStylesheet(null);
+				scene.getStylesheets().add(getClass().getResource("view/modenaLight.css").toExternalForm());
+			} catch (Exception e) {
+				System.out.println("Erro ao aplicar css Light");
+			}
+		} else if (MainApp.selectedCss == "modenaPink") {
+			try {
+				//this.rootLayout.getScene().getStylesheets().clear();
+				//setUserAgentStylesheet(null);
+				//this.rootLayout.getScene().getStylesheets()
+				//		.add(getClass().getResource("view/modenaPink.css").toExternalForm());
+				 scene.getStylesheets().clear();
+				 setUserAgentStylesheet(null);
+				 scene.getStylesheets().add(getClass().getResource("view/modenaPink.css").toExternalForm());
+			} catch (Exception e) {
+				System.out.println("Erro ao aplicar CSS Pink");
+			}
 		}
-		
 	}
 
 	/**
@@ -177,8 +202,6 @@ public class MainApp extends Application {
 	public AtendendoClienteOverviewController getAtendendoClienteController() {
 		return this.atendendoClienteController;
 	}
-
-	
 
 	public void showAboutDialog() {
 		try {
@@ -349,7 +372,7 @@ public class MainApp extends Application {
 
 			// Dá ao controlador acesso ao MainApp
 			HistoricoDeClientesOverviewController controller = loader.getController();
-			controller.setMainApp(this,this.getClienteData());
+			controller.setMainApp(this, this.getClienteData());
 
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
@@ -378,14 +401,13 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	/**
 	 * Mostra o Cliente selecionado a partir do Atendimento
 	 */
 	public void showHistoricoDeClientesOverview(String idCLi) {
 		try {
-			
+
 			Cliente cliente = getClientePeloId(idCLi);
 
 			// Load o FXML
@@ -395,15 +417,16 @@ public class MainApp extends Application {
 
 			// Dá ao controlador acesso ao MainApp
 			HistoricoDeClientesOverviewController controller = loader.getController();
-			
+
 			ObservableList<Cliente> obListCliente = FXCollections.observableArrayList();
 			obListCliente.add(cliente);
-			controller.setMainApp(this,obListCliente);
+			controller.setMainApp(this, obListCliente);
 
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
 			 */
-			//clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente()) - Integer.parseInt(o1.getIdCliente()));
+			// clienteData.sort((o1, o2) -> Integer.parseInt(o2.getIdCliente())
+			// - Integer.parseInt(o1.getIdCliente()));
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -428,10 +451,9 @@ public class MainApp extends Application {
 		}
 	}
 
-	
 	private Cliente getClientePeloId(String idCLi) {
-		for(Cliente cli : clienteData){
-			if(cli.getIdCliente().equalsIgnoreCase(idCLi))
+		for (Cliente cli : clienteData) {
+			if (cli.getIdCliente().equalsIgnoreCase(idCLi))
 				return cli;
 		}
 		return null;
@@ -514,7 +536,6 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
 	 * Mostra o HistoricoDeClienteOverview
@@ -542,12 +563,12 @@ public class MainApp extends Application {
 			 * 
 			 */
 			// TODO Auto-generated catch block
-			//atendimentoData.sort(
-				//	(o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) - Integer.parseInt(o1.getIdAtendimento()));
-			
-			controller.pendentesList.sort(
-					(o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
+			// atendimentoData.sort(
+			// (o1, o2) -> Integer.parseInt(o2.getIdAtendimento()) -
+			// Integer.parseInt(o1.getIdAtendimento()));
 
+			controller.pendentesList
+					.sort((o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -571,29 +592,29 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	public LocalDate geraData(String data){
-		System.out.println("data: "+data);
-		if(data!=null && data.length()==10){
-			
+
+	public LocalDate geraData(String data) {
+		System.out.println("data: " + data);
+		if (data != null && data.length() == 10) {
+
 			String[] estru = data.split("-");
 			int ano = Integer.parseInt(estru[0]);
 			int mes = Integer.parseInt(estru[1]);
 			int dia = Integer.parseInt(estru[2]);
-			LocalDate date =  LocalDate.of(ano, mes, dia);
+			LocalDate date = LocalDate.of(ano, mes, dia);
 			return date;
-		}else
+		} else
 			return null;
-		
+
 	}
 
-
-	public int comparaDatas(LocalDate data1, LocalDate data2){
-		if(data1.isEqual(data2))
+	public int comparaDatas(LocalDate data1, LocalDate data2) {
+		if (data1.isEqual(data2))
 			return 0;
-		else if(data1.isBefore(data2))
+		else if (data1.isBefore(data2))
 			return -1;
-		else return 1;
+		else
+			return 1;
 	}
 
 	/**
@@ -758,7 +779,7 @@ public class MainApp extends Application {
 			}
 		}
 	}
-	
+
 	/**
 	 * Mostra o HistoricoDeClienteOverview
 	 */
@@ -777,7 +798,8 @@ public class MainApp extends Application {
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
 			 */
-			notaAvulsaData.sort((o1, o2) -> Integer.parseInt(o2.getIdNotaAvulsa()) - Integer.parseInt(o1.getIdNotaAvulsa()));
+			notaAvulsaData
+					.sort((o1, o2) -> Integer.parseInt(o2.getIdNotaAvulsa()) - Integer.parseInt(o1.getIdNotaAvulsa()));
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -801,11 +823,11 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	private Object[] showHistoricoDeNotasAvulsasOverviewRetornandoController(){
+
+	private Object[] showHistoricoDeNotasAvulsasOverviewRetornandoController() {
 		HistoricoDeNotasAvulsasOverviewController controller = null;
 		Stage dialogStage = null;
-		
+
 		try {
 
 			// Load o FXML
@@ -820,7 +842,8 @@ public class MainApp extends Application {
 			/**
 			 * Reordenando a clienteData Utilizando lambda - Comparablea
 			 */
-			notaAvulsaData.sort((o1, o2) -> Integer.parseInt(o2.getIdNotaAvulsa()) - Integer.parseInt(o1.getIdNotaAvulsa()));
+			notaAvulsaData
+					.sort((o1, o2) -> Integer.parseInt(o2.getIdNotaAvulsa()) - Integer.parseInt(o1.getIdNotaAvulsa()));
 
 			// Criando o dialogStage
 			dialogStage = new Stage();
@@ -843,11 +866,11 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		Object[] obj = {controller,dialogStage};
+
+		Object[] obj = { controller, dialogStage };
 		return obj;
 	}
-	
+
 	/**
 	 * Apresenta o dialog para edição do cliente
 	 */
@@ -870,7 +893,6 @@ public class MainApp extends Application {
 			EditarNotaAvulsaOverviewController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setNotaAvulsa(notaAvulsa);
-			
 
 			// Apresenta o dialog
 			dialogStage.showAndWait();
@@ -882,19 +904,18 @@ public class MainApp extends Application {
 		}
 		return false;
 	}
-	
-	
-	
-	
+
 	public void carregaHistoricoDeNotasAvulstas() {
 		if (this.usuarioAtivo != null) {
 			ResultSet resultSet = null;
-			
+
 			CRUD crud = new CRUD(this.usuarioAtivo);
-			
+
 			try {
-				//ESSA LINHA ABAIXO DEVE SER RETIRADA ASSIM QUE EU TIVER A CERTEZA DE QUE TODOS USUÁRIOS JÁ ATUALIZARAM PARA A NOVA VERSÃO
-				if(NotasAvulsasTableExist.isNotasAvulsasTableExist(crud)){
+				// ESSA LINHA ABAIXO DEVE SER RETIRADA ASSIM QUE EU TIVER A
+				// CERTEZA DE QUE TODOS USUÁRIOS JÁ ATUALIZARAM PARA A NOVA
+				// VERSÃO
+				if (NotasAvulsasTableExist.isNotasAvulsasTableExist(crud)) {
 					try {
 						resultSet = crud.getResultSet("SELECT * FROM NOTASAVULSAS ORDER BY IDNOTAAVULSA DESC");
 						adicionaTodasNotasAvulsasFromDBNaNotasAvulsasData(resultSet);
@@ -908,34 +929,29 @@ public class MainApp extends Application {
 							e.printStackTrace();
 						}
 					}
-				}else
+				} else
 					return;
-				
+
 			} catch (ClassNotFoundException | SQLException | CRUDException e1) {
-				
+
 				e1.printStackTrace();
 			}
 
-			
 		}
 	}
-	
-	
 
 	private void adicionaTodasNotasAvulsasFromDBNaNotasAvulsasData(ResultSet resultSet) throws SQLException {
 		ArrayList<NotaAvulsa> notas = new ArrayList<>();
 
 		while (resultSet.next()) {
 
-			notas.add(
-					new NotaAvulsa(resultSet.getString("idNotaAvulsa"), descriptografa(resultSet.getString("link")),
-							descriptografa(resultSet.getString("titulo")),
-							descriptografa(resultSet.getString("descricao"))));
+			notas.add(new NotaAvulsa(resultSet.getString("idNotaAvulsa"), descriptografa(resultSet.getString("link")),
+					descriptografa(resultSet.getString("titulo")), descriptografa(resultSet.getString("descricao"))));
 		}
 
 		notaAvulsaData.addAll(FXCollections.observableArrayList(notas));
 	}
-	
+
 	/**
 	 * Mostra o HistoricoDeClienteOverview
 	 */
@@ -950,8 +966,6 @@ public class MainApp extends Application {
 			// Dá ao controlador acesso ao MainApp
 			PesquisaIntegradaOverviewController controller = loader.getController();
 			controller.setMainApp(this);
-
-			
 
 			// Criando o dialogStage
 			Stage dialogStage = new Stage();
@@ -975,86 +989,68 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	public void ordenaListaDeAtendimentosPendentes(ObservableList<Atendimento> list){
-		list.sort(
-				(o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
+
+	public void ordenaListaDeAtendimentosPendentes(ObservableList<Atendimento> list) {
+		list.sort((o1, o2) -> comparaDatas(geraData(o1.getDataSolucao()), geraData(o2.getDataSolucao())));
 	}
-	
+
 	/**
 	 * Opens a dialog to show birthday statistics.
 	 */
 	public void showAtendimentoDiarioStatistics() {
-	    try {
-	        // Load the fxml file and create a new stage for the popup.
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/AtendimentoDiarioStatistics.fxml"));
-	        AnchorPane page = (AnchorPane) loader.load();
-	        
-	        
-	     // Set the persons into the controller.
-	        AtendimentoDiarioStatisticsController controller = loader.getController();
-	        controller.setMainApp(this);
-	        controller.setAndShowData();
-	        
-	        
-	        Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Atendimentos: Mês Corrente");
-	        dialogStage.initModality(Modality.WINDOW_MODAL);
-	        dialogStage.initOwner(primaryStage);
-	        
-	        Scene scene = new Scene(page);
-	        addPersonalStyle(scene);
-	        dialogStage.setScene(scene);
+		try {
+			// Load the fxml file and create a new stage for the popup.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/AtendimentoDiarioStatistics.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
 
-	        
+			// Set the persons into the controller.
+			AtendimentoDiarioStatisticsController controller = loader.getController();
+			controller.setMainApp(this);
+			controller.setAndShowData();
 
-	        dialogStage.show();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Atendimentos: Mês Corrente");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
 
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+			Scene scene = new Scene(page);
+			addPersonalStyle(scene);
+			dialogStage.setScene(scene);
+
+			dialogStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void showAtendimentoDiarioStatisticsMensal() {
 		try {
-	        // Load the fxml file and create a new stage for the popup.
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/AtendimentoDiarioStatisticsMensal.fxml"));
-	        AnchorPane page = (AnchorPane) loader.load();
-	        
-	        
-	     // Set the persons into the controller.
-	        AtendimentoDiarioStatisticsControllerMensal controller = loader.getController();
-	        controller.setMainApp(this);
-	        controller.setAndShowData();
-	        
-	        
-	        Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Estatísticas Mensais");
-	        dialogStage.initModality(Modality.WINDOW_MODAL);
-	        dialogStage.initOwner(primaryStage);
-	        Scene scene = new Scene(page);
-	        addPersonalStyle(scene);
-	        dialogStage.setScene(scene);
+			// Load the fxml file and create a new stage for the popup.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/AtendimentoDiarioStatisticsMensal.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
 
-	        
+			// Set the persons into the controller.
+			AtendimentoDiarioStatisticsControllerMensal controller = loader.getController();
+			controller.setMainApp(this);
+			controller.setAndShowData();
 
-	        dialogStage.show();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Estatísticas Mensais");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			addPersonalStyle(scene);
+			dialogStage.setScene(scene);
 
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-		
+			dialogStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
-
 }
-
-
-
-
-
-
-
-
