@@ -150,6 +150,18 @@ public class MainApp extends Application {
 			} catch (Exception e) {
 				System.out.println("Erro ao aplicar CSS Pink");
 			}
+		} else if (MainApp.selectedCss == "modenaDarkPink") {
+			try {
+				//this.rootLayout.getScene().getStylesheets().clear();
+				//setUserAgentStylesheet(null);
+				//this.rootLayout.getScene().getStylesheets()
+				//		.add(getClass().getResource("view/modenaPink.css").toExternalForm());
+				 scene.getStylesheets().clear();
+				 setUserAgentStylesheet(null);
+				 scene.getStylesheets().add(getClass().getResource("view/modenaDark_Pink.css").toExternalForm());
+			} catch (Exception e) {
+				System.out.println("Erro ao aplicar CSS Pink");
+			}
 		}
 	}
 

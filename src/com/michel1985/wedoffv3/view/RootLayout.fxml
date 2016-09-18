@@ -47,9 +47,10 @@
               <MenuItem mnemonicParsing="false" text="Escolher Driver de Instalação" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <RadioMenuItem disable="true" mnemonicParsing="false" text="Selecione um Tema:" />
-                  <RadioMenuItem fx:id="optionModernaLight" mnemonicParsing="false" onAction="#handleSelectCSS" text="ModernaLight" />
-                  <RadioMenuItem fx:id="optionModernaPink" mnemonicParsing="false" onAction="#handleSelectCSS" text="ModernaPink" />
-                  <RadioMenuItem fx:id="optionModernaDark" mnemonicParsing="false" onAction="#handleSelectCSS" text="ModernaDark" />
+                  <RadioMenuItem fx:id="optionModernaLight" mnemonicParsing="false" onAction="#handleSelectCSS" text="Moderna Light" />
+                  <RadioMenuItem fx:id="optionModernaPink" mnemonicParsing="false" onAction="#handleSelectCSS" text="Moderna Light_Pink" />
+                  <RadioMenuItem fx:id="optionModernaDark" mnemonicParsing="false" onAction="#handleSelectCSS" text="Moderna Dark" />
+                  <RadioMenuItem fx:id="optionModernaDarkPink" mnemonicParsing="false" onAction="#handleSelectCSS" text="Moderna Dark_Pink" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Ajuda">

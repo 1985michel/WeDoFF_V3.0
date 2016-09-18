@@ -207,7 +207,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 			currentRow.setStyle("-fx-background-color: #FE7B51;");
 
 		} else if (data.equals(hoje)) {// vencendo hoje
-			currentRow.setStyle("-fx-background-color: #ffff33;-fx-light-text-color: steelblue ;");
+			currentRow.setStyle("-fx-background-color: #ffff33;-fx-light-text-color: #0096C9 ;");
 			
 			
 

@@ -41,23 +41,35 @@ public class RootLayoutController {
 	private RadioMenuItem optionModernaDark;
 	
 	@FXML
+	private RadioMenuItem optionModernaDarkPink;
+	
+	@FXML
 	private RadioMenuItem optionModernaPink;
 	
 	@FXML private void handleSelectCSS(){
 		if(optionModernaLight.isSelected()){
 			optionModernaDark.setSelected(false);
 			optionModernaPink.setSelected(false);
+			optionModernaDarkPink.setSelected(false);
 			MainApp.selectedCss = "modenaLight";
 		}			
 		else if(optionModernaDark.isSelected()){
 			optionModernaLight.setSelected(false);
 			optionModernaPink.setSelected(false);
+			optionModernaDarkPink.setSelected(false);
 			MainApp.selectedCss = "modenaDark";
 		}
 		else if(optionModernaPink.isSelected()){
 			optionModernaLight.setSelected(false);
 			optionModernaDark.setSelected(false);
+			optionModernaDarkPink.setSelected(false);
 			MainApp.selectedCss = "modenaPink";
+		}
+		else if(optionModernaDarkPink.isSelected()){
+			optionModernaLight.setSelected(false);
+			optionModernaDark.setSelected(false);
+			optionModernaPink.setSelected(false);
+			MainApp.selectedCss = "modenaDarkPink";
 		}
 		
 		this.mainApp.setRootPersonalStyle();

@@ -125,17 +125,17 @@ is being used to size a border should also be in pixels.
 
     /* A bright blue for highlighting/accenting objects.  For example: selected
      * text; selected items in menus, lists, trees, and tables; progress bars */
-    -fx-accent: #0096C9;
+    -fx-accent: #FEDEE2;
 
     /* Default buttons color, this is similar to accent but more subtle */
-    -fx-default-button: #1F87AE;
+    -fx-default-button: #F79EC8;
 
     /* A bright blue for the focus indicator of objects. Typically used as the
      * first color in -fx-background-color for the "focused" pseudo-class. Also
      * typically used with insets of -1.4 to provide a glowing effect.
      */
-    -fx-focus-color: #039ED3;
-    -fx-faint-focus-color: #039ED322;
+    -fx-focus-color: #F9AACD;
+    -fx-faint-focus-color: #FEDEE2;
 
     /* The color that is used in styling controls. The default value is based
      * on -fx-base, but is changed by pseudoclasses to change the base color.
@@ -146,8 +146,8 @@ is being used to size a border should also be in pixels.
     -fx-color: -fx-base;
 
     /* Chart Color Palette */
-    CHART_COLOR_1: #2487AB;
-    CHART_COLOR_2: #ED94BB;
+    CHART_COLOR_1: #f3622d;
+    CHART_COLOR_2: #fba71b;
     CHART_COLOR_3: #57b757;
     CHART_COLOR_4: #41a9c9;
     CHART_COLOR_5: #4258c9;
