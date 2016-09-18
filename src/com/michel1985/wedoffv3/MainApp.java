@@ -1,6 +1,7 @@
 package com.michel1985.wedoffv3;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -45,6 +46,7 @@ public class MainApp extends Application {
 	private BorderPane rootLayout;
 	private AtendendoClienteOverviewController atendendoClienteController;
 
+	
 	private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 	private ObservableList<Atendimento> atendimentoData = FXCollections.observableArrayList();
 	private ObservableList<NotaAvulsa> notaAvulsaData = FXCollections.observableArrayList();
@@ -83,17 +85,36 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
+			//rootLayout.setStyle("view/modernaDark.css");
+			
+			//rootLayout.getStylesheets().add("path/modernaDark.css");
+			//scene.getStylesheets().add("path/stylesheet.css");
 
 			// Give the controller access to the main app.
+			
+			
+			            
+			
+			
 			RootLayoutController controller = loader.getController();
 			controller.setMainApp(this);
 
 			// Colocando o RootLayout em cena
-			primaryStage.setScene(new Scene(rootLayout));
+			Scene scene = new Scene(rootLayout);
+			addDarkStyle(scene);
+
+			
+			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void addDarkStyle(Scene scene) {
+		scene.getStylesheets().clear();
+		setUserAgentStylesheet(null);
+		scene.getStylesheets().add(getClass().getResource("view/modenaDark.css").toExternalForm());
 	}
 
 	/**
@@ -164,6 +185,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Show
@@ -332,6 +354,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -380,6 +403,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -417,6 +441,7 @@ public class MainApp extends Application {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Passa o cliente a ser editado ao controller
@@ -465,6 +490,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -521,6 +547,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -588,6 +615,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -616,6 +644,7 @@ public class MainApp extends Application {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Passa o cliente a ser editado ao controller
@@ -675,6 +704,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -747,6 +777,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -789,6 +820,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -820,6 +852,7 @@ public class MainApp extends Application {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Passa a nota a ser editado ao controller
@@ -918,6 +951,7 @@ public class MainApp extends Application {
 			// dialogStage.getIcons().add(new
 			// Image("file:resources/images/edit.png"));
 			Scene scene = new Scene(page);
+			addDarkStyle(scene);
 			dialogStage.setScene(scene);
 
 			// Dando ao controlador poderes sobre seu próprio dialogStage
@@ -957,7 +991,9 @@ public class MainApp extends Application {
 	        dialogStage.setTitle("Atendimentos: Mês Corrente");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
+	        
 	        Scene scene = new Scene(page);
+	        addDarkStyle(scene);
 	        dialogStage.setScene(scene);
 
 	        
@@ -988,6 +1024,7 @@ public class MainApp extends Application {
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        Scene scene = new Scene(page);
+	        addDarkStyle(scene);
 	        dialogStage.setScene(scene);
 
 	        
@@ -1002,3 +1039,11 @@ public class MainApp extends Application {
 
 
 }
+
+
+
+
+
+
+
+
