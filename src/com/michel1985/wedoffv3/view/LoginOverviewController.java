@@ -82,6 +82,9 @@ public class LoginOverviewController {
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		InputStream url = this.getClass().getResourceAsStream("/security-app-shield-icon.png");
+		wedoffLogoImageView.setImage(new Image(url));
+		
 
 		// Em casos de tabela,aqui é o local para solitiar o povoamento
 		// someTable.setItems(mainApp.getClienteData());

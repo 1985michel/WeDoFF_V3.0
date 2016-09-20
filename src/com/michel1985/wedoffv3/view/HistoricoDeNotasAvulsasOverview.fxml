@@ -75,15 +75,19 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label fx:id="descricaoDaNotaAvulsaTituloLabel" layoutX="14.0" layoutY="14.0" text="Descrição da Nota:" />
-                  <HBox fx:id="acoesSobreNotasHBox" alignment="CENTER_RIGHT" disable="true" layoutX="48.0" layoutY="371.0" prefHeight="25.0" prefWidth="214.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="2.0">
+                  <HBox AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
                      <children>
                         <Button fx:id="novaNotaButton" defaultButton="true" mnemonicParsing="false" onAction="#handleNovaNotaAvulsa" prefHeight="25.0" prefWidth="118.0" text="Criar Nova Nota" />
-                        <MenuButton fx:id="acoesMenuButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Ações" HBox.hgrow="ALWAYS">
-                          <items>
-                            <MenuItem fx:id="editarNotaAvulsaMenuItem" mnemonicParsing="false" onAction="#handleAtualizaNotaAvulsa" text="Editar Nota" />
-                            <MenuItem fx:id="excluirNotaAvulsaMenuItem" mnemonicParsing="false" onAction="#handleDeleteNotaAvulsa" text="Excluir Nota" />
-                          </items>
-                        </MenuButton>
+                        <HBox fx:id="acoesSobreNotasHBox" alignment="CENTER_RIGHT" disable="true" prefHeight="25.0" prefWidth="100.0" spacing="5.0">
+                           <children>
+                              <MenuButton fx:id="acoesMenuButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Ações" HBox.hgrow="ALWAYS">
+                                <items>
+                                  <MenuItem fx:id="editarNotaAvulsaMenuItem" mnemonicParsing="false" onAction="#handleAtualizaNotaAvulsa" text="Editar Nota" />
+                                  <MenuItem fx:id="excluirNotaAvulsaMenuItem" mnemonicParsing="false" onAction="#handleDeleteNotaAvulsa" text="Excluir Nota" />
+                                </items>
+                              </MenuButton>
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
                   <TextArea fx:id="descricaoDaNotaAvulsaTextArea" editable="false" layoutX="2.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" promptText="..." wrapText="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="40.0" />

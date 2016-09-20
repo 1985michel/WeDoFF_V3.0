@@ -1,6 +1,8 @@
 package com.michel1985.wedoffv3.view;
 
 import com.michel1985.wedoffv3.MainApp;
+import com.michel1985.wedoffv3.util.PreferenciasDoUsuario;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -52,24 +54,29 @@ public class RootLayoutController {
 			optionModernaPink.setSelected(false);
 			optionModernaDarkPink.setSelected(false);
 			MainApp.selectedCss = "modenaLight";
+			PreferenciasDoUsuario.setPersonCss("modenaLight");
 		}			
 		else if(optionModernaDark.isSelected()){
 			optionModernaLight.setSelected(false);
 			optionModernaPink.setSelected(false);
 			optionModernaDarkPink.setSelected(false);
 			MainApp.selectedCss = "modenaDark";
+			PreferenciasDoUsuario.setPersonCss("modenaDark");
 		}
 		else if(optionModernaPink.isSelected()){
 			optionModernaLight.setSelected(false);
 			optionModernaDark.setSelected(false);
 			optionModernaDarkPink.setSelected(false);
 			MainApp.selectedCss = "modenaPink";
+			PreferenciasDoUsuario.setPersonCss("modenaPink");
+
 		}
 		else if(optionModernaDarkPink.isSelected()){
 			optionModernaLight.setSelected(false);
 			optionModernaDark.setSelected(false);
 			optionModernaPink.setSelected(false);
 			MainApp.selectedCss = "modenaDarkPink";
+			PreferenciasDoUsuario.setPersonCss("modenaDarkPink");
 		}
 		
 		this.mainApp.setRootPersonalStyle();

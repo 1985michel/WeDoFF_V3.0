@@ -14,6 +14,7 @@ import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.NotaAvulsa;
 import com.michel1985.wedoffv3.model.Usuario;
 import com.michel1985.wedoffv3.seguranca.Cripto;
+import com.michel1985.wedoffv3.util.PreferenciasDoUsuario;
 import com.michel1985.wedoffv3.view.AtendendoClienteOverviewController;
 import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsController;
 import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsControllerMensal;
@@ -58,6 +59,12 @@ public class MainApp extends Application {
 
 		// Cliente newCli = new Cliente("1","Jose Um","87487813983","um notas");
 		// clienteData.add(newCli);
+		try {
+			//Capiturando o CSS preferencial
+			MainApp.selectedCss = PreferenciasDoUsuario.getPersonCss();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
 	}
 

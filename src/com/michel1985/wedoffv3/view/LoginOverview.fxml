@@ -34,13 +34,13 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="59.0" prefWidth="700.0">
                      <children>
-                        <ImageView fx:id="wedoffLogoImageView" fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="wedoffTituloLabel" contentDisplay="CENTER" prefHeight="46.0" prefWidth="129.0" text="WeDoFF" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                        <ImageView fx:id="wedoffLogoImageView" fitHeight="119.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="wedoffTituloLabel" contentDisplay="CENTER" prefHeight="93.0" prefWidth="240.0" text="WeDoFF" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                            <font>
-                              <Font name="Playbill" size="68.0" />
+                              <Font size="64.0" />
                            </font>
                         </Label>
-                        <Label fx:id="versaoTituloLabel" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="383.0" layoutY="10.0" prefHeight="50.0" prefWidth="50.0" text="v 3.0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                        <Label fx:id="versaoTituloLabel" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="383.0" layoutY="10.0" prefHeight="62.0" prefWidth="62.0" text="v 3.0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="Playbill" size="30.0" />
                            </font>
