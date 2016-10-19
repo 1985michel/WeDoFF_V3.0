@@ -530,6 +530,7 @@ public class HistoricoDeAtendimentosPendentesOverviewController extends Historic
 		return removedora.clean(atd.getNotasSobreAtendimento().toLowerCase()).contains(termo.toLowerCase());
 	}
 	
+	@Override
 	@FXML
 	void handleVerClienteDoAtendimento() {
 		String selectedId = atendimentosTableView.getSelectionModel().getSelectedItem().getIdCliente();

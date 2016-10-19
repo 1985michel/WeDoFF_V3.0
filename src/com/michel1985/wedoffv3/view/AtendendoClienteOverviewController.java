@@ -15,6 +15,7 @@ import com.michel1985.wedoffv3.model.Atendimento;
 import com.michel1985.wedoffv3.model.Cliente;
 import com.michel1985.wedoffv3.model.TextFieldLimited;
 import com.michel1985.wedoffv3.seguranca.Cripto;
+import com.michel1985.wedoffv3.util.EstruturaData;
 import com.michel1985.wedoffv3.util.RemoveCaracteresEspeciais;
 import com.michel1985.wedoffv3.util.ValidaCliente;
 
@@ -349,7 +350,12 @@ public class AtendendoClienteOverviewController {
 
 		// Carrega campos
 		nomeClienteTextField.setText(descriptografa(resultSet.getString("nomeCliente")));
-		notasClienteTextArea.setText(descriptografa(resultSet.getString("notasSobreCliente")));
+		
+		//Embarcando Tags
+		String notas = descriptografa(resultSet.getString("notasSobreCliente"));
+		if(!notas.contains("<rating>"))
+			notas = "<rating></rating>\n"+notas;
+		notasClienteTextArea.setText(notas);
 
 		
 		cpfTextField.setText(descriptografa(resultSet.getString("cpfCliente")));
@@ -628,7 +634,11 @@ public class AtendendoClienteOverviewController {
 				dataParaSolucionarPendenciaDatePicker.setValue(LocalDate.parse(resultSet.getString("dataSolucao")));
 			}
 
-			notasSobreAtendimentoTextArea.setText(descriptografa(resultSet.getString("notassobreatendimento")));
+			LocalDate date = LocalDate.now();
+			String hoje = date.toString();
+			hoje = EstruturaData.estruturaData(hoje);
+			String tagHoje = "\n<"+hoje+">\n\n\n</"+hoje+">\n\n";
+			notasSobreAtendimentoTextArea.setText(tagHoje+descriptografa(resultSet.getString("notassobreatendimento")));
 			registrarAtendimentoButton.setOnAction((event) -> handleAtualizaAtendimento());
 			registrarAtendimentoButton.setText("Atualizar Atendimento");
 			setIdAtendimentoAtual(resultSet.getString("idAtendimento"));

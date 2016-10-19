@@ -99,6 +99,10 @@ public class AtendendoClienteOverviewUIManager {
 
 		// Desabilita o textField de edição do CPF
 		controller.cpfTextField.setEditable(false);
+		
+		//Colocando as Novas Tags
+		//controller.notasClienteTextArea.setText("<rating></rating>\n\n");
+    	controller.notasSobreAtendimentoTextArea.setText("<ToDo></ToDo>\n\n<Done></Done>\n\n<Exigencias></Exigencias>");
 
 	}
 
@@ -122,6 +126,9 @@ public class AtendendoClienteOverviewUIManager {
 		controller.verHistoricoDeAtendimentosDoClienteButton.setText("Ver Atendimentos do Cliente");
 		controller.verHistoricoDeAtendimentosDoClienteButton
 				.setOnAction((event) -> controller.handleVerHistoricoDeAtendimentosDoCliente());
+		
+		//Colocando as novas Tags
+		//controller.notasSobreAtendimentoTextArea.setText("<ToDo></ToDo>\n\n<Done></Done>\n\n<Exigencias></Exigencias>");
 
 	}
 	
@@ -223,8 +230,11 @@ public class AtendendoClienteOverviewUIManager {
 		ObjetoSAT obSat = ManipuladoraDeClipBoard.getSAT();
 		controller.cpfTextField.setText(obSat.getCpf());
 		controller.nomeClienteTextField.setText(obSat.getNome());
-		controller.notasClienteTextArea.setText(obSat.getNit());
-		controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
+		//controller.notasClienteTextArea.setText(obSat.getNit());
+		String comRating = "<rating></rating>\n\n" + obSat.getNit();
+		controller.notasClienteTextArea.setText(comRating);		
+    	controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
+    	controller.notasSobreAtendimentoTextArea.setText("<ToDo></ToDo>\n\n<Done></Done>\n\n<Exigencias></Exigencias>");
 		
 	}
 

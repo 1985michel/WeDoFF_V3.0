@@ -1,6 +1,5 @@
 package com.michel1985.wedoffv3.util;
 
-import java.io.File;
 import java.util.prefs.Preferences;
 
 import com.michel1985.wedoffv3.MainApp;

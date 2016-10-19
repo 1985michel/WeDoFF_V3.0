@@ -78,7 +78,15 @@ public class ManipuladoraDeClipBoard {
 		String cpf = pqi.split("CPF\n")[1].split("\nNIT")[0];
 		if (cpf.contains("NIT"))
 			cpf = "";
-		return retiraCaracteresEspeciais(cpf);
+		//Acrescimo para tentar resolver a questão do CPF que começa com 0
+		String cpfZero =  retiraCaracteresEspeciais(cpf);
+		if(cpfZero.length()<11){
+			do{
+				cpfZero = "0"+cpfZero;
+			}while(cpfZero.length()<11);
+		}
+		//return retiraCaracteresEspeciais(cpf);
+		return cpfZero;
 	}
 
 	public static String getNIT() {

@@ -1,7 +1,6 @@
 package com.michel1985.wedoffv3;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

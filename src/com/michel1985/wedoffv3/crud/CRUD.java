@@ -13,7 +13,7 @@ public class CRUD {
 
 	static Usuario user;
 	public String address;
-	public static String diretorioDb = "D:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
+	public static String diretorioDb = "C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
 
 	public CRUD(Usuario user) {
 		CRUD.user = user;				

@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.michel1985.wedoffv3.model.Atendimento;
-import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsController;
 import com.michel1985.wedoffv3.view.AtendimentoDiarioStatisticsControllerMensal;
 
 public class TestesEstatistica {

@@ -4,7 +4,6 @@ import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.util.PreferenciasDoUsuario;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.RadioMenuItem;
 
