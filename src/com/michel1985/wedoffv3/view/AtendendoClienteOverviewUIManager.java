@@ -102,7 +102,7 @@ public class AtendendoClienteOverviewUIManager {
 		
 		//Colocando as Novas Tags
 		//controller.notasClienteTextArea.setText("<rating></rating>\n\n");
-    	controller.notasSobreAtendimentoTextArea.setText("<ToDo></ToDo>\n\n<Done></Done>\n\n<Exigencias></Exigencias>");
+    	controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n\n\t</ToDo>\n\n\n\t<Done>\n\n\t</Done>\n\n\n\t<Exigencias>\n\n\t</Exigencias>");
 
 	}
 
@@ -234,7 +234,7 @@ public class AtendendoClienteOverviewUIManager {
 		String comRating = "<rating></rating>\n\n" + obSat.getNit();
 		controller.notasClienteTextArea.setText(comRating);		
     	controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
-    	controller.notasSobreAtendimentoTextArea.setText("<ToDo></ToDo>\n\n<Done></Done>\n\n<Exigencias></Exigencias>");
+    	controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n\n\t</ToDo>\n\n\t<Done>\n\n\t</Done>\n\n\t<Exigencias>\n\n\t</Exigencias>");
 		
 	}
 
