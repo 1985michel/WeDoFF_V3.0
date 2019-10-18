@@ -113,6 +113,7 @@ public class MainApp extends Application {
 		}
 	}
 	
+	
 	public void setRootPersonalStyle(){
 		Scene rootScene = this.rootLayout.getScene();
 		addPersonalStyle(rootScene);

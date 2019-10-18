@@ -3,7 +3,9 @@ package com.michel1985.wedoffv3.view;
 import java.io.InputStream;
 
 import com.michel1985.wedoffv3.model.ObjetoSAT;
+import com.michel1985.wedoffv3.model.ObjetoTarefaGET;
 import com.michel1985.wedoffv3.util.ManipuladoraDeClipBoard;
+import com.michel1985.wedoffv3.util.ManipuradoradeClipBoardTarefaGet;
 
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -102,7 +104,7 @@ public class AtendendoClienteOverviewUIManager {
 		
 		//Colocando as Novas Tags
 		//controller.notasClienteTextArea.setText("<rating></rating>\n\n");
-    	controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n\n\t</ToDo>\n\n\n\t<Done>\n\n\t</Done>\n\n\n\t<Exigencias>\n\n\t</Exigencias>");
+    	//controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n\n\t</ToDo>\n\n\n\t<Done>\n\n\t</Done>\n\n\n\t<Exigencias>\n\n\t</Exigencias>");
 
 	}
 
@@ -227,15 +229,34 @@ public class AtendendoClienteOverviewUIManager {
 	}
 
 	public void receberSat() {
-		ObjetoSAT obSat = ManipuladoraDeClipBoard.getSAT();
-		controller.cpfTextField.setText(obSat.getCpf());
-		controller.nomeClienteTextField.setText(obSat.getNome());
+//		ObjetoSAT obSat = ManipuladoraDeClipBoard.getSAT();
+//		controller.cpfTextField.setText(obSat.getCpf());
+//		controller.nomeClienteTextField.setText(obSat.getNome());
+//		//controller.notasClienteTextArea.setText(obSat.getNit());
+//		String comRating = "<rating></rating>\n\n" + obSat.getNit();
+//		controller.notasClienteTextArea.setText(comRating);		
+//    	controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
+//    	controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n\n\t</ToDo>\n\n\t<Done>\n\n\t</Done>\n\n\t<Exigencias>\n\n\t</Exigencias>");
+		this.receberTarefaGet();
+	}
+	
+	public void receberTarefaGet() {
+		ObjetoTarefaGET obGET = ManipuradoradeClipBoardTarefaGet.getGET();
+						
+		controller.cpfTextField.setText(obGET.getCpf());
+		controller.nomeClienteTextField.setText(obGET.getNome());
 		//controller.notasClienteTextArea.setText(obSat.getNit());
-		String comRating = "<rating></rating>\n\n" + obSat.getNit();
-		controller.notasClienteTextArea.setText(comRating);		
-    	controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
-    	controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n\n\t</ToDo>\n\n\t<Done>\n\n\t</Done>\n\n\t<Exigencias>\n\n\t</Exigencias>");
-		
+		//String comRating = "<rating></rating>\n\n" + obSat.getNit();
+		controller.notasClienteTextArea.setText("\n"+obGET.getDataNascimento()+
+				"\n\n\n\n\n\n"+"Mãe: "+obGET.getNomeMae());		
+    	//controller.isAgendamentoCheckBox.setSelected(obSat.isAgendamento());
+    	controller.notasSobreAtendimentoTextArea.setText("\n\t<ToDo>\n"+obGET.getServico()+
+    			"\n"+obGET.getProtocoloGET()+
+    			"\nDER: "+obGET.getDER()+
+    			"\nOL: "+
+    			"\nMicro: "+
+    			"\n\n\t</ToDo>\n\n\t<Done>\n\n\t</Done>\n\n\t<Exigencias>\n\n\t</Exigencias>");
+		//>>> estou comentando a linha 107 desse arquivo para que o conteúdo da textArea Atendimento não seja reescrito apenas com as tags.
 	}
 
 }

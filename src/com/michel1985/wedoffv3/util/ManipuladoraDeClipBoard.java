@@ -143,7 +143,7 @@ public class ManipuladoraDeClipBoard {
 
 	}
 
-	private static boolean isStringNulaOuVazia(String nome) {
+	protected static boolean isStringNulaOuVazia(String nome) {
 		return nome == null || nome.equals("");
 	}
 
