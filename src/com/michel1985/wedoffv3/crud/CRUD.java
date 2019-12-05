@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.michel1985.wedoffv3.MainApp;
 import com.michel1985.wedoffv3.exceptions.CRUDException;
 import com.michel1985.wedoffv3.model.Usuario;
 
@@ -13,8 +14,10 @@ public class CRUD {
 
 	static Usuario user;
 	public String address;
-	public static String diretorioDb = "C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
-
+	//public static String diretorioDb = "C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
+	public static String diretorioDb = MainApp.diretorioDb;
+	
+	
 	public CRUD(Usuario user) {
 		CRUD.user = user;				
 		address = "jdbc:hsqldb:file:"+diretorioDb + user.getNome();

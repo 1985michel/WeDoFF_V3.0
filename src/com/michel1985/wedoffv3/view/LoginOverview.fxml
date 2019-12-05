@@ -59,6 +59,7 @@
                      <children>
                         <VBox spacing="2.0">
                            <children>
+                           	  <TextField fx:id="driverDbTextField" promptText="Local do DB" />
                               <TextField fx:id="loginTextField" promptText="login" />
                               <PasswordField fx:id="senhaPasswordField" promptText="senha" VBox.vgrow="ALWAYS" />
                               <Button fx:id="logarButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogar" text="Logar" textAlignment="CENTER" />

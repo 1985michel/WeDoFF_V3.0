@@ -50,6 +50,9 @@ public class LoginOverviewController {
 	private TextField loginTextField;
 
 	@FXML
+	private TextField driverDbTextField;
+
+	@FXML
 	private PasswordField senhaPasswordField;
 
 	@FXML
@@ -84,7 +87,6 @@ public class LoginOverviewController {
 		this.mainApp = mainApp;
 		InputStream url = this.getClass().getResourceAsStream("/security-app-shield-icon.png");
 		wedoffLogoImageView.setImage(new Image(url));
-		
 
 		// Em casos de tabela,aqui é o local para solitiar o povoamento
 		// someTable.setItems(mainApp.getClienteData());
@@ -108,15 +110,27 @@ public class LoginOverviewController {
 	@FXML
 	private void handleLogar() {
 
+		System.out.println("feijao!!!!!!!!!!!!!!!");
+
+		if (driverDbTextField.getText().trim() != null && driverDbTextField.getText().trim().length() > 0) {
+			String local = driverDbTextField.getText().trim();
+			String teste = "/";
+			String invertendoBarras = local.replaceAll("\\\\", teste);
+			System.out.println("tentando acesso a >>>> " + invertendoBarras);
+			MainApp.diretorioDb = invertendoBarras;
+		} else {
+			System.out.println("veio no eulse da linha 124 do loginoverviewcontroller");
+			MainApp.diretorioDb = "C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
+		}
+
 		LoginMiddle middle = new LoginMiddle(this);
 		try {
 			middle.logar(loginTextField.getText().trim(), senhaPasswordField.getText());
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
-
-
 
 	@FXML
 	private void handleCadastrarNovoUsuario() {
@@ -127,12 +141,11 @@ public class LoginOverviewController {
 	public void mostraGif() {
 		// Faz o fundo ficar preto
 		faixaBackgroundPane.setStyle("-fx-background-color: #000000;");
-		
+
 		InputStream url = this.getClass().getResourceAsStream("/load04.gif");
 		imagemImageView.setImage(new Image(url));
-		//imagemImageView.setImage(new Image("file:resources/images/load04.gif"));
-		//imagemImageView.setImage(new Image(url));
-
+		// imagemImageView.setImage(new Image("file:resources/images/load04.gif"));
+		// imagemImageView.setImage(new Image(url));
 
 		imagemImageView.toFront();
 		imagemImageView.setVisible(true);
@@ -140,16 +153,15 @@ public class LoginOverviewController {
 	}
 
 	/**
-	 * Método responsável pelo carregamento da interface de abertura abrangendo
-	 * 1 - A exibição da imagem de abertura; 2 - O carregamento de progresssBar
-	 * confrome a quantidade de Clientes sendo carregados
+	 * Método responsável pelo carregamento da interface de abertura abrangendo 1 -
+	 * A exibição da imagem de abertura; 2 - O carregamento de progresssBar confrome
+	 * a quantidade de Clientes sendo carregados
 	 */
 	private void carregaInterfaceDeAbertura() {
 
-	
 		// Obtendo a quantidade de clientes e criando uma Task
-		//int qtd = getQtdDeClientes();
-		//copyWorker = createWorker(qtd < 100 ? 100 : qtd);
+		// int qtd = getQtdDeClientes();
+		// copyWorker = createWorker(qtd < 100 ? 100 : qtd);
 		copyWorker = createWorker(100);
 
 		// Dizendo a ProgressBar que ela deve observar o percentual de execução
@@ -186,8 +198,8 @@ public class LoginOverviewController {
 		};
 
 	}
-	
-	private void showAtendendo(){
+
+	private void showAtendendo() {
 		this.mainApp.showAtendendoClienteOverview();
 	}
 
@@ -196,38 +208,36 @@ public class LoginOverviewController {
 		Thread.sleep(60);
 	}
 
-
-	
 	// Informando ao mainApp que o login ocorreu e que a aplicação deve ser
 	// liberada
 	public void loginConfirmado() {
-		//mostraGif();
+		// mostraGif();
 		this.mainApp.setUsuarioAtivo(usuarioAtivo);
-		
+
 		carregandoLoginProgressBar.progressProperty().unbind();
 		waitSomeTime();
-		
-		//carregaInterfaceDeAbertura();
-		//this.mainApp.carregaHistoricoDeClientes();
-		//this.mainApp.carregaHistoricoDeAtendimentos();
+
+		// carregaInterfaceDeAbertura();
+		// this.mainApp.carregaHistoricoDeClientes();
+		// this.mainApp.carregaHistoricoDeAtendimentos();
 		// this.mainApp.showAtendendoClienteOverview();
 	}
-	
-	
-	private void carregaListas(){
+
+	private void carregaListas() {
 		this.mainApp.carregaHistoricoDeClientes();
 		this.mainApp.carregaHistoricoDeAtendimentos();
 		this.mainApp.carregaHistoricoDeNotasAvulstas();
 	}
+
 	private void waitSomeTime() {
-		
+
 		Task<Void> sleeper = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
 				try {
 					carregaListas();
-					//Thread.sleep(2300);
-					
+					// Thread.sleep(2300);
+
 				} catch (Exception e) {
 				}
 				return null;

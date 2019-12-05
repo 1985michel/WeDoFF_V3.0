@@ -53,6 +53,7 @@ public class MainApp extends Application {
 	private Usuario usuarioAtivo;
 
 	public static String selectedCss;// = "modernaDark";
+	public static String diretorioDb = "C:/Program Files/wedoffSecurity/hsqldb-2.3.3/hsqldb/db/";
 
 	public MainApp() {
 
@@ -61,6 +62,7 @@ public class MainApp extends Application {
 		try {
 			//Capiturando o CSS preferencial
 			MainApp.selectedCss = PreferenciasDoUsuario.getPersonCss();
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
